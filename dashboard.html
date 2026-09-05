@@ -869,6 +869,7 @@
         let isRecoveredMode = false;
         let animTimer = null;
         let activeStep = 1;
+        let lastHeadingAngle = null;
 
         if (!trajData || trajData.length === 0) {
             document.getElementById('errorBanner').style.display = 'block';
@@ -958,25 +959,42 @@
             let vx = toCanvasX(currX);
             let vy = toCanvasY(currY);
 
-            // Compute current motion vector and heading angle in canvas pixels
-            let prevIdx = Math.max(0, currentIndex - 2);
-            let prevPoint = trajData[prevIdx] || curr;
-            let prevX = isForcedBlackout ? prevPoint.blackout_x : prevPoint.fused_x;
-            let prevY = isForcedBlackout ? prevPoint.blackout_y : prevPoint.fused_y;
-            let px = toCanvasX(prevX);
-            let py = toCanvasY(prevY);
-
-            let headingAngle = Math.atan2(vy - py, vx - px);
-            if (Math.abs(vx - px) < 0.1 && Math.abs(vy - py) < 0.1) {
-                if (currentIndex < trajData.length - 1) {
-                    let nextP = trajData[currentIndex + 1];
-                    let nx = toCanvasX(isForcedBlackout ? nextP.blackout_x : nextP.fused_x);
-                    let ny = toCanvasY(isForcedBlackout ? nextP.blackout_y : nextP.fused_y);
-                    headingAngle = Math.atan2(ny - vy, nx - vx);
-                } else {
-                    headingAngle = -Math.PI / 4;
+            // Dynamically calculate tangent angle along the drawn trajectory path
+            let moveAngle = null;
+            for (let stepBack = 1; stepBack <= Math.min(5, currentIndex); stepBack++) {
+                let pPrev = trajData[currentIndex - stepBack];
+                let pX = isForcedBlackout ? pPrev.blackout_x : pPrev.fused_x;
+                let pY = isForcedBlackout ? pPrev.blackout_y : pPrev.fused_y;
+                let pCanvasX = toCanvasX(pX);
+                let pCanvasY = toCanvasY(pY);
+                let dist = Math.hypot(vx - pCanvasX, vy - pCanvasY);
+                if (dist >= 2.0) {
+                    moveAngle = Math.atan2(vy - pCanvasY, vx - pCanvasX);
+                    break;
                 }
             }
+
+            if (moveAngle === null && currentIndex < trajData.length - 1) {
+                for (let stepFwd = 1; stepFwd <= Math.min(5, trajData.length - 1 - currentIndex); stepFwd++) {
+                    let pNext = trajData[currentIndex + stepFwd];
+                    let nX = isForcedBlackout ? pNext.blackout_x : pNext.fused_x;
+                    let nY = isForcedBlackout ? pNext.blackout_y : pNext.fused_y;
+                    let nCanvasX = toCanvasX(nX);
+                    let nCanvasY = toCanvasY(nY);
+                    let dist = Math.hypot(nCanvasX - vx, nCanvasY - vy);
+                    if (dist >= 2.0) {
+                        moveAngle = Math.atan2(nCanvasY - vy, nCanvasX - vx);
+                        break;
+                    }
+                }
+            }
+
+            if (moveAngle !== null) {
+                lastHeadingAngle = moveAngle;
+            } else if (typeof lastHeadingAngle === 'undefined' || lastHeadingAngle === null) {
+                lastHeadingAngle = -Math.PI / 4;
+            }
+            let headingAngle = lastHeadingAngle;
 
             // A. Draw Directional Flashlight Beam Cone emanating from vehicle location dot
             ctx.save();
