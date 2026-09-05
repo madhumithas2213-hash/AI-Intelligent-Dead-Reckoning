@@ -1040,7 +1040,8 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         <div style="font-size:12px; color:var(--text-muted);">
                             <span style="color:#38bdf8;">━ Reference</span> | 
                             <span style="color:#f87171;">┈ INS</span> | 
-                            <span style="color:#34d399;">━ AI-IDR Fused</span>
+                            <span style="color:#34d399;">━ AI-IDR Fused</span> | 
+                            <span style="color:#38bdf8;">Blue Dot = Location + Heading Flash</span>
                         </div>
                     </div>
                     <canvas id="trajCanvas"></canvas>
@@ -1515,26 +1516,83 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             }}
             ctx.stroke();
 
-            // 4. Draw Vehicle Marker with Pulsing Ring
+            // 4. Calculate Vehicle Heading & Draw Directional Location Flash Cone
             let curr = trajData[Math.min(currentIndex, trajData.length - 1)];
             let currX = isForcedBlackout ? curr.blackout_x : curr.fused_x;
             let currY = isForcedBlackout ? curr.blackout_y : curr.fused_y;
             let vx = toCanvasX(currX);
             let vy = toCanvasY(currY);
 
-            // Outer Pulse Ring
+            // Compute current motion vector and heading angle in canvas pixels
+            let prevIdx = Math.max(0, currentIndex - 2);
+            let prevPoint = trajData[prevIdx] || curr;
+            let prevX = isForcedBlackout ? prevPoint.blackout_x : prevPoint.fused_x;
+            let prevY = isForcedBlackout ? prevPoint.blackout_y : prevPoint.fused_y;
+            let px = toCanvasX(prevX);
+            let py = toCanvasY(prevY);
+
+            let headingAngle = Math.atan2(vy - py, vx - px);
+            if (Math.abs(vx - px) < 0.1 && Math.abs(vy - py) < 0.1) {{
+                if (currentIndex < trajData.length - 1) {{
+                    let nextP = trajData[currentIndex + 1];
+                    let nx = toCanvasX(isForcedBlackout ? nextP.blackout_x : nextP.fused_x);
+                    let ny = toCanvasY(isForcedBlackout ? nextP.blackout_y : nextP.fused_y);
+                    headingAngle = Math.atan2(ny - vy, nx - vx);
+                }} else {{
+                    headingAngle = -Math.PI / 4;
+                }}
+            }}
+
+            // A. Draw Directional Flashlight Beam Cone emanating from vehicle location dot
+            ctx.save();
             ctx.beginPath();
-            ctx.arc(vx, vy, 14, 0, 2 * Math.PI);
+            ctx.moveTo(vx, vy);
+            ctx.arc(vx, vy, 52, headingAngle - 0.45, headingAngle + 0.45);
+            ctx.closePath();
+            
+            let beamColorStart = isForcedBlackout ? 'rgba(245, 158, 11, 0.65)' : (isRecoveredMode ? 'rgba(56, 189, 248, 0.70)' : 'rgba(52, 211, 153, 0.70)');
+            let beamColorEnd = isForcedBlackout ? 'rgba(245, 158, 11, 0.0)' : (isRecoveredMode ? 'rgba(56, 189, 248, 0.0)' : 'rgba(52, 211, 153, 0.0)');
+
+            let flashGrad = ctx.createRadialGradient(vx, vy, 4, vx, vy, 52);
+            flashGrad.addColorStop(0, beamColorStart);
+            flashGrad.addColorStop(1, beamColorEnd);
+            ctx.fillStyle = flashGrad;
+            ctx.fill();
+            ctx.restore();
+
+            // B. Draw Pulsing Beacon Halo Ring around Blue Location Dot
+            let pulseRadius = 14 + 3 * Math.sin(Date.now() / 180);
+            ctx.beginPath();
+            ctx.arc(vx, vy, pulseRadius, 0, 2 * Math.PI);
             ctx.fillStyle = isForcedBlackout ? 'rgba(245, 158, 11, 0.25)' : 'rgba(56, 189, 248, 0.25)';
             ctx.fill();
 
-            // Core Marker Dot
+            // C. Draw Core Blue Location Dot
             ctx.beginPath();
-            ctx.arc(vx, vy, 7, 0, 2 * Math.PI);
+            ctx.arc(vx, vy, 8, 0, 2 * Math.PI);
             ctx.fillStyle = isForcedBlackout ? '#f59e0b' : '#38bdf8';
             ctx.fill();
-            ctx.lineWidth = 2;
+            ctx.lineWidth = 2.5;
             ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+
+            // D. Draw Direction Pointer Arrow / Flash Beam Tip
+            let tipX = vx + 18 * Math.cos(headingAngle);
+            let tipY = vy + 18 * Math.sin(headingAngle);
+            let leftX = vx + 10 * Math.cos(headingAngle + 2.5);
+            let leftY = vy + 10 * Math.sin(headingAngle + 2.5);
+            let rightX = vx + 10 * Math.cos(headingAngle - 2.5);
+            let rightY = vy + 10 * Math.sin(headingAngle - 2.5);
+
+            ctx.beginPath();
+            ctx.moveTo(tipX, tipY);
+            ctx.lineTo(leftX, leftY);
+            ctx.lineTo(rightX, rightY);
+            ctx.closePath();
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = isForcedBlackout ? '#f59e0b' : '#0284c7';
             ctx.stroke();
 
             // Update Top Metric Cards
