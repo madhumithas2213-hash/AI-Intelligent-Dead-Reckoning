@@ -385,23 +385,23 @@
 <body>
     <div class="container">
         <div id="errorBanner" class="error-banner">
-            ⚠️ Unable to load evaluation sequence dataset or sensor telemetry unavailable.
+            Unable to load evaluation sequence dataset or sensor telemetry unavailable.
         </div>
 
         <!-- HEADER -->
         <div class="header">
             <div class="header-title">
-                <h1>📡 AI-IDR — Intelligent Dead Reckoning</h1>
+                <h1>AI-IDR — Intelligent Dead Reckoning</h1>
                 <p>Adaptive GNSS + INS + AI Sensor Fusion | SIH26168 Interactive Benchmark</p>
             </div>
             <div>
-                <span id="nav-mode-badge" class="badge badge-gnss">🟢 GNSS-AIDED</span>
+                <span id="nav-mode-badge" class="badge badge-gnss">GNSS-AIDED</span>
             </div>
         </div>
 
         <!-- DEMO FLOW STEP BAR FOR SIH JUDGES -->
         <div class="step-bar">
-            <div class="step-title">📋 SIH26168 Demonstration Workflow Steps</div>
+            <div class="step-title">SIH26168 Demonstration Workflow Steps</div>
             <div class="step-grid">
                 <div class="step-item active" id="step-1">STEP 1: Select Inputs</div>
                 <div class="step-item" id="step-2">STEP 2: GNSS-AIDED</div>
@@ -416,7 +416,7 @@
 
         <!-- USER INPUT CONTROL PANEL -->
         <div class="user-input-box">
-            <div class="user-input-title">🎛️ DYNAMIC USER INPUTS & BENCHMARK PARAMETERS</div>
+            <div class="user-input-title">DYNAMIC USER INPUTS & BENCHMARK PARAMETERS</div>
             <div class="user-input-grid">
                 <div class="input-group">
                     <label for="user-seq-select">Dataset Sequence</label>
@@ -470,7 +470,7 @@
         <div class="main-layout">
             <div class="canvas-box">
                 <div class="canvas-header">
-                    <div class="canvas-title">📍 Live Navigation Trajectory & Moving Vehicle Marker</div>
+                    <div class="canvas-title">Live Navigation Trajectory & Moving Vehicle Marker</div>
                     <div style="font-size:12px; color:var(--text-muted);">
                         <span style="color:#38bdf8;">━ Reference</span> | 
                         <span style="color:#f87171;">┈ INS</span> | 
@@ -481,13 +481,13 @@
             </div>
 
             <div class="controls-panel">
-                <div class="panel-title">🎮 Demo Control Panel</div>
-                <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">▶ Replay Trajectory</button>
-                <button class="btn btn-danger" id="btnSimLoss" onclick="simulateLoss()">⚡ Simulate GNSS Loss</button>
-                <button class="btn btn-success" id="btnRestoreGNSS" onclick="restoreGNSS()">🛰️ Restore GNSS</button>
-                <button class="btn btn-secondary" onclick="resetDemo()">↺ Reset Trajectory</button>
+                <div class="panel-title">Demo Control Panel</div>
+                <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">Replay Trajectory</button>
+                <button class="btn btn-danger" id="btnSimLoss" onclick="simulateLoss()">Simulate GNSS Loss</button>
+                <button class="btn btn-success" id="btnRestoreGNSS" onclick="restoreGNSS()">Restore GNSS</button>
+                <button class="btn btn-secondary" onclick="resetDemo()">Reset Trajectory</button>
 
-                <div class="panel-title" style="margin-top:8px;">📊 Live Sensor Telemetry</div>
+                <div class="panel-title" style="margin-top:8px;">Live Sensor Telemetry</div>
                 <ul class="status-list">
                     <li class="status-item">
                         <span>GNSS Receiver</span>
@@ -510,7 +510,7 @@
                 <!-- REAL-TIME PHONE SENSOR PANEL (JUDGES REQUIREMENT) -->
                 <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:8px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
-                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">📱 LIVE DEVICE SENSORS</span>
+                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
                         <span id="sensor-stream-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">IMU STREAM (100Hz)</span>
                     </div>
 
@@ -552,7 +552,7 @@
             <!-- SIH TARGET CARD -->
             <div class="sih-card">
                 <div class="sih-title">
-                    <span>🏆 DYNAMIC SIH26168 BENCHMARK RESULT</span>
+                    <span>DYNAMIC SIH26168 BENCHMARK RESULT</span>
                     <span id="sih-badge-result" style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:800; background:#34d399; color:#0f172a;">PASS</span>
                 </div>
                 <div class="sih-metric-row">
@@ -586,7 +586,7 @@
 
                 <!-- TOPIC & REASONING CARD -->
                 <div class="topic-card">
-                    <div class="topic-title">💡 DYNAMIC BENCHMARK EXPLANATION TOPIC</div>
+                    <div class="topic-title">DYNAMIC BENCHMARK EXPLANATION TOPIC</div>
                     <div id="sih-explanation-text">
                         Evaluating sequence S-A1 under Kinematic GT Basis over a 30s outage. Calculated drift of 5.51% meets user target threshold (< 10.0%) → PASS.
                     </div>
@@ -595,7 +595,7 @@
 
             <!-- DEBUG METRICS TELEMETRY PANEL -->
             <div class="debug-panel">
-                <div class="debug-title">🛠️ DEBUG METRICS TELEMETRY PANEL</div>
+                <div class="debug-title">DEBUG METRICS TELEMETRY PANEL</div>
                 <div class="debug-grid">
                     <div class="debug-item">
                         <div class="debug-label">dt Median</div>
@@ -804,23 +804,23 @@
 
             if (isForcedBlackout || curr.mode === "DEAD_RECKONING") {
                 modeBadge.className = 'badge badge-dr';
-                modeBadge.innerHTML = '🔴 DEAD RECKONING';
+                modeBadge.innerHTML = 'DEAD RECKONING';
                 gnssStat.innerHTML = '<span class="dot dot-red"></span>Signal Lost';
                 fusionStat.innerHTML = '<span class="dot dot-amber"></span>AI-IDR Prediction';
                 if (activeStep < 4) setStep(4);
             } else if (isRecoveredMode) {
                 modeBadge.className = 'badge badge-recovered';
-                modeBadge.innerHTML = '🔵 GNSS-RECOVERED';
+                modeBadge.innerHTML = 'GNSS-RECOVERED';
                 gnssStat.innerHTML = '<span class="dot dot-green"></span>Connected';
                 fusionStat.innerHTML = '<span class="dot dot-green"></span>Gated EKF Smooth Recovery';
             } else if (curr.mode === "GNSS_DEGRADED" || curr.conf < 80) {
                 modeBadge.className = 'badge badge-degraded';
-                modeBadge.innerHTML = '🟡 GNSS-DEGRADED';
+                modeBadge.innerHTML = 'GNSS-DEGRADED';
                 gnssStat.innerHTML = '<span class="dot dot-amber"></span>Weak Signal';
                 fusionStat.innerHTML = '<span class="dot dot-green"></span>Adaptive EKF';
             } else {
                 modeBadge.className = 'badge badge-gnss';
-                modeBadge.innerHTML = '🟢 GNSS-AIDED';
+                modeBadge.innerHTML = 'GNSS-AIDED';
                 gnssStat.innerHTML = '<span class="dot dot-green"></span>Connected';
                 fusionStat.innerHTML = '<span class="dot dot-green"></span>Adaptive EKF';
             }
@@ -928,12 +928,12 @@
 
             // Build dynamic explanation topic text based on user input combination
             if (passed) {
-                explanationStr = "✅ <b>BENCHMARK RESULT: PASS</b><br>" +
+                explanationStr = "<b>BENCHMARK RESULT: PASS</b><br>" +
                     "Evaluated sequence <b>" + activeSeqKey + "</b> over a <b>" + outageDurSec.toFixed(1) + "s</b> outage under <b>" + (evalMode === 'kinematic' ? "Kinematic GT Basis" : "Raw GPS Basis") + "</b>.<br>" +
                     "Calculated position drift is <b>" + calculatedDriftPct.toFixed(2) + "%</b> (" + calculatedDriftM.toFixed(2) + "m drift over " + refDist.toFixed(1) + "m reference distance).<br>" +
                     "This performance satisfies the user-defined SIH target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>PASS</b>.";
             } else {
-                explanationStr = "❌ <b>BENCHMARK RESULT: FAIL</b><br>" +
+                explanationStr = "<b>BENCHMARK RESULT: FAIL</b><br>" +
                     "Evaluated sequence <b>" + activeSeqKey + "</b> over a <b>" + outageDurSec.toFixed(1) + "s</b> outage under <b>" + (evalMode === 'kinematic' ? "Kinematic GT Basis" : "Raw GPS Basis") + "</b>.<br>" +
                     "Calculated position drift is <b>" + calculatedDriftPct.toFixed(2) + "%</b> (" + calculatedDriftM.toFixed(2) + "m drift over " + refDist.toFixed(1) + "m reference distance).<br>" +
                     "This exceeds the user-defined SIH target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>FAIL</b>.<br>" +
