@@ -1099,26 +1099,61 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </div>
                 </div>
 
-                <!-- NAVIGATION MODE TIMELINE (LIVE MODE TRANSITION FLOW) -->
+                <!-- NAVIGATION MODE TIMELINE (LIVE HUMAN-FRIENDLY JOURNEY) -->
                 <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:8px;">
-                    <div style="border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <div style="border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
                         <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">NAVIGATION MODE TIMELINE</span>
-                        <span style="font-size:9px; color:var(--text-muted); font-weight:600;">LIVE TRANSITIONS</span>
+                        <span style="font-size:9px; color:var(--text-muted); font-weight:600;">LIVE JOURNEY</span>
                     </div>
                     
-                    <div style="display:flex; flex-direction:column; align-items:center; gap:3px; font-family:monospace; font-size:11px;">
-                        <div id="mode-flow-1" style="width:100%; text-align:center; padding:5px 8px; border-radius:6px; border:1px solid #059669; background:rgba(52,211,153,0.15); color:#34d399; font-weight:800;">GNSS-AIDED</div>
-                        <div style="color:#64748b; font-size:10px;">↓</div>
-                        <div id="mode-flow-2" style="width:100%; text-align:center; padding:5px 8px; border-radius:6px; border:1px solid #334155; background:rgba(255,255,255,0.03); color:#94a3b8; font-weight:700;">GNSS-DEGRADED</div>
-                        <div style="color:#64748b; font-size:10px;">↓</div>
-                        <div id="mode-flow-3" style="width:100%; text-align:center; padding:5px 8px; border-radius:6px; border:1px solid #334155; background:rgba(255,255,255,0.03); color:#94a3b8; font-weight:700;">DEAD RECKONING</div>
-                        <div style="color:#64748b; font-size:10px;">↓</div>
-                        <div id="mode-flow-4" style="width:100%; text-align:center; padding:5px 8px; border-radius:6px; border:1px solid #334155; background:rgba(255,255,255,0.03); color:#94a3b8; font-weight:700;">GNSS-RECOVERED</div>
-                        <div style="color:#64748b; font-size:10px;">↓</div>
-                        <div id="mode-flow-5" style="width:100%; text-align:center; padding:5px 8px; border-radius:6px; border:1px solid #334155; background:rgba(255,255,255,0.03); color:#94a3b8; font-weight:700;">GNSS-AIDED</div>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <!-- Step 1: GNSS Available -->
+                        <div id="mode-flow-1" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #059669; background:rgba(52,211,153,0.15); transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:12px; font-weight:800; color:#34d399;">GNSS Available</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS is working normally</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Signal Getting Weak -->
+                        <div id="mode-flow-2" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">Signal Getting Weak</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS accuracy is decreasing</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: GNSS Lost -->
+                        <div id="mode-flow-3" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">GNSS Lost — AI Dead Reckoning Takes Over</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS unavailable — AI-IDR is navigating using phone sensors</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: GNSS Signal Returns -->
+                        <div id="mode-flow-4" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">GNSS Signal Returns</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS signal is back — correcting the estimated position</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Normal Navigation Restored -->
+                        <div id="mode-flow-5" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">Normal Navigation Restored</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS + AI-IDR working together</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div style="margin-top:10px; padding:6px 8px; border-radius:6px; background:rgba(56,189,248,0.06); border:1px solid rgba(56,189,248,0.2); font-size:10px; color:#93c5fd; text-align:center; line-height:1.3;">
+                    <div style="margin-top:12px; padding:8px 10px; border-radius:6px; background:rgba(56,189,248,0.06); border:1px solid rgba(56,189,248,0.2); font-size:10px; color:#93c5fd; text-align:center; line-height:1.4;">
                         "The system seamlessly transitions between GNSS and dead reckoning."
                     </div>
                 </div>
@@ -1437,33 +1472,65 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 if (qConf) {{ qConf.innerText = confNum; qConf.style.color = "#34d399"; }}
             }}
 
-            // Update Navigation Mode Timeline highlighting
-            let mf1 = document.getElementById('mode-flow-1');
-            let mf2 = document.getElementById('mode-flow-2');
-            let mf3 = document.getElementById('mode-flow-3');
-            let mf4 = document.getElementById('mode-flow-4');
-            let mf5 = document.getElementById('mode-flow-5');
+            // Update Navigation Mode Timeline highlighting (Active state highlighted, previous completed)
+            let activeStepIdx = 1;
+            if (isForcedBlackout || curr.mode === "DEAD_RECKONING") activeStepIdx = 3;
+            else if (isRecoveredMode) activeStepIdx = 4;
+            else if (curr.mode === "GNSS_DEGRADED" || curr.conf < 80) activeStepIdx = 2;
+            else if (currentIndex > Math.floor(trajData.length * 0.7)) activeStepIdx = 5;
+            else activeStepIdx = 1;
 
-            [mf1, mf2, mf3, mf4, mf5].forEach(mf => {{
-                if (mf) {{
-                    mf.style.border = "1px solid #334155";
-                    mf.style.background = "rgba(255,255,255,0.03)";
-                    mf.style.color = "#94a3b8";
-                    mf.style.fontWeight = "700";
+            const stepConfigs = [
+                {{ id: 'mode-flow-1', color: '#059669', titleColor: '#34d399', bg: 'rgba(52,211,153,0.15)' }},
+                {{ id: 'mode-flow-2', color: '#d97706', titleColor: '#f59e0b', bg: 'rgba(245,158,11,0.18)' }},
+                {{ id: 'mode-flow-3', color: '#dc2626', titleColor: '#f87171', bg: 'rgba(239,68,68,0.20)' }},
+                {{ id: 'mode-flow-4', color: '#0284c7', titleColor: '#38bdf8', bg: 'rgba(56,189,248,0.20)' }},
+                {{ id: 'mode-flow-5', color: '#059669', titleColor: '#34d399', bg: 'rgba(52,211,153,0.18)' }}
+            ];
+
+            stepConfigs.forEach((s, idx) => {{
+                let stepNum = idx + 1;
+                let el = document.getElementById(s.id);
+                if (!el) return;
+
+                let titleEl = el.querySelector('.journey-title');
+                let dotEl = el.querySelector('.journey-dot');
+
+                if (stepNum === activeStepIdx) {{
+                    // CURRENT ACTIVE STATE
+                    el.style.border = '1px solid ' + s.color;
+                    el.style.background = s.bg;
+                    el.style.opacity = '1.0';
+                    el.style.boxShadow = '0 0 12px ' + s.bg;
+                    if (titleEl) titleEl.style.color = s.titleColor;
+                    if (dotEl) {{
+                        dotEl.style.background = s.titleColor;
+                        dotEl.style.boxShadow = '0 0 8px ' + s.titleColor;
+                    }}
+                }} else if (stepNum < activeStepIdx) {{
+                    // PREVIOUS COMPLETED STATE
+                    el.style.border = '1px solid #1e293b';
+                    el.style.background = 'rgba(255,255,255,0.03)';
+                    el.style.opacity = '0.75';
+                    el.style.boxShadow = 'none';
+                    if (titleEl) titleEl.style.color = '#e2e8f0';
+                    if (dotEl) {{
+                        dotEl.style.background = '#64748b';
+                        dotEl.style.boxShadow = 'none';
+                    }}
+                }} else {{
+                    // UPCOMING FUTURE STATE
+                    el.style.border = '1px solid #1e293b';
+                    el.style.background = 'rgba(255,255,255,0.01)';
+                    el.style.opacity = '0.40';
+                    el.style.boxShadow = 'none';
+                    if (titleEl) titleEl.style.color = '#94a3b8';
+                    if (dotEl) {{
+                        dotEl.style.background = '#334155';
+                        dotEl.style.boxShadow = 'none';
+                    }}
                 }}
             }});
-
-            if (isForcedBlackout || curr.mode === "DEAD_RECKONING") {{
-                if (mf3) {{ mf3.style.border = "1px solid #dc2626"; mf3.style.background = "rgba(239,68,68,0.2)"; mf3.style.color = "#f87171"; mf3.style.fontWeight = "800"; }}
-            }} else if (isRecoveredMode) {{
-                if (mf4) {{ mf4.style.border = "1px solid #0284c7"; mf4.style.background = "rgba(56,189,248,0.2)"; mf4.style.color = "#38bdf8"; mf4.style.fontWeight = "800"; }}
-            }} else if (curr.mode === "GNSS_DEGRADED" || curr.conf < 80) {{
-                if (mf2) {{ mf2.style.border = "1px solid #d97706"; mf2.style.background = "rgba(245,158,11,0.2)"; mf2.style.color = "#f59e0b"; mf2.style.fontWeight = "800"; }}
-            }} else if (currentIndex > Math.floor(trajData.length * 0.7)) {{
-                if (mf5) {{ mf5.style.border = "1px solid #059669"; mf5.style.background = "rgba(52,211,153,0.2)"; mf5.style.color = "#34d399"; mf5.style.fontWeight = "800"; }}
-            }} else {{
-                if (mf1) {{ mf1.style.border = "1px solid #059669"; mf1.style.background = "rgba(52,211,153,0.2)"; mf1.style.color = "#34d399"; mf1.style.fontWeight = "800"; }}
-            }}
 
             // Update Debug Panel Telemetry
             document.getElementById('dbg-vel-mps').innerText = (curr.speed / 3.6).toFixed(2) + ' m/s';
