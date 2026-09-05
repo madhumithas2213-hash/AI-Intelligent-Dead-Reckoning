@@ -756,7 +756,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
         }}
         canvas {{
             width: 100%;
-            height: 420px;
+            height: 360px;
             background-color: #0b1120;
             border-radius: 8px;
             border: 1px solid #1e293b;
@@ -996,18 +996,143 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
         <!-- MAIN LAYOUT: LIVE TRAJECTORY CANVAS & DEMO CONTROLS -->
         <div class="main-layout">
-            <div class="canvas-box">
-                <div class="canvas-header">
-                    <div class="canvas-title">Live Navigation Trajectory & Moving Vehicle Marker</div>
-                    <div style="font-size:12px; color:var(--text-muted);">
-                        <span style="color:#38bdf8;">━ Reference</span> | 
-                        <span style="color:#f87171;">┈ INS</span> | 
-                        <span style="color:#34d399;">━ AI-IDR Fused</span>
+            <div class="main-content-col" style="display:flex; flex-direction:column; gap:12px;">
+                <div class="canvas-box">
+                    <div class="canvas-header">
+                        <div class="canvas-title">Live Navigation Trajectory & Moving Vehicle Marker</div>
+                        <div style="font-size:12px; color:var(--text-muted);">
+                            <span style="color:#38bdf8;">━ Reference</span> | 
+                            <span style="color:#f87171;">┈ INS</span> | 
+                            <span style="color:#34d399;">━ AI-IDR Fused</span>
+                        </div>
+                    </div>
+                    <canvas id="trajCanvas"></canvas>
+                </div>
+
+                <!-- NAVIGATION MODE TIMELINE (HORIZONTAL LIVE JOURNEY FLOW) -->
+                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
+                    <div style="border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">NAVIGATION MODE TIMELINE</span>
+                        <span style="font-size:9px; color:var(--text-muted); font-weight:600;">LIVE JOURNEY FLOW</span>
+                    </div>
+                    
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:8px;">
+                        <!-- Step 1: GNSS Available -->
+                        <div id="mode-flow-1" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #059669; background:rgba(52,211,153,0.15); transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:11px; font-weight:800; color:#34d399; line-height:1.2;">GNSS Available</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS is working normally</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Signal Getting Weak -->
+                        <div id="mode-flow-2" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">Signal Getting Weak</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS accuracy decreasing</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: GNSS Lost -->
+                        <div id="mode-flow-3" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS Lost — AI-IDR</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS lost — navigating with sensors</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: GNSS Signal Returns -->
+                        <div id="mode-flow-4" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS Signal Returns</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS signal back — correcting</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: Normal Navigation Restored -->
+                        <div id="mode-flow-5" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
+                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div>
+                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">Navigation Restored</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS + AI-IDR fused</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <canvas id="trajCanvas"></canvas>
+
+                <!-- LOWER SENSORS & QUALITY GRID IN LEFT COLUMN -->
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                    <!-- REAL-TIME PHONE SENSOR PANEL -->
+                    <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
+                            <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
+                            <span id="sensor-stream-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">IMU STREAM (100Hz)</span>
+                        </div>
+
+                        <!-- Accelerometer -->
+                        <div style="margin-bottom:8px;">
+                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Accelerometer</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
+                                <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
+                                <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
+                                <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Gyroscope -->
+                        <div style="margin-bottom:8px;">
+                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Gyroscope</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
+                                <div>Yaw: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
+                                <div>Pitch: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
+                                <div>Roll: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Magnetometer -->
+                        <div>
+                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Magnetometer</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
+                                <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
+                                <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
+                                <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GNSS SIGNAL QUALITY PANEL -->
+                    <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
+                            <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
+                            <span id="gnss-quality-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">GOOD</span>
+                        </div>
+                        <div style="display:flex; flex-direction:column; gap:6px; font-family:monospace; font-size:11px;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <span style="color:var(--text-muted);">Satellites</span>
+                                <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span style="color:var(--text-muted);">Accuracy</span>
+                                <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span style="color:var(--text-muted);">Signal Quality</span>
+                                <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between;">
+                                <span style="color:var(--text-muted);">Confidence</span>
+                                <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
+            <!-- RIGHT SIDEBAR (DEMO CONTROL PANEL & TELEMETRY ONLY) -->
             <div class="controls-panel">
                 <div class="panel-title">Demo Control Panel</div>
                 <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">Replay Trajectory</button>
@@ -1034,129 +1159,6 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         <span id="stat-fusion"><span class="dot dot-green"></span>Adaptive EKF</span>
                     </li>
                 </ul>
-
-                <!-- REAL-TIME PHONE SENSOR PANEL (JUDGES REQUIREMENT) -->
-                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:8px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
-                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
-                        <span id="sensor-stream-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">IMU STREAM (100Hz)</span>
-                    </div>
-
-                    <!-- Accelerometer -->
-                    <div style="margin-bottom:8px;">
-                        <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Accelerometer</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                            <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                            <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                            <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Gyroscope -->
-                    <div style="margin-bottom:8px;">
-                        <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Gyroscope</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                            <div>Yaw: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                            <div>Pitch: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                            <div>Roll: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Magnetometer -->
-                    <div>
-                        <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Magnetometer</div>
-                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                            <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                            <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                            <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- GNSS SIGNAL QUALITY PANEL (QUALITY-AWARE FUSION DEMO) -->
-                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:8px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
-                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
-                        <span id="gnss-quality-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">GOOD</span>
-                    </div>
-                    <div style="display:flex; flex-direction:column; gap:6px; font-family:monospace; font-size:11px;">
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="color:var(--text-muted);">Satellites</span>
-                            <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="color:var(--text-muted);">Accuracy</span>
-                            <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="color:var(--text-muted);">Signal Quality</span>
-                            <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
-                        </div>
-                        <div style="display:flex; justify-content:space-between;">
-                            <span style="color:var(--text-muted);">Confidence</span>
-                            <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- NAVIGATION MODE TIMELINE (LIVE HUMAN-FRIENDLY JOURNEY) -->
-                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:8px;">
-                    <div style="border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">NAVIGATION MODE TIMELINE</span>
-                        <span style="font-size:9px; color:var(--text-muted); font-weight:600;">LIVE JOURNEY</span>
-                    </div>
-                    
-                    <div style="display:flex; flex-direction:column; gap:8px;">
-                        <!-- Step 1: GNSS Available -->
-                        <div id="mode-flow-1" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #059669; background:rgba(52,211,153,0.15); transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:12px; font-weight:800; color:#34d399;">GNSS Available</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS is working normally</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: Signal Getting Weak -->
-                        <div id="mode-flow-2" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">Signal Getting Weak</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS accuracy is decreasing</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: GNSS Lost -->
-                        <div id="mode-flow-3" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">GNSS Lost — AI Dead Reckoning Takes Over</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS unavailable — AI-IDR is navigating using phone sensors</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: GNSS Signal Returns -->
-                        <div id="mode-flow-4" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">GNSS Signal Returns</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS signal is back — correcting the estimated position</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 5: Normal Navigation Restored -->
-                        <div id="mode-flow-5" style="display:flex; align-items:flex-start; gap:10px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:10px; height:10px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:12px; font-weight:700; color:#94a3b8;">Normal Navigation Restored</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:1px;">GPS + AI-IDR working together</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top:12px; padding:8px 10px; border-radius:6px; background:rgba(56,189,248,0.06); border:1px solid rgba(56,189,248,0.2); font-size:10px; color:#93c5fd; text-align:center; line-height:1.4;">
-                        "The system seamlessly transitions between GNSS and dead reckoning."
-                    </div>
-                </div>
             </div>
         </div>
 
