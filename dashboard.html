@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-IDR — Intelligent Dead Reckoning | SIH26168</title>
+    <title>AI-IDR — Intelligent Dead Reckoning</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -392,7 +392,7 @@
         <div class="header">
             <div class="header-title">
                 <h1>AI-IDR — Intelligent Dead Reckoning</h1>
-                <p>Adaptive GNSS + INS + AI Sensor Fusion | SIH26168 Interactive Benchmark</p>
+                <p>Adaptive GNSS + INS + AI Sensor Fusion | Interactive Benchmark</p>
             </div>
             <div>
                 <span id="nav-mode-badge" class="badge badge-gnss">GNSS-AIDED</span>
@@ -401,7 +401,7 @@
 
         <!-- DEMO FLOW STEP BAR FOR SIH JUDGES -->
         <div class="step-bar">
-            <div class="step-title">SIH26168 Demonstration Workflow Steps</div>
+            <div class="step-title">Demonstration Workflow Steps</div>
             <div class="step-grid">
                 <div class="step-item active" id="step-1">STEP 1: Select Inputs</div>
                 <div class="step-item" id="step-2">STEP 2: GNSS-AIDED</div>
@@ -433,7 +433,7 @@
                     <input type="range" id="user-outage-slider" min="5" max="60" step="5" value="30" class="input-control" style="padding:4px;" oninput="document.getElementById('outage-dur-val').innerText = this.value + ' s'; onUserInputChange()">
                 </div>
                 <div class="input-group">
-                    <label for="user-target-threshold">SIH Target Drift Threshold (%)</label>
+                    <label for="user-target-threshold">Target Drift Threshold (%)</label>
                     <input type="number" id="user-target-threshold" min="1" max="200" step="1" value="10.0" class="input-control" oninput="onUserInputChange()">
                 </div>
                 <div class="input-group">
@@ -639,7 +639,7 @@
             <!-- SIH TARGET CARD -->
             <div class="sih-card">
                 <div class="sih-title">
-                    <span>DYNAMIC SIH26168 BENCHMARK RESULT</span>
+                    <span>DYNAMIC BENCHMARK RESULT</span>
                     <span id="sih-badge-result" style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:800; background:#34d399; color:#0f172a;">PASS</span>
                 </div>
                 <div class="sih-metric-row">
@@ -729,7 +729,7 @@
                         <div class="debug-val" id="dbg-drift-pct" style="color:var(--accent-green);">5.51 %</div>
                     </div>
                     <div class="debug-item">
-                        <div class="debug-label">SIH Target Status</div>
+                        <div class="debug-label">Target Status</div>
                         <div class="debug-val" id="dbg-sih-status" style="color:var(--accent-green);">PASS</div>
                     </div>
                     <div class="debug-item">
@@ -1112,12 +1112,12 @@
                 explanationStr = "<b>BENCHMARK RESULT: PASS</b><br>" +
                     "Evaluated sequence <b>" + activeSeqKey + "</b> over a <b>" + outageDurSec.toFixed(1) + "s</b> outage under <b>" + (evalMode === 'kinematic' ? "Kinematic GT Basis" : "Raw GPS Basis") + "</b>.<br>" +
                     "Calculated position drift is <b>" + calculatedDriftPct.toFixed(2) + "%</b> (" + calculatedDriftM.toFixed(2) + "m drift over " + refDist.toFixed(1) + "m reference distance).<br>" +
-                    "This performance satisfies the user-defined SIH target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>PASS</b>.";
+                    "This performance satisfies the user-defined target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>PASS</b>.";
             } else {
                 explanationStr = "<b>BENCHMARK RESULT: FAIL</b><br>" +
                     "Evaluated sequence <b>" + activeSeqKey + "</b> over a <b>" + outageDurSec.toFixed(1) + "s</b> outage under <b>" + (evalMode === 'kinematic' ? "Kinematic GT Basis" : "Raw GPS Basis") + "</b>.<br>" +
                     "Calculated position drift is <b>" + calculatedDriftPct.toFixed(2) + "%</b> (" + calculatedDriftM.toFixed(2) + "m drift over " + refDist.toFixed(1) + "m reference distance).<br>" +
-                    "This exceeds the user-defined SIH target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>FAIL</b>.<br>" +
+                    "This exceeds the user-defined target threshold of <b>< " + targetThresholdPct.toFixed(1) + "%</b> → <b>FAIL</b>.<br>" +
                     "<i>(Reason: " + (evalMode === 'raw_gps' ? "Raw ground-truth GPS coordinates in IO-VNBD update discretely every 50-100s, causing vehicle displacement to be evaluated as spatial error against frozen GPS fix" : "Extended outage duration causes accumulated Dead Reckoning velocity integration error to exceed target threshold") + ")</i>.";
             }
             document.getElementById('sih-explanation-text').innerHTML = explanationStr;
