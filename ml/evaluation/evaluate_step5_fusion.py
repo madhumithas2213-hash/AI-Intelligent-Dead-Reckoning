@@ -1039,20 +1039,6 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             </div>
         </div>
 
-        <!-- DEMO FLOW STEP BAR FOR SIH JUDGES -->
-        <div class="step-bar">
-            <div class="step-title">Demonstration Workflow Steps</div>
-            <div class="step-grid">
-                <div class="step-item active" id="step-1">STEP 1: Select Inputs</div>
-                <div class="step-item" id="step-2">STEP 2: GNSS-AIDED</div>
-                <div class="step-item" id="step-3">STEP 3: Simulate Loss</div>
-                <div class="step-item" id="step-4">STEP 4: DEAD RECKONING</div>
-                <div class="step-item" id="step-5">STEP 5: IMU+AI Prediction</div>
-                <div class="step-item" id="step-6">STEP 6: Restore GNSS</div>
-                <div class="step-item" id="step-7">STEP 7: Smooth Recovery</div>
-                <div class="step-item" id="step-8">STEP 8: Dynamic Benchmark</div>
-            </div>
-        </div>
 
         <!-- USER INPUT CONTROL PANEL -->
         <div class="user-input-box">
