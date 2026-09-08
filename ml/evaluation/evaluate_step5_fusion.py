@@ -646,15 +646,18 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
     <title>AI-IDR — Intelligent Dead Reckoning</title>
     <style>
         :root {{
-            --bg-color: #0f172a;
-            --panel-bg: #1e293b;
+            --bg-color: #0b1120;
+            --panel-bg: #131d31;
+            --card-inner-bg: #0f172a;
             --accent-blue: #38bdf8;
+            --accent-cyan: #06b6d4;
             --accent-green: #34d399;
             --accent-amber: #f59e0b;
             --accent-red: #f87171;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #334155;
+            --border-color: #1e293b;
+            --border-highlight: #334155;
         }}
         * {{ box-sizing: border-box; }}
         body {{
@@ -663,10 +666,14 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             color: var(--text-main);
             margin: 0;
             padding: 16px;
+            -webkit-font-smoothing: antialiased;
         }}
         .container {{
-            max-width: 1300px;
+            max-width: 1480px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
         }}
         .error-banner {{
             display: none;
@@ -675,27 +682,28 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             padding: 12px 20px;
             border-radius: 8px;
             font-weight: 700;
-            margin-bottom: 16px;
             text-align: center;
         }}
+
+        /* HEADER */
         .header {{
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 24px;
+            padding: 18px 24px;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            margin-bottom: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 14px;
         }}
         .header-title h1 {{
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
+            font-weight: 800;
             color: var(--accent-blue);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -706,9 +714,9 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             font-size: 13px;
         }}
         .badge {{
-            padding: 8px 16px;
+            padding: 7px 16px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             letter-spacing: 0.5px;
             display: inline-flex;
@@ -716,92 +724,59 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             gap: 8px;
             transition: all 0.3s ease;
         }}
-        .badge-gnss {{ background-color: rgba(6, 95, 70, 0.6); color: var(--accent-green); border: 1px solid #059669; box-shadow: 0 0 12px rgba(52, 211, 153, 0.3); }}
-        .badge-dr {{ background-color: rgba(153, 27, 27, 0.6); color: var(--accent-red); border: 1px solid #dc2626; box-shadow: 0 0 12px rgba(248, 113, 113, 0.3); }}
-        .badge-degraded {{ background-color: rgba(180, 83, 9, 0.6); color: var(--accent-amber); border: 1px solid #d97706; box-shadow: 0 0 12px rgba(245, 158, 11, 0.3); }}
-        .badge-recovered {{ background-color: rgba(29, 78, 216, 0.6); color: var(--accent-blue); border: 1px solid #2563eb; box-shadow: 0 0 12px rgba(56, 189, 248, 0.3); }}
+        .badge-gnss {{ background-color: rgba(6, 95, 70, 0.6); color: var(--accent-green); border: 1px solid #059669; box-shadow: 0 0 12px rgba(52, 211, 153, 0.25); }}
+        .badge-dr {{ background-color: rgba(153, 27, 27, 0.6); color: var(--accent-red); border: 1px solid #dc2626; box-shadow: 0 0 12px rgba(248, 113, 113, 0.25); }}
+        .badge-degraded {{ background-color: rgba(180, 83, 9, 0.6); color: var(--accent-amber); border: 1px solid #d97706; box-shadow: 0 0 12px rgba(245, 158, 11, 0.25); }}
+        .badge-recovered {{ background-color: rgba(29, 78, 216, 0.6); color: var(--accent-blue); border: 1px solid #2563eb; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25); }}
 
-        /* JUDGE DEMO FLOW STEP BAR */
-        .step-bar {{
-            background-color: var(--panel-bg);
+        /* UNIFIED CONTROL CENTER */
+        .control-center {{
+            background: linear-gradient(135deg, #162032, #0d1525);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 12px 16px;
-            margin-bottom: 16px;
-        }}
-        .step-title {{
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }}
-        .step-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 6px;
-        }}
-        .step-item {{
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 6px 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-align: center;
-            transition: all 0.2s ease;
-        }}
-        .step-item.active {{
-            background: rgba(56, 189, 248, 0.15);
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            font-weight: 700;
-        }}
-
-        /* USER INPUT CONTROL PANEL SECTION */
-        .user-input-box {{
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 12px;
-            border: 1px solid var(--accent-blue);
+            border: 1px solid rgba(56, 189, 248, 0.3);
             padding: 16px 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
         }}
-        .user-input-title {{
-            font-size: 14px;
+        .control-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }}
+        .control-title {{
+            font-size: 13px;
             font-weight: 800;
             color: var(--accent-blue);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            letter-spacing: 0.8px;
         }}
         .user-input-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
+            gap: 14px;
         }}
         .input-group {{
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 5px;
         }}
         .input-group label {{
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }}
         .input-control {{
-            background-color: #0b1120;
+            background-color: #070c18;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-main);
-            padding: 9px 12px;
+            padding: 8px 12px;
             font-size: 13px;
             font-weight: 600;
             outline: none;
@@ -811,100 +786,35 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             border-color: var(--accent-blue);
         }}
 
-        .grid-top {{
+        /* ACTIONS & TELEMETRY STRIP */
+        .actions-strip {{
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px;
-            margin-bottom: 16px;
-        }}
-        .card {{
-            background-color: var(--panel-bg);
-            padding: 16px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }}
-        .card-title {{
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }}
-        .card-value {{
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-main);
-        }}
-        
-        .main-layout {{
-            display: grid;
-            grid-template-columns: 2.2fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
+            grid-template-columns: 1.4fr 1.6fr;
+            gap: 14px;
+            align-items: center;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.04);
         }}
         @media (max-width: 900px) {{
-            .main-layout {{ grid-template-columns: 1fr; }}
+            .actions-strip {{ grid-template-columns: 1fr; }}
         }}
-
-        .canvas-box {{
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 16px;
-            position: relative;
-        }}
-        .canvas-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
+        .btn-row {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
         }}
-        .canvas-title {{
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--accent-blue);
-        }}
-        canvas {{
-            width: 100%;
-            height: 360px;
-            background-color: #0b1120;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-        }}
-
-        .controls-panel {{
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }}
-        .panel-title {{
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--text-main);
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }}
         .btn {{
-            width: 100%;
-            padding: 11px;
+            padding: 8px 10px;
             border: none;
-            border-radius: 8px;
+            border-radius: 7px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            white-space: nowrap;
         }}
         .btn-primary {{ background-color: #0284c7; color: white; }}
         .btn-primary:hover {{ background-color: #0369a1; }}
@@ -912,114 +822,213 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
         .btn-danger:hover {{ background-color: #b91c1c; }}
         .btn-success {{ background-color: #16a34a; color: white; }}
         .btn-success:hover {{ background-color: #15803d; }}
-        .btn-secondary {{ background-color: #475569; color: white; }}
-        .btn-secondary:hover {{ background-color: #334155; }}
+        .btn-secondary {{ background-color: #334155; color: white; }}
+        .btn-secondary:hover {{ background-color: #475569; }}
 
-        .status-list {{
-            list-style: none;
-            padding: 0;
-            margin: 0;
+        .telemetry-pills {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }}
-        .status-item {{
+        .pill-item {{
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 7px;
+            padding: 6px 10px;
+            font-size: 11px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }}
+        .pill-label {{ font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }}
+        .pill-value {{ font-size: 11px; font-weight: 700; color: #f8fafc; margin-top: 1px; display: flex; align-items: center; }}
+
+        /* TOP KPI CARDS */
+        .grid-top {{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }}
+        @media (max-width: 900px) {{
+            .grid-top {{ grid-template-columns: repeat(2, 1fr); }}
+        }}
+        @media (max-width: 500px) {{
+            .grid-top {{ grid-template-columns: 1fr; }}
+        }}
+        .kpi-card {{
+            background-color: var(--panel-bg);
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }}
+        .kpi-title {{
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }}
+        .kpi-value {{
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+        }}
+
+        /* MAIN BALANCED 2-COLUMN LAYOUT */
+        .main-layout {{
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+            gap: 16px;
+            align-items: start;
+        }}
+        @media (max-width: 1080px) {{
+            .main-layout {{ grid-template-columns: 1fr; }}
+        }}
+        .col-stack {{
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }}
+
+        /* CARD CONTAINERS */
+        .card-panel {{
+            background-color: var(--panel-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }}
+        .card-header {{
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
         }}
+        .card-title {{
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }}
+        .card-subtitle {{
+            font-size: 10.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }}
+
+        /* CANVAS STYLING */
+        canvas#trajCanvas {{
+            width: 100%;
+            height: 380px;
+            background-color: #070c18;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            display: block;
+        }}
+        canvas#mapMatchCanvas {{
+            width: 100%;
+            height: 220px;
+            background-color: #070c18;
+            border-radius: 8px;
+            border: 1px solid #1e293b;
+            display: block;
+        }}
+
+        /* DOT INDICATORS */
         .dot {{
-            height: 8px;
-            width: 8px;
+            height: 7px;
+            width: 7px;
             border-radius: 50%;
             display: inline-block;
             margin-right: 6px;
         }}
-        .dot-green {{ background-color: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }}
-        .dot-red {{ background-color: var(--accent-red); box-shadow: 0 0 8px var(--accent-red); }}
-        .dot-amber {{ background-color: var(--accent-amber); box-shadow: 0 0 8px var(--accent-amber); }}
+        .dot-green {{ background-color: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }}
+        .dot-red {{ background-color: var(--accent-red); box-shadow: 0 0 6px var(--accent-red); }}
+        .dot-amber {{ background-color: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }}
 
-        /* SIH TARGET CARD & SUMMARY GRID */
-        .bottom-grid {{
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 16px;
-        }}
-        @media (max-width: 900px) {{
-            .bottom-grid {{ grid-template-columns: 1fr; }}
-        }}
-
+        /* SIH BENCHMARK CARD */
         .sih-card {{
-            background: linear-gradient(135deg, #1e293b, #0f172a);
+            background: linear-gradient(135deg, #172236, #0e1728);
             border-radius: 12px;
-            border: 2px solid var(--accent-blue);
-            padding: 18px;
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15);
+            border: 1.5px solid var(--accent-blue);
+            padding: 16px;
+            box-shadow: 0 4px 18px rgba(56, 189, 248, 0.12);
         }}
         .sih-title {{
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 800;
             color: var(--accent-blue);
             margin-bottom: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 8px;
         }}
         .sih-metric-row {{
             display: flex;
             justify-content: space-between;
-            padding: 7px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
+            padding: 6.5px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 12.5px;
         }}
 
-        /* EXPLANATION TOPIC CARD */
+        /* TOPIC CARD */
         .topic-card {{
-            margin-top: 14px;
-            background: rgba(15, 23, 42, 0.8);
+            margin-top: 12px;
+            background: rgba(11, 17, 32, 0.8);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 12px 14px;
-            font-size: 12px;
-            line-height: 1.5;
+            padding: 10px 12px;
+            font-size: 11.5px;
+            line-height: 1.45;
         }}
         .topic-title {{
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 800;
             color: var(--accent-amber);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 6px;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
         }}
 
+        /* DEBUG PANEL */
         .debug-panel {{
-            background-color: #0b1120;
+            background-color: var(--panel-bg);
             border-radius: 12px;
             border: 1px solid var(--border-color);
-            padding: 18px;
+            padding: 16px;
         }}
         .debug-title {{
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 800;
             color: var(--accent-amber);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }}
         .debug-grid {{
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
+            gap: 8px;
         }}
         .debug-item {{
-            background: rgba(255,255,255,0.03);
-            padding: 8px 10px;
+            background: rgba(255,255,255,0.02);
+            padding: 6px 8px;
             border-radius: 6px;
             border: 1px solid var(--border-color);
         }}
-        .debug-label {{ font-size: 10px; color: var(--text-muted); text-transform: uppercase; }}
-        .debug-val {{ font-size: 15px; font-weight: 700; color: #38bdf8; margin-top: 2px; }}
+        .debug-label {{ font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; }}
+        .debug-val {{ font-size: 13.5px; font-weight: 700; color: #38bdf8; margin-top: 2px; }}
     </style>
 </head>
 <body>
@@ -1039,10 +1048,11 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             </div>
         </div>
 
-
-        <!-- USER INPUT CONTROL PANEL -->
-        <div class="user-input-box">
-            <div class="user-input-title">DYNAMIC USER INPUTS & BENCHMARK PARAMETERS</div>
+        <!-- UNIFIED CONTROL CENTER -->
+        <div class="control-center">
+            <div class="control-header">
+                <span class="control-title">Dynamic Benchmark Parameters & Live Controls</span>
+            </div>
             <div class="user-input-grid">
                 <div class="input-group">
                     <label for="user-seq-select">Dataset Sequence</label>
@@ -1070,64 +1080,101 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </select>
                 </div>
             </div>
+
+            <div class="actions-strip">
+                <div class="btn-row">
+                    <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">Replay Trajectory</button>
+                    <button class="btn btn-danger" id="btnSimLoss" onclick="simulateLoss()">Simulate Loss</button>
+                    <button class="btn btn-success" id="btnRestoreGNSS" onclick="restoreGNSS()">Restore GNSS</button>
+                    <button class="btn btn-secondary" onclick="resetDemo()">Reset</button>
+                </div>
+                <div class="telemetry-pills">
+                    <div class="pill-item">
+                        <span class="pill-label">GNSS</span>
+                        <span class="pill-value" id="stat-gnss"><span class="dot dot-green"></span>Connected</span>
+                    </div>
+                    <div class="pill-item">
+                        <span class="pill-label">IMU Stream</span>
+                        <span class="pill-value" id="stat-imu"><span class="dot dot-green"></span>100 Hz</span>
+                    </div>
+                    <div class="pill-item">
+                        <span class="pill-label">Alignment</span>
+                        <span class="pill-value" id="stat-align"><span class="dot dot-green"></span>Calibrated</span>
+                    </div>
+                    <div class="pill-item">
+                        <span class="pill-label">Fusion Engine</span>
+                        <span class="pill-value" id="stat-fusion"><span class="dot dot-green"></span>Adaptive EKF</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- TOP METRICS CARDS -->
+        <!-- TOP KPI METRICS BAR -->
         <div class="grid-top">
-            <div class="card">
-                <div class="card-title">Vehicle Speed</div>
-                <div class="card-value" id="val-speed">0.0 <span style="font-size:14px; font-weight:400; color:var(--text-muted);">km/h</span></div>
+            <div class="kpi-card">
+                <div class="kpi-title">Vehicle Speed</div>
+                <div class="kpi-value" id="val-speed">0.0 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">km/h</span></div>
             </div>
-            <div class="card">
-                <div class="card-title">Position Uncertainty</div>
-                <div class="card-value" id="val-acc" style="color:var(--accent-blue);">3.2 <span style="font-size:14px; font-weight:400; color:var(--text-muted);">m</span></div>
+            <div class="kpi-card">
+                <div class="kpi-title">Position Uncertainty</div>
+                <div class="kpi-value" id="val-acc" style="color:var(--accent-blue);">3.2 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">m</span></div>
             </div>
-            <div class="card">
-                <div class="card-title">Sensor Confidence</div>
-                <div class="card-value" id="val-conf" style="color:var(--accent-green);">95 <span style="font-size:14px; font-weight:400; color:var(--text-muted);">%</span></div>
+            <div class="kpi-card">
+                <div class="kpi-title">Sensor Confidence</div>
+                <div class="kpi-value" id="val-conf" style="color:var(--accent-green);">95 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">%</span></div>
             </div>
-            <div class="card">
-                <div class="card-title">Calculated Outage Drift</div>
-                <div class="card-value" id="val-drift" style="color:var(--accent-amber);">5.25 <span style="font-size:14px; font-weight:400; color:var(--text-muted);">m</span></div>
+            <div class="kpi-card">
+                <div class="kpi-title">Calculated Outage Drift</div>
+                <div class="kpi-value" id="val-drift" style="color:var(--accent-amber);">5.25 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">m</span></div>
             </div>
         </div>
 
-        <!-- MAIN LAYOUT: LIVE TRAJECTORY CANVAS & DEMO CONTROLS -->
+        <!-- BALANCED 2-COLUMN WORKSPACE -->
         <div class="main-layout">
-            <div class="main-content-col" style="display:flex; flex-direction:column; gap:12px;">
-                <div class="canvas-box">
-                    <div class="canvas-header">
-                        <div class="canvas-title">Live Navigation Trajectory & Moving Vehicle Marker</div>
-                        <div style="font-size:12px; color:var(--text-muted);">
+
+            <!-- LEFT COLUMN: TRAJECTORY VISUALS & MAPPING FLOW -->
+            <div class="col-stack">
+                
+                <!-- LIVE TRAJECTORY CANVAS -->
+                <div class="card-panel">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title" style="color:var(--accent-blue);">Live Navigation Trajectory & Moving Vehicle Marker</div>
+                            <div class="card-subtitle">Real-time Kinematic State & Gated Innovation Trajectory</div>
+                        </div>
+                        <div style="font-size:11.5px; color:var(--text-muted);">
                             <span style="color:#38bdf8;">━ Reference</span> | 
                             <span style="color:#f87171;">┈ INS</span> | 
                             <span style="color:#34d399;">━ AI-IDR Fused</span> | 
-                            <span style="color:#38bdf8;">Blue Dot = Location + Heading Flash</span>
+                            <span style="color:#38bdf8;">Blue Dot = Vehicle</span>
                         </div>
                     </div>
-                    <canvas id="trajCanvas"></canvas>
+                    <canvas id="trajCanvas" width="800" height="380"></canvas>
                 </div>
 
-                <!-- NAVIGATION MODE TIMELINE (HORIZONTAL LIVE JOURNEY FLOW) -->
-                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
-                    <div style="border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">NAVIGATION MODE TIMELINE</span>
-                        <span style="font-size:9px; color:var(--text-muted); font-weight:600;">LIVE JOURNEY FLOW</span>
+                <!-- NAVIGATION MODE TIMELINE -->
+                <div class="card-panel">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title" style="color:var(--accent-blue);">Navigation Mode Timeline</div>
+                            <div class="card-subtitle">Seamless Multi-Sensor Outage Transition Flow</div>
+                        </div>
+                        <span style="font-size:9.5px; color:var(--text-muted); font-weight:700;">LIVE JOURNEY FLOW</span>
                     </div>
                     
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap:8px;">
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:8px;">
                         <!-- Step 1: GNSS Available -->
                         <div id="mode-flow-1" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #059669; background:rgba(52,211,153,0.15); transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
+                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
                             <div>
                                 <div class="journey-title" style="font-size:11px; font-weight:800; color:#34d399; line-height:1.2;">GNSS Available</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS is working normally</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS working normally</div>
                             </div>
                         </div>
 
                         <!-- Step 2: Signal Getting Weak -->
                         <div id="mode-flow-2" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
                             <div>
                                 <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">Signal Getting Weak</div>
                                 <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS accuracy decreasing</div>
@@ -1136,16 +1183,16 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
                         <!-- Step 3: GNSS Lost -->
                         <div id="mode-flow-3" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
                             <div>
                                 <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS Lost — AI-IDR</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS lost — navigating with sensors</div>
+                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">Navigating with sensors</div>
                             </div>
                         </div>
 
                         <!-- Step 4: GNSS Signal Returns -->
                         <div id="mode-flow-4" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
                             <div>
                                 <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS Signal Returns</div>
                                 <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS signal back — correcting</div>
@@ -1154,7 +1201,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
                         <!-- Step 5: Normal Navigation Restored -->
                         <div id="mode-flow-5" style="display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:9px; height:9px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
+                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
                             <div>
                                 <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">Navigation Restored</div>
                                 <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GPS + AI-IDR fused</div>
@@ -1163,366 +1210,22 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </div>
                 </div>
 
-                <!-- LOWER SENSORS & QUALITY GRID IN LEFT COLUMN -->
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                    <!-- REAL-TIME PHONE SENSOR PANEL -->
-                    <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
-                            <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
-                            <span id="sensor-stream-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">IMU STREAM (100Hz)</span>
-                        </div>
-
-                        <!-- Accelerometer -->
-                        <div style="margin-bottom:8px;">
-                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Accelerometer</div>
-                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                                <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                                <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                                <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span> <span style="font-size:9px; color:#64748b;">m/s²</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Gyroscope -->
-                        <div style="margin-bottom:8px;">
-                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Gyroscope</div>
-                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                                <div>Yaw: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                                <div>Pitch: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                                <div>Roll: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span> <span style="font-size:9px; color:#64748b;">rad/s</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Magnetometer -->
-                        <div>
-                            <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px;">Magnetometer</div>
-                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:4px; font-family:monospace; font-size:11px; color:#f8fafc;">
-                                <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                                <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                                <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span> <span style="font-size:9px; color:#64748b;">µT</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- GNSS SIGNAL QUALITY PANEL -->
-                    <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px;">
-                        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:10px;">
-                            <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
-                            <span id="gnss-quality-tag" style="font-size:9px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 6px; border-radius:8px; font-weight:700; border:1px solid #059669;">GOOD</span>
-                        </div>
-                        <div style="display:flex; flex-direction:column; gap:6px; font-family:monospace; font-size:11px;">
-                            <div style="display:flex; justify-content:space-between;">
-                                <span style="color:var(--text-muted);">Satellites</span>
-                                <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span style="color:var(--text-muted);">Accuracy</span>
-                                <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span style="color:var(--text-muted);">Signal Quality</span>
-                                <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
-                            </div>
-                            <div style="display:flex; justify-content:space-between;">
-                                <span style="color:var(--text-muted);">Confidence</span>
-                                <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS -->
-                <div style="background:#0b1120; border:1px solid var(--border-color); border-radius:10px; padding:14px; margin-top:12px;">
-                    <div style="border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS</span>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:1px;">Dynamic real-time sensor weight & navigation quality telemetry</div>
-                        </div>
-                        <button id="btnToggleDetails" onclick="toggleConfidenceDetails()" style="background:rgba(56,189,248,0.12); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:4px 10px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer; transition:all 0.2s;">View Details</button>
-                    </div>
-
-                    <!-- 2-Column Subgrid: Left = Confidence Bars, Right = Navigation Quality Summary -->
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-                        <!-- Left: Individual Sensor Confidence Breakdown -->
-                        <div>
-                            <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Input Sensor Confidence</div>
-                            
-                            <!-- Accelerometer Confidence -->
-                            <div style="margin-bottom:7px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
-                                    <span style="color:#f8fafc;">Accelerometer</span>
-                                    <span id="conf-accel-val" style="font-weight:700; color:#38bdf8;">94%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-accel-bar" style="width:94%; height:100%; background:#38bdf8; border-radius:3px; transition:width 0.3s ease;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Gyroscope Confidence -->
-                            <div style="margin-bottom:7px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
-                                    <span style="color:#f8fafc;">Gyroscope</span>
-                                    <span id="conf-gyro-val" style="font-weight:700; color:#34d399;">91%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gyro-bar" style="width:91%; height:100%; background:#34d399; border-radius:3px; transition:width 0.3s ease;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Magnetometer Confidence -->
-                            <div style="margin-bottom:7px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
-                                    <span style="color:#f8fafc;">Magnetometer</span>
-                                    <span id="conf-mag-val" style="font-weight:700; color:#f59e0b;">86%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-mag-bar" style="width:86%; height:100%; background:#f59e0b; border-radius:3px; transition:width 0.3s ease;"></div>
-                                </div>
-                            </div>
-
-                            <!-- GNSS Confidence -->
-                            <div style="margin-bottom:7px;">
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
-                                    <span style="color:#f8fafc;">GNSS Receiver</span>
-                                    <span id="conf-gnss-val" style="font-weight:700; color:#34d399;">93%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gnss-bar" style="width:93%; height:100%; background:#34d399; border-radius:3px; transition:width 0.3s ease;"></div>
-                                </div>
-                            </div>
-
-                            <!-- Overall Sensor Confidence -->
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">Overall Fusion Confidence</span>
-                                    <span id="conf-overall-val" style="font-weight:800; color:var(--accent-blue);">90%</span>
-                                </div>
-                                <div style="width:100%; height:8px; background:#1e293b; border-radius:4px; overflow:hidden; border:1px solid rgba(56,189,248,0.3);">
-                                    <div id="conf-overall-bar" style="width:90%; height:100%; background:linear-gradient(90deg, #0284c7, #34d399); border-radius:4px; transition:width 0.3s ease;"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Right: Navigation & Sensor Quality Summary -->
-                        <div>
-                            <div style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Navigation Quality Summary</div>
-                            <div style="display:flex; flex-direction:column; gap:6px; font-size:11px;">
-                                <div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Motion Quality</span>
-                                    <span id="qual-motion-val" style="font-weight:700; color:#34d399;">SMOOTH MOTION</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Vibration Level</span>
-                                    <span id="qual-vibration-val" style="font-weight:700; color:#38bdf8;">LOW (0.06 m/s²)</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Phone Alignment</span>
-                                    <span id="qual-align-val" style="font-weight:700; color:#34d399;">CALIBRATED (Step 4)</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:4px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Timestamp Quality</span>
-                                    <span id="qual-dt-val" style="font-weight:700; color:#34d399;">HIGH (100 Hz)</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- EXPANDABLE INLINE DETAILS CONTAINER -->
-                    <div id="confidence-details-box" style="display:none; margin-top:12px; padding:10px 12px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:8px; font-size:11px; line-height:1.5;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
-                            <span>CONFIDENCE DIAGNOSTIC EXPLANATION</span>
-                            <span id="details-state-tag" style="color:var(--accent-green); font-size:10px;">GNSS-AIDED ACTIVE</span>
-                        </div>
-                        <div id="details-reasoning-text" style="color:#e2e8f0;">
-                            GNSS receiver signal is connected with 14 satellites and 3.2m accuracy. Adaptive EKF sensor fusion is actively weighting GNSS position observations together with Step 4 calibrated Phone IMU streams. Overall confidence is HIGH at 94%.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PHONE ALIGNMENT INDICATOR CARD -->
-                <div class="confidence-card" style="margin-top:14px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:10px;">
-                        <div>
-                            <div style="font-size:12px; font-weight:800; color:var(--text-main); letter-spacing:0.5px; text-transform:uppercase;">
-                                PHONE ALIGNMENT INDICATOR
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Phone-to-Vehicle Frame Orientation Calibration</div>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span id="align-status-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">ALIGNMENT: GOOD</span>
-                            <button onclick="toggleAlignDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <!-- Left Column: Euler Angle Offsets & Status -->
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 8px; text-align:center;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Yaw Offset</div>
-                                    <div id="align-yaw-val" style="font-size:14px; font-weight:800; color:#38bdf8; margin-top:2px;">+4.2°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 8px; text-align:center;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Pitch Offset</div>
-                                    <div id="align-pitch-val" style="font-size:14px; font-weight:800; color:#38bdf8; margin-top:2px;">+1.8°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 8px; text-align:center;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Roll Offset</div>
-                                    <div id="align-roll-val" style="font-size:14px; font-weight:800; color:#38bdf8; margin-top:2px;">+0.9°</div>
-                                </div>
-                            </div>
-
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Alignment Correction</span>
-                                <span id="align-correction-val" style="font-weight:700; color:#34d399;">ACTIVE (R_p2v Applied)</span>
-                            </div>
-                        </div>
-
-                        <!-- Right Column: Simple Judge Explanation Note -->
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                Smartphones may not always be mounted perfectly. AI-IDR estimates the phone-to-vehicle alignment and compensates for orientation errors before using IMU data.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- EXPANDABLE INLINE ALIGNMENT DETAILS PANEL -->
-                    <div id="alignment-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; display:flex; justify-content:space-between; font-size:9.5px;">
-                            <span>FRAME CALIBRATION DIAGNOSTIC DETAILS</span>
-                            <span id="align-det-tag" style="color:var(--accent-green);">det(R_p2v) = 1.000</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:6px; background:rgba(255,255,255,0.02); padding:6px; border-radius:4px;">
-                            <div>
-                                <span style="color:var(--text-muted);">Transform</span><br>
-                                <span style="font-weight:700; color:#e2e8f0;">Body → Vehicle</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Gravity Residual</span><br>
-                                <span id="align-grav-residual" style="font-weight:700; color:#34d399;">0.04 m/s²</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Sample Size</span><br>
-                                <span style="font-weight:700; color:#e2e8f0;">50 frames</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Method</span><br>
-                                <span style="font-weight:700; color:#38bdf8;">Gravity + Dynamics</span>
-                            </div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:10px;">
-                            <strong>Transformation Equation:</strong> S_vehicle = R_p2v · S_phone, where R_p2v is computed via stationary gravity decomposition for Pitch & Roll, combined with dynamic acceleration alignment for Yaw.
-                        </div>
-                </div>
-
-                <!-- DRIFT PREDICTION / RISK METER CARD -->
-                <div class="confidence-card" style="margin-top:14px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:10px;">
-                        <div>
-                            <div style="font-size:12px; font-weight:800; color:var(--text-main); letter-spacing:0.5px; text-transform:uppercase;">
-                                DRIFT PREDICTION / RISK METER
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Real-Time Trajectory Stability & Forecasted Error Risk</div>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span id="risk-status-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">DRIFT RISK: LOW</span>
-                            <button onclick="toggleRiskDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">
-                                View Details
-                            </button>
-                        </div>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <!-- Left Column: Risk Input Metrics Grid -->
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Current Drift</div>
-                                    <div id="risk-curr-drift-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.00 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Uncertainty</div>
-                                    <div id="risk-uncert-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">3.2 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">10s Forecast</div>
-                                    <div id="risk-forecast-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">1.12 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">DR Elapsed</div>
-                                    <div id="risk-dr-time-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.0 s</div>
-                                </div>
-                            </div>
-
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Risk Assessment State</span>
-                                <span id="risk-eval-state" style="font-weight:700; color:#34d399;">STABLE (Low Covariance Growth)</span>
-                            </div>
-                        </div>
-
-                        <!-- Right Column: Simple Judge Explanation Note -->
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                AI-IDR evaluates real-time covariance growth, dead reckoning outage duration, and sensor noise to predict drift trajectory risk before position degradation occurs.
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- EXPANDABLE INLINE RISK DETAILS PANEL -->
-                    <div id="risk-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; display:flex; justify-content:space-between; font-size:9.5px;">
-                            <span>DRIFT RISK DIAGNOSTIC BREAKDOWN</span>
-                            <span id="risk-det-tag" style="color:var(--accent-green);">COVARIANCE: STABLE</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:6px; background:rgba(255,255,255,0.02); padding:6px; border-radius:4px;">
-                            <div>
-                                <span style="color:var(--text-muted);">Growth Rate</span><br>
-                                <span id="risk-growth-rate" style="font-weight:700; color:#34d399;">0.08 m/s</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Velocity Integration</span><br>
-                                <span id="risk-vel-factor" style="font-weight:700; color:#e2e8f0;">Normal</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Sensor Noise Penalty</span><br>
-                                <span id="risk-noise-penalty" style="font-weight:700; color:#34d399;">Low (+2%)</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Safety Threshold</span><br>
-                                <span style="font-weight:700; color:#38bdf8;">10.0 m</span>
-                            </div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:10px;">
-                            <strong>Risk Rating Function:</strong> R = f(σ_p, t_dr, v_vehicle, C_sensor). Low risk indicates high confidence positioning. Medium/High risk indicates accelerating outage drift where map matching or GNSS recovery is recommended.
-                        </div>
-                    </div>
-                </div>
-
                 <!-- MAP MATCHING VIEW CARD -->
-                <div class="confidence-card" style="margin-top:14px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:10px;">
+                <div class="card-panel">
+                    <div class="card-header">
                         <div>
-                            <div style="font-size:12px; font-weight:800; color:var(--text-main); letter-spacing:0.5px; text-transform:uppercase;">
-                                MAP MATCHING VIEW
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Road Network Geometry & Snapped Polyline Constraint</div>
+                            <div class="card-title">MAP MATCHING VIEW</div>
+                            <div class="card-subtitle">Road Network Geometry & Snapped Polyline Constraint</div>
                         </div>
                         <div style="display:flex; gap:8px; align-items:center;">
                             <span id="mapmatch-status-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">ROAD MATCH: GOOD</span>
-                            <button onclick="toggleMapMatchDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">
-                                View Details
-                            </button>
+                            <button onclick="toggleMapMatchDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">View Details</button>
                         </div>
                     </div>
 
-                    <!-- DEDICATED MAP MATCHING CANVAS & LEGEND -->
-                    <div style="position:relative; width:100%; height:220px; background:#0b1329; border:1px solid #1e293b; border-radius:8px; overflow:hidden; margin-bottom:10px;">
+                    <div style="position:relative; width:100%; height:220px; background:#070c18; border:1px solid #1e293b; border-radius:8px; overflow:hidden; margin-bottom:10px;">
                         <canvas id="mapMatchCanvas" width="700" height="220" style="width:100%; height:100%; display:block;"></canvas>
                         
-                        <!-- MAP LEGEND OVERLAY -->
                         <div style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.85); border:1px solid #1e293b; border-radius:6px; padding:6px 10px; font-size:9.5px; display:flex; flex-direction:column; gap:4px;">
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span style="width:12px; height:3px; background:#38bdf8; border-radius:1px;"></span>
@@ -1540,34 +1243,31 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </div>
 
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <!-- Left Column: Map Metrics Grid -->
                         <div style="display:flex; flex-direction:column; gap:6px;">
                             <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Snap Dist</div>
                                     <div id="map-snap-dist-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.84 m</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Segment ID</div>
                                     <div id="map-seg-id-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">SEG_012</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Head Error</div>
                                     <div id="map-head-err-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">1.4°</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Constraint</div>
                                     <div id="map-constraint-val" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">ACTIVE</div>
                                 </div>
                             </div>
-
                             <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
                                 <span style="color:var(--text-muted);">Road Match State</span>
                                 <span id="map-match-state-val" style="font-weight:700; color:#34d399;">ON-ROUTE (Constrained to Road Polyline)</span>
                             </div>
                         </div>
 
-                        <!-- Right Column: Simple Judge Explanation Note -->
                         <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
                             <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
                             <div style="color:#e2e8f0;">
@@ -1576,29 +1276,16 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
 
-                    <!-- EXPANDABLE INLINE MAP MATCHING DETAILS PANEL -->
                     <div id="mapmatch-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
                         <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; display:flex; justify-content:space-between; font-size:9.5px;">
                             <span>MAP MATCHING ALGORITHM DIAGNOSTIC BREAKDOWN</span>
                             <span id="map-algo-tag" style="color:var(--accent-green);">OSM VITERBI HMM ACTIVE</span>
                         </div>
                         <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:6px; background:rgba(255,255,255,0.02); padding:6px; border-radius:4px;">
-                            <div>
-                                <span style="color:var(--text-muted);">Search Radius</span><br>
-                                <span style="font-weight:700; color:#e2e8f0;">50.0 m</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Distance Weight</span><br>
-                                <span style="font-weight:700; color:#38bdf8;">w_d = 1.0</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Heading Weight</span><br>
-                                <span style="font-weight:700; color:#38bdf8;">w_θ = 10.0</span>
-                            </div>
-                            <div>
-                                <span style="color:var(--text-muted);">Projection Type</span><br>
-                                <span style="font-weight:700; color:#34d399;">Orthogonal Line</span>
-                            </div>
+                            <div><span style="color:var(--text-muted);">Search Radius</span><br><span style="font-weight:700; color:#e2e8f0;">50.0 m</span></div>
+                            <div><span style="color:var(--text-muted);">Distance Weight</span><br><span style="font-weight:700; color:#38bdf8;">w_d = 1.0</span></div>
+                            <div><span style="color:var(--text-muted);">Heading Weight</span><br><span style="font-weight:700; color:#38bdf8;">w_θ = 10.0</span></div>
+                            <div><span style="color:var(--text-muted);">Projection Type</span><br><span style="font-weight:700; color:#34d399;">Orthogonal Line</span></div>
                         </div>
                         <div style="color:var(--text-muted); font-size:10px;">
                             <strong>Candidate Scoring Function:</strong> S = w_d · d_proj + w_θ · |θ_est - θ_seg|. The Viterbi algorithm optimizes candidate road segment transitions to prevent physically impossible off-road jumps.
@@ -1607,22 +1294,16 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 </div>
 
                 <!-- BEFORE VS AFTER ACCURACY COMPARISON CARD -->
-                <div class="confidence-card" style="margin-top:14px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px; margin-bottom:10px;">
+                <div class="card-panel">
+                    <div class="card-header">
                         <div>
-                            <div style="font-size:12px; font-weight:800; color:var(--text-main); letter-spacing:0.5px; text-transform:uppercase;">
-                                BEFORE VS AFTER ACCURACY COMPARISON
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Measured Position Error Reduction During GNSS Outage</div>
+                            <div class="card-title">BEFORE VS AFTER ACCURACY COMPARISON</div>
+                            <div class="card-subtitle">Measured Position Error Reduction During GNSS Outage</div>
                         </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span id="bfa-improvement-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">+71.9% ACCURACY IMPROVEMENT</span>
-                        </div>
+                        <span id="bfa-improvement-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">+71.9% ACCURACY IMPROVEMENT</span>
                     </div>
 
-                    <!-- SIDE-BY-SIDE COMPARISON CARDS GRID -->
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:10px;">
-                        <!-- Card 1: WITHOUT AI-IDR -->
                         <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:10px 12px;">
                             <div style="font-size:10px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
                                 <span>WITHOUT AI-IDR</span>
@@ -1633,7 +1314,6 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <div style="font-size:9.5px; color:#fca5a5; margin-top:4px;">Unconstrained Inertial Quadratic Sensor Drift</div>
                         </div>
 
-                        <!-- Card 2: WITH AI-IDR -->
                         <div style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.3); border-radius:8px; padding:10px 12px;">
                             <div style="font-size:10px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
                                 <span>WITH AI-IDR</span>
@@ -1645,32 +1325,28 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
 
-                    <!-- OUTAGE METRICS & JUDGE NOTE GRID -->
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <!-- Left Column: Detailed Measured Outage Summary Grid -->
                         <div style="display:flex; flex-direction:column; gap:6px;">
                             <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">GNSS Outage</div>
                                     <div id="bfa-outage-dur" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">30.0 s</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Reference Dist</div>
                                     <div id="bfa-ref-dist" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">95.3 m</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px 6px; text-align:center;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
                                     <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Improvement</div>
                                     <div id="bfa-improvement-pct" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">+71.9 %</div>
                                 </div>
                             </div>
-
                             <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
                                 <span style="color:var(--text-muted);">Error Reduction Delta</span>
                                 <span id="bfa-delta-err" style="font-weight:700; color:#34d399;">13.45 m Reduced</span>
                             </div>
                         </div>
 
-                        <!-- Right Column: Simple Judge Explanation Note -->
                         <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
                             <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
                             <div style="color:#e2e8f0;">
@@ -1679,149 +1355,358 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
                 </div>
+
             </div>
 
-            <!-- RIGHT SIDEBAR (DEMO CONTROL PANEL & TELEMETRY ONLY) -->
-            <div class="controls-panel">
-                <div class="panel-title">Demo Control Panel</div>
-                <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">Replay Trajectory</button>
-                <button class="btn btn-danger" id="btnSimLoss" onclick="simulateLoss()">Simulate GNSS Loss</button>
-                <button class="btn btn-success" id="btnRestoreGNSS" onclick="restoreGNSS()">Restore GNSS</button>
-                <button class="btn btn-secondary" onclick="resetDemo()">Reset Trajectory</button>
+            <!-- RIGHT COLUMN: BENCHMARK, SENSORS & INTELLIGENCE TELEMETRY -->
+            <div class="col-stack">
+                
+                <!-- DYNAMIC BENCHMARK RESULT CARD -->
+                <div class="sih-card">
+                    <div class="sih-title">
+                        <span>DYNAMIC BENCHMARK RESULT</span>
+                        <span id="sih-badge-result" style="padding:4px 10px; border-radius:12px; font-size:11px; font-weight:800; background:#34d399; color:#0f172a; flex-shrink:0;">PASS</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Active Sequence</span>
+                        <span id="sih-seq-name" style="font-weight:700;">S-A1</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Selected Outage Duration</span>
+                        <span id="sih-outage-dur" style="font-weight:700;">30.0 s</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Reference Distance</span>
+                        <span id="sih-ref-dist" style="font-weight:700;">95.3 m</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Calculated Drift Error</span>
+                        <span id="sih-drift-err" style="font-weight:700; color:var(--accent-amber);">5.25 m</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Calculated Drift Percentage</span>
+                        <span id="sih-drift-pct" style="font-weight:700; color:var(--accent-green);">5.51 %</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>User Target Threshold</span>
+                        <span id="sih-target-val" style="font-weight:700; color:var(--accent-blue);">&lt; 10.0 %</span>
+                    </div>
+                    <div class="sih-metric-row">
+                        <span>Validation Status</span>
+                        <span id="sih-status-final" style="font-weight:800; color:var(--accent-green);">PASS</span>
+                    </div>
 
-                <div class="panel-title" style="margin-top:8px;">Live Sensor Telemetry</div>
-                <ul class="status-list">
-                    <li class="status-item">
-                        <span>GNSS Receiver</span>
-                        <span id="stat-gnss"><span class="dot dot-green"></span>Connected</span>
-                    </li>
-                    <li class="status-item">
-                        <span>Smartphone IMU</span>
-                        <span id="stat-imu"><span class="dot dot-green"></span>Active (100 Hz)</span>
-                    </li>
-                    <li class="status-item">
-                        <span>Frame Alignment</span>
-                        <span id="stat-align"><span class="dot dot-green"></span>Calibrated (Step 4)</span>
-                    </li>
-                    <li class="status-item">
-                        <span>Fusion Engine</span>
-                        <span id="stat-fusion"><span class="dot dot-green"></span>Adaptive EKF</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- BOTTOM GRID: SIH TARGET CARD & DEBUG METRICS PANEL -->
-        <div class="bottom-grid">
-            <!-- SIH TARGET CARD -->
-            <div class="sih-card">
-                <div class="sih-title">
-                    <span>DYNAMIC BENCHMARK RESULT</span>
-                    <span id="sih-badge-result" style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:800; background:#34d399; color:#0f172a;">PASS</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Active Sequence</span>
-                    <span id="sih-seq-name" style="font-weight:700;">{primary_seq}</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Selected Outage Duration</span>
-                    <span id="sih-outage-dur" style="font-weight:700;">30.0 s</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Reference Distance</span>
-                    <span id="sih-ref-dist" style="font-weight:700;">95.3 m</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Calculated Drift Error</span>
-                    <span id="sih-drift-err" style="font-weight:700; color:var(--accent-amber);">5.25 m</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Calculated Drift Percentage</span>
-                    <span id="sih-drift-pct" style="font-weight:700; color:var(--accent-green);">5.51 %</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>User Target Threshold</span>
-                    <span id="sih-target-val" style="font-weight:700; color:var(--accent-blue);">&lt; 10.0 %</span>
-                </div>
-                <div class="sih-metric-row">
-                    <span>Validation Status</span>
-                    <span id="sih-status-final" style="font-weight:800; color:var(--accent-green);">PASS</span>
+                    <div class="topic-card">
+                        <div class="topic-title">DYNAMIC BENCHMARK EXPLANATION TOPIC</div>
+                        <div id="sih-explanation-text">
+                            Evaluating sequence S-A1 under Kinematic GT Basis over a 30s outage. Calculated drift of 5.51% meets user target threshold (< 10.0%) → PASS.
+                        </div>
+                    </div>
                 </div>
 
-                <!-- TOPIC & REASONING CARD -->
-                <div class="topic-card">
-                    <div class="topic-title">DYNAMIC BENCHMARK EXPLANATION TOPIC</div>
-                    <div id="sih-explanation-text">
-                        Evaluating sequence S-A1 under Kinematic GT Basis over a 30s outage. Calculated drift of 5.51% meets user target threshold (< 10.0%) → PASS.
-                    </div>
-                </div>
-            </div>
+                <!-- LIVE DEVICE SENSORS & GNSS QUALITY PANEL -->
+                <div class="card-panel">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                        <!-- Real-Time Phone Sensors -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
+                                <span id="sensor-stream-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">100Hz</span>
+                            </div>
 
-            <!-- DEBUG METRICS TELEMETRY PANEL -->
-            <div class="debug-panel">
-                <div class="debug-title">DEBUG METRICS TELEMETRY PANEL</div>
-                <div class="debug-grid">
-                    <div class="debug-item">
-                        <div class="debug-label">dt Median</div>
-                        <div class="debug-val" id="dbg-dt-median">0.500 s</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">dt Max</div>
-                        <div class="debug-val" id="dbg-dt-max">0.506 s</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Accel Mag</div>
-                        <div class="debug-val" id="dbg-accel">9.81 m/s²</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Velocity (m/s)</div>
-                        <div class="debug-val" id="dbg-vel-mps">0.0 m/s</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Velocity (km/h)</div>
-                        <div class="debug-val" id="dbg-vel-kmh">0.0 km/h</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Outage Duration</div>
-                        <div class="debug-val" id="dbg-outage-dur">30.0 s</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Outage Distance</div>
-                        <div class="debug-val" id="dbg-ref-dist">95.3 m</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Current Frame Error</div>
-                        <div class="debug-val" id="dbg-current-err">0.00 m</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Outage Final Error</div>
-                        <div class="debug-val" id="dbg-final-err">5.25 m</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Outage Max Error</div>
-                        <div class="debug-val" id="dbg-max-err">5.25 m</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Drift Percentage</div>
-                        <div class="debug-val" id="dbg-drift-pct" style="color:var(--accent-green);">5.51 %</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Target Status</div>
-                        <div class="debug-val" id="dbg-sih-status" style="color:var(--accent-green);">PASS</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Avg Outage Vel</div>
-                        <div class="debug-val">11.4 km/h</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Fused RMSE</div>
-                        <div class="debug-val">1.24 m</div>
-                    </div>
-                    <div class="debug-item">
-                        <div class="debug-label">Selected Basis</div>
-                        <div class="debug-val" id="dbg-eval-mode-name">Kinematic</div>
+                            <div style="margin-bottom:6px;">
+                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Accelerometer</div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
+                                    <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span></div>
+                                    <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span></div>
+                                    <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:6px;">
+                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Gyroscope</div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
+                                    <div>Y: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span></div>
+                                    <div>P: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span></div>
+                                    <div>R: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Magnetometer</div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
+                                    <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span></div>
+                                    <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span></div>
+                                    <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GNSS Signal Quality -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
+                                <span id="gnss-quality-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">GOOD</span>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:5px; font-family:monospace; font-size:10.5px;">
+                                <div style="display:flex; justify-content:space-between;">
+                                    <span style="color:var(--text-muted);">Satellites</span>
+                                    <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between;">
+                                    <span style="color:var(--text-muted);">Accuracy</span>
+                                    <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between;">
+                                    <span style="color:var(--text-muted);">Signal Quality</span>
+                                    <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between;">
+                                    <span style="color:var(--text-muted);">Confidence</span>
+                                    <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <!-- SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS -->
+                <div class="card-panel">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title">SENSOR CONFIDENCE & QUALITY</div>
+                            <div class="card-subtitle">Real-Time Sensor Weighting & Motion Telemetry</div>
+                        </div>
+                        <button id="btnToggleDetails" onclick="toggleConfidenceDetails()" style="background:rgba(56,189,248,0.12); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">View Details</button>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:14px;">
+                        <div>
+                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Input Confidence</div>
+                            
+                            <div style="margin-bottom:6px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
+                                    <span>Accelerometer</span>
+                                    <span id="conf-accel-val" style="font-weight:700; color:#38bdf8;">94%</span>
+                                </div>
+                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
+                                    <div id="conf-accel-bar" style="width:94%; height:100%; background:#38bdf8; border-radius:3px;"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:6px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
+                                    <span>Gyroscope</span>
+                                    <span id="conf-gyro-val" style="font-weight:700; color:#34d399;">91%</span>
+                                </div>
+                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
+                                    <div id="conf-gyro-bar" style="width:91%; height:100%; background:#34d399; border-radius:3px;"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:6px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
+                                    <span>Magnetometer</span>
+                                    <span id="conf-mag-val" style="font-weight:700; color:#f59e0b;">86%</span>
+                                </div>
+                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
+                                    <div id="conf-mag-bar" style="width:86%; height:100%; background:#f59e0b; border-radius:3px;"></div>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:6px;">
+                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
+                                    <span>GNSS Receiver</span>
+                                    <span id="conf-gnss-val" style="font-weight:700; color:#34d399;">93%</span>
+                                </div>
+                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
+                                    <div id="conf-gnss-bar" style="width:93%; height:100%; background:#34d399; border-radius:3px;"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
+                                    <span style="color:var(--accent-blue); font-weight:800;">Fusion Confidence</span>
+                                    <span id="conf-overall-val" style="font-weight:800; color:var(--accent-blue);">90%</span>
+                                </div>
+                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
+                                    <div id="conf-overall-bar" style="width:90%; height:100%; background:linear-gradient(90deg, #0284c7, #34d399); border-radius:3px;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Quality Summary</div>
+                            <div style="display:flex; flex-direction:column; gap:5px; font-size:10.5px;">
+                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Motion</span>
+                                    <span id="qual-motion-val" style="font-weight:700; color:#34d399;">SMOOTH</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Vibration</span>
+                                    <span id="qual-vibration-val" style="font-weight:700; color:#38bdf8;">LOW</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Alignment</span>
+                                    <span id="qual-align-val" style="font-weight:700; color:#34d399;">CALIBRATED</span>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Timestamp</span>
+                                    <span id="qual-dt-val" style="font-weight:700; color:#34d399;">100 Hz</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="confidence-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
+                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; display:flex; justify-content:space-between;">
+                            <span>CONFIDENCE DIAGNOSTIC EXPLANATION</span>
+                            <span id="details-state-tag" style="color:var(--accent-green); font-size:9.5px;">GNSS-AIDED ACTIVE</span>
+                        </div>
+                        <div id="details-reasoning-text" style="color:#e2e8f0;">
+                            GNSS receiver signal is connected with 14 satellites and 3.2m accuracy. Adaptive EKF sensor fusion is actively weighting GNSS position observations together with Step 4 calibrated Phone IMU streams. Overall confidence is HIGH at 94%.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PHONE ALIGNMENT & DRIFT RISK DUAL PANEL -->
+                <div class="card-panel">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                        
+                        <!-- Phone Alignment Subcard -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">PHONE ALIGNMENT</span>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span id="align-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">GOOD</span>
+                                    <button onclick="toggleAlignDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">YAW</div>
+                                    <div id="align-yaw-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+4.2°</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">PITCH</div>
+                                    <div id="align-pitch-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+1.8°</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">ROLL</div>
+                                    <div id="align-roll-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+0.9°</div>
+                                </div>
+                            </div>
+                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="align-correction-val">ACTIVE (R_p2v Applied)</div>
+
+                            <div id="alignment-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                    <span style="color:var(--accent-blue); font-weight:800;">CALIBRATION DETAILS</span>
+                                    <span id="align-det-tag" style="color:var(--accent-green);">det(R)=1.0</span>
+                                </div>
+                                <div style="color:var(--text-muted);">Residual: <span id="align-grav-residual" style="color:#34d399; font-weight:700;">0.04 m/s²</span> | 50 frames</div>
+                            </div>
+                        </div>
+
+                        <!-- Drift Prediction Subcard -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">DRIFT RISK METER</span>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span id="risk-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">LOW</span>
+                                    <button onclick="toggleRiskDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">DRIFT</div>
+                                    <div id="risk-curr-drift-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.00m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">UNCERT</div>
+                                    <div id="risk-uncert-val" style="font-size:11px; font-weight:800; color:#38bdf8;">3.2m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">10s FCST</div>
+                                    <div id="risk-forecast-val" style="font-size:11px; font-weight:800; color:#38bdf8;">1.12m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">ELAPSED</div>
+                                    <div id="risk-dr-time-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.0s</div>
+                                </div>
+                            </div>
+                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="risk-eval-state">STABLE (Low Growth)</div>
+
+                            <div id="risk-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                    <span style="color:var(--accent-blue); font-weight:800;">RISK BREAKDOWN</span>
+                                    <span id="risk-det-tag" style="color:var(--accent-green);">STABLE</span>
+                                </div>
+                                <div style="color:var(--text-muted);">Rate: <span id="risk-growth-rate" style="color:#34d399; font-weight:700;">0.08 m/s</span> | Penalty: <span id="risk-noise-penalty" style="color:#34d399; font-weight:700;">Low (+2%)</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- DEBUG METRICS TELEMETRY PANEL -->
+                <div class="debug-panel">
+                    <div class="debug-title">DEBUG METRICS TELEMETRY PANEL</div>
+                    <div class="debug-grid">
+                        <div class="debug-item">
+                            <div class="debug-label">dt Median</div>
+                            <div class="debug-val" id="dbg-dt-median">0.500 s</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">dt Max</div>
+                            <div class="debug-val" id="dbg-dt-max">0.506 s</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Accel Mag</div>
+                            <div class="debug-val" id="dbg-accel">9.81 m/s²</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Velocity (m/s)</div>
+                            <div class="debug-val" id="dbg-vel-mps">0.0 m/s</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Velocity (km/h)</div>
+                            <div class="debug-val" id="dbg-vel-kmh">0.0 km/h</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Outage Duration</div>
+                            <div class="debug-val" id="dbg-outage-dur">30.0 s</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Outage Distance</div>
+                            <div class="debug-val" id="dbg-ref-dist">95.3 m</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Current Error</div>
+                            <div class="debug-val" id="dbg-current-err">0.00 m</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Final Error</div>
+                            <div class="debug-val" id="dbg-final-err">5.25 m</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Max Error</div>
+                            <div class="debug-val" id="dbg-max-err">5.25 m</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Drift %</div>
+                            <div class="debug-val" id="dbg-drift-pct" style="color:var(--accent-green);">5.51 %</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Status</div>
+                            <div class="debug-val" id="dbg-sih-status" style="color:var(--accent-green);">PASS</div>
+                        </div>
+                        <div class="debug-item">
+                            <div class="debug-label">Selected Basis</div>
+                            <div class="debug-val" id="dbg-eval-mode-name">Kinematic</div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
