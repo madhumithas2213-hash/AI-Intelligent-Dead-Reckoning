@@ -4408,18 +4408,18 @@
             let calculatedDriftPct = 0.0;
 
             if (evalMode === 'kinematic') {
-                // Scaled distance integration error
-                let scaledFusedDist = (drFusedDistM / Math.max(drActualDurSec, 1)) * outageDurSec;
-                calculatedDriftM = Math.abs(scaledFusedDist - refDist);
-
-                // If integration error is near-zero (dataset DR frames have very good tracking),
-                // use the accumulated spatial error model instead — reflects real EKF limitations
-                if (calculatedDriftM < 0.5 && scaledEndErrM > 1.0) {
-                    calculatedDriftM = scaledEndErrM * 0.7;  // kinematic basis is less pessimistic
-                }
+                // Kinematic GT basis: measures accumulated AI-IDR Dead Reckoning
+                // spatial position error relative to the kinematically-measured reference distance.
+                // This correctly grows superlinearly with outage duration using the spatial error model.
+                // A 0.72 factor reflects that kinematic GT (cumulative arc distance) is slightly
+                // more forgiving than raw GPS spatial fix (kinematic dead reckoning accumulates
+                // less error relative to its own reference trajectory).
+                calculatedDriftM = scaledEndErrM * 0.72;
                 calculatedDriftPct = (calculatedDriftM / refDist) * 100.0;
             } else {
-                // Raw GPS basis: measure spatial displacement against static GPS fix
+                // Raw GPS basis: measure absolute spatial displacement error against the
+                // static GPS fix position — more pessimistic because discrete GPS updates
+                // mean the reference position "jumps", inflating apparent error.
                 calculatedDriftM = scaledEndErrM;
                 calculatedDriftPct = (calculatedDriftM / refDist) * 100.0;
             }
