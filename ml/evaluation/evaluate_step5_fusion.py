@@ -1190,6 +1190,194 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             line-height: 1.4;
         }}
 
+        /* EMERGENCY / NAVIGATION ALERT SECTION */
+        .nav-alert-card {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            background: linear-gradient(135deg, #131d2e, #0b1220);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            gap: 14px;
+            flex-wrap: wrap;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }}
+        .nav-alert-card::before {{
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: currentColor;
+            border-radius: 4px 0 0 4px;
+        }}
+        .nav-alert-left {{
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+            min-width: 260px;
+        }}
+        .nav-alert-icon-wrap {{
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 900;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }}
+        .nav-alert-info {{
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }}
+        .nav-alert-title {{
+            font-size: 13.5px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        .nav-alert-msg {{
+            font-size: 12px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }}
+        .nav-alert-sub {{
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 1px;
+            font-family: monospace;
+        }}
+        .nav-alert-right {{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }}
+        .nav-alert-badge {{
+            padding: 5px 12px;
+            border-radius: 12px;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }}
+        .nav-alert-mode-tag {{
+            font-size: 9.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-family: monospace;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            white-space: nowrap;
+        }}
+
+        /* Danger state (GNSS Lost / Outage Blackout) */
+        .nav-alert-danger {{
+            border-color: rgba(239, 68, 68, 0.45);
+            background: linear-gradient(135deg, rgba(38, 12, 16, 0.95), rgba(20, 8, 12, 0.98));
+            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(248, 113, 113, 0.2);
+            color: #ef4444;
+        }}
+        .nav-alert-danger .nav-alert-icon-wrap {{
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #dc2626;
+            color: #f87171;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
+            animation: alertPulseDanger 1.5s infinite alternate;
+        }}
+        .nav-alert-danger .nav-alert-title {{ color: #f87171; }}
+        .nav-alert-danger .nav-alert-badge {{
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid #dc2626;
+        }}
+
+        /* Warning state (GNSS Degraded / Multipath) */
+        .nav-alert-warning {{
+            border-color: rgba(245, 158, 11, 0.45);
+            background: linear-gradient(135deg, rgba(36, 24, 10, 0.95), rgba(18, 14, 8, 0.98));
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.18), inset 0 1px 0 rgba(251, 191, 36, 0.2);
+            color: #f59e0b;
+        }}
+        .nav-alert-warning .nav-alert-icon-wrap {{
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid #d97706;
+            color: #fbbf24;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
+        }}
+        .nav-alert-warning .nav-alert-title {{ color: #fbbf24; }}
+        .nav-alert-warning .nav-alert-badge {{
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border: 1px solid #d97706;
+        }}
+
+        /* Recovery state (GNSS Recovered / Smooth Correction) */
+        .nav-alert-recovery {{
+            border-color: rgba(56, 189, 248, 0.45);
+            background: linear-gradient(135deg, rgba(12, 28, 48, 0.95), rgba(8, 18, 32, 0.98));
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(125, 211, 252, 0.2);
+            color: #38bdf8;
+        }}
+        .nav-alert-recovery .nav-alert-icon-wrap {{
+            background: rgba(56, 189, 248, 0.2);
+            border: 1px solid #0284c7;
+            color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+        }}
+        .nav-alert-recovery .nav-alert-title {{ color: #38bdf8; }}
+        .nav-alert-recovery .nav-alert-badge {{
+            background: rgba(56, 189, 248, 0.2);
+            color: #7dd3fc;
+            border: 1px solid #0284c7;
+        }}
+
+        /* Nominal state (GNSS Nominal / GPS+INS Online) */
+        .nav-alert-nominal {{
+            border-color: rgba(52, 211, 153, 0.3);
+            background: linear-gradient(135deg, rgba(10, 30, 24, 0.85), rgba(6, 18, 16, 0.95));
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            color: #34d399;
+        }}
+        .nav-alert-nominal .nav-alert-icon-wrap {{
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid #059669;
+            color: #34d399;
+        }}
+        .nav-alert-nominal .nav-alert-title {{ color: #34d399; }}
+        .nav-alert-nominal .nav-alert-badge {{
+            background: rgba(52, 211, 153, 0.15);
+            color: #6ee7b7;
+            border: 1px solid #059669;
+        }}
+
+        @keyframes alertPulseDanger {{
+            0% {{ transform: scale(1); box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }}
+            100% {{ transform: scale(1.06); box-shadow: 0 0 16px rgba(239, 68, 68, 0.7); }}
+        }}
+
         /* DEBUG PANEL */
         .debug-panel {{
             background-color: var(--panel-bg);
@@ -1470,6 +1658,30 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             <!-- LEFT COLUMN: TRAJECTORY VISUALS & MAPPING FLOW -->
             <div class="col-stack">
                 
+                <!-- EMERGENCY / NAVIGATION ALERT SECTION -->
+                <div class="nav-alert-card nav-alert-nominal" id="nav-alert-card">
+                    <div class="nav-alert-left">
+                        <div class="nav-alert-icon-wrap" id="nav-alert-icon">✓</div>
+                        <div class="nav-alert-info">
+                            <div class="nav-alert-title" id="nav-alert-title">
+                                <span id="nav-alert-title-text">✓ GNSS NAVIGATION NOMINAL</span>
+                            </div>
+                            <div class="nav-alert-msg" id="nav-alert-msg">Satellite + Phone INS sensor fusion operating with high integrity.</div>
+                            <div class="nav-alert-sub" id="nav-alert-sub">14 Satellites Locked • Precision: 3.2m • Adaptive EKF Converged</div>
+                        </div>
+                    </div>
+                    <div class="nav-alert-right">
+                        <span class="nav-alert-badge" id="nav-alert-badge">GNSS-AIDED ACTIVE</span>
+                        <span class="nav-alert-mode-tag" id="nav-alert-mode-tag">MODE: REAL-TIME GNSS</span>
+                        <button id="btn-copy-alert" onclick="copyNavAlertReport()" title="Copy Navigation Alert Log" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:var(--text-muted); border-radius:6px; padding:4px 7px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- LIVE TRAJECTORY CANVAS -->
                 <div class="card-panel">
                     <div class="card-header">
@@ -2739,6 +2951,91 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
             // Update AI Explainability Card (Why AI-IDR Trusts This Estimate)
             updateAiExplainability(curr, stateKey, satsNum, accM, accelConf, gyroConf, yawVal, pitchVal);
+
+            // Update Emergency / Navigation Alert Section
+            updateNavAlert(curr, stateKey, satsNum, accM, drElapsed, isSmoothTransitioning, recoveryStartFrame, recoveryTotalFrames);
+        }}
+
+        function updateNavAlert(curr, stateKey, satsNum, accM, drElapsed, isSmoothTransitioning, recoveryStartFrame, recoveryTotalFrames) {{
+            let alertCard = document.getElementById('nav-alert-card');
+            let alertIcon = document.getElementById('nav-alert-icon');
+            let alertTitle = document.getElementById('nav-alert-title-text');
+            let alertMsg = document.getElementById('nav-alert-msg');
+            let alertSub = document.getElementById('nav-alert-sub');
+            let alertBadge = document.getElementById('nav-alert-badge');
+            let alertModeTag = document.getElementById('nav-alert-mode-tag');
+
+            if (!alertCard) return;
+
+            let curSpeed = (curr.speed !== undefined ? curr.speed.toFixed(1) : "0.0") + " km/h";
+
+            if (stateKey === "OFFLINE") {{
+                // 1. GNSS LOST / OUTAGE BLACKOUT -> ACTIVE EMERGENCY ALERT
+                alertCard.className = "nav-alert-card nav-alert-danger";
+                if (alertIcon) alertIcon.innerText = "⚠";
+                if (alertTitle) alertTitle.innerText = "⚠ GNSS SIGNAL LOST";
+                if (alertMsg) alertMsg.innerText = "Switching to Intelligent Dead Reckoning...";
+                if (alertSub) alertSub.innerText = "0 Satellites • Outage Blackout (" + drElapsed.toFixed(1) + "s elapsed) • Speed: " + curSpeed + " • Kinematic AI Inference Active";
+                if (alertBadge) alertBadge.innerText = "AI-IDR ACTIVE";
+                if (alertModeTag) alertModeTag.innerText = "MODE: OFFLINE DEAD RECKONING";
+            }} else if (stateKey === "RECOVERING") {{
+                // 2. GNSS RECOVERED -> SMOOTH POSITION CORRECTION
+                let alpha = recoveryTotalFrames > 0 ? (recoveryStartFrame / recoveryTotalFrames) : 1.0;
+                let ease = Math.min(1.0, Math.max(0.0, alpha * alpha * (3 - 2 * alpha)));
+                let pct = Math.round(ease * 100);
+
+                alertCard.className = "nav-alert-card nav-alert-recovery";
+                if (alertIcon) alertIcon.innerText = "✓";
+                if (alertTitle) alertTitle.innerText = "✓ GNSS RECOVERED";
+                if (alertMsg) alertMsg.innerText = "Position corrected smoothly.";
+                if (alertSub) alertSub.innerText = satsNum + " Satellites Re-Acquired (" + accM.toFixed(1) + "m lock) • Gated Innovation Filter Active • Smoothstep Ease: " + pct + "% (Zero Jump)";
+                if (alertBadge) alertBadge.innerText = "SMOOTH RE-CONVERGENCE";
+                if (alertModeTag) alertModeTag.innerText = "MODE: GNSS RECOVERED";
+            }} else if (stateKey === "DEGRADED") {{
+                // 3. GNSS DEGRADED -> R-SCALED ELEVATED AI WEIGHTING
+                alertCard.className = "nav-alert-card nav-alert-warning";
+                if (alertIcon) alertIcon.innerText = "⚠";
+                if (alertTitle) alertTitle.innerText = "⚠ GNSS SIGNAL DEGRADED";
+                if (alertMsg) alertMsg.innerText = "Elevating IMU & AI Dead Reckoning Weights (R-Scaled)...";
+                if (alertSub) alertSub.innerText = satsNum + " Satellites • Weak Accuracy: " + accM.toFixed(1) + "m • Multipath Detected • Covariance Inflated to Reject Noise";
+                if (alertBadge) alertBadge.innerText = "ADAPTIVE R-SCALED";
+                if (alertModeTag) alertModeTag.innerText = "MODE: GNSS DEGRADED";
+            }} else {{
+                // 4. GNSS NOMINAL / REAL-TIME GNSS-AIDED
+                alertCard.className = "nav-alert-card nav-alert-nominal";
+                if (alertIcon) alertIcon.innerText = "✓";
+                if (alertTitle) alertTitle.innerText = "✓ GNSS NAVIGATION NOMINAL";
+                if (alertMsg) alertMsg.innerText = "Satellite + Phone INS sensor fusion operating with high integrity.";
+                if (alertSub) alertSub.innerText = satsNum + " Satellites Locked • Precision: " + accM.toFixed(1) + "m • Speed: " + curSpeed + " • Adaptive EKF Converged";
+                if (alertBadge) alertBadge.innerText = "GNSS-AIDED ACTIVE";
+                if (alertModeTag) alertModeTag.innerText = "MODE: REAL-TIME GNSS";
+            }}
+        }}
+
+        function copyNavAlertReport() {{
+            let title = document.getElementById('nav-alert-title-text')?.innerText || '';
+            let msg = document.getElementById('nav-alert-msg')?.innerText || '';
+            let sub = document.getElementById('nav-alert-sub')?.innerText || '';
+            let badge = document.getElementById('nav-alert-badge')?.innerText || '';
+            let mode = document.getElementById('nav-alert-mode-tag')?.innerText || '';
+
+            let report = `AI-IDR EMERGENCY & NAVIGATION ALERT LOG\\n` +
+                         `Status: ${{title}}\\n` +
+                         `System Action: ${{msg}}\\n` +
+                         `Active State: ${{badge}} | ${{mode}}\\n` +
+                         `Telemetry Context: ${{sub}}\\n` +
+                         `Timestamp: ${{new Date().toISOString()}}`;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {{
+                navigator.clipboard.writeText(report).then(() => {{
+                    let btn = document.getElementById('btn-copy-alert');
+                    if (btn) {{
+                        let oldHtml = btn.innerHTML;
+                        btn.innerHTML = '<span style="color:#34d399; font-size:10px; font-weight:800;">✓ Copied</span>';
+                        setTimeout(() => {{ btn.innerHTML = oldHtml; }}, 1800);
+                    }}
+                }}).catch(() => {{}});
+            }}
         }}
 
         function updateAiExplainability(curr, stateKey, satsNum, accM, accelConf, gyroConf, yawVal, pitchVal) {{
