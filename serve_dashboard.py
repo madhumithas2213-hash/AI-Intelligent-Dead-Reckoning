@@ -8,7 +8,7 @@ import socketserver
 import os
 import sys
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 DASHBOARD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "ml", "outputs", "fusion"))
 
 class DashboardHandler(http.server.SimpleHTTPRequestHandler):
@@ -28,10 +28,11 @@ class DashboardHandler(http.server.SimpleHTTPRequestHandler):
 if __name__ == "__main__":
     # Allow port reuse and handle concurrent requests
     socketserver.ThreadingTCPServer.allow_reuse_address = True
-    with socketserver.ThreadingTCPServer(("", PORT), DashboardHandler) as httpd:
-        print(f"AI-IDR Dashboard server running at: http://localhost:{PORT}/")
+    with socketserver.ThreadingTCPServer(("0.0.0.0", PORT), DashboardHandler) as httpd:
+        print(f"AI-IDR Dashboard server running at: http://0.0.0.0:{PORT}/")
         sys.stdout.flush()
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:
             print("\nShutting down server.")
+
