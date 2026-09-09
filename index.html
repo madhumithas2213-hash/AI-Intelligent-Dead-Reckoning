@@ -1190,6 +1190,229 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        /* ANDROID SMARTPHONE SIMULATOR STYLES */
+        .android-phone-card {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .android-phone-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px 0;
+        }
+        .android-phone-frame {
+            width: 320px;
+            background: #090d16;
+            border: 6px solid #1e293b;
+            border-radius: 36px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(56,189,248,0.15);
+            position: relative;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #f8fafc;
+            user-select: none;
+        }
+        .phone-notch {
+            width: 96px;
+            height: 18px;
+            background: #000;
+            margin: 0 auto;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            z-index: 20;
+            position: relative;
+        }
+        .phone-notch-camera {
+            width: 8px;
+            height: 8px;
+            background: #0f172a;
+            border-radius: 50%;
+            border: 1px solid #334155;
+        }
+        .phone-notch-speaker {
+            width: 28px;
+            height: 3px;
+            background: #1e293b;
+            border-radius: 2px;
+        }
+        .phone-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 16px 2px 16px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+        }
+        .phone-app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: rgba(30, 41, 59, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .phone-app-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .phone-hud-speed {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 12px 14px;
+            background: linear-gradient(180deg, rgba(15,23,42,0.8) 0%, rgba(9,13,22,1) 100%);
+        }
+        .phone-speed-box {
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-speed-num {
+            font-size: 32px;
+            font-weight: 900;
+            color: #38bdf8;
+            line-height: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .phone-speed-unit {
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+        .phone-acc-box {
+            text-align: right;
+        }
+        .phone-acc-val {
+            font-size: 16px;
+            font-weight: 800;
+            color: #34d399;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .phone-acc-lbl {
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .phone-mode-banner {
+            padding: 6px 14px;
+            font-size: 10px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .phone-mode-aided {
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+            border-top: 1px solid rgba(52, 211, 153, 0.4);
+            border-bottom: 1px solid rgba(52, 211, 153, 0.4);
+        }
+        .phone-mode-degraded {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border-top: 1px solid rgba(245, 158, 11, 0.4);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+        }
+        .phone-mode-dr {
+            background: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            border-top: 1px solid rgba(239, 68, 68, 0.5);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.5);
+            animation: phonePulseRed 1.5s infinite;
+        }
+        @keyframes phonePulseRed {
+            0%, 100% { background: rgba(239, 68, 68, 0.25); }
+            50% { background: rgba(239, 68, 68, 0.45); }
+        }
+        .phone-mode-recovered {
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border-top: 1px solid rgba(56, 189, 248, 0.4);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+        }
+        .phone-map-wrap {
+            position: relative;
+            width: 100%;
+            height: 175px;
+            background: #050811;
+            border-top: 1px solid #1e293b;
+            border-bottom: 1px solid #1e293b;
+            overflow: hidden;
+        }
+        .phone-toast-alert {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 9.5px;
+            color: #f87171;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        .phone-sensor-feed {
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.8);
+            font-size: 9px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .phone-sensor-pill {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            padding: 4px 6px;
+        }
+        .phone-sensor-lbl {
+            color: #94a3b8;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .phone-sensor-val {
+            color: #f8fafc;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 1px;
+        }
+        .phone-home-indicator {
+            width: 100px;
+            height: 4px;
+            background: #475569;
+            border-radius: 2px;
+            margin: 8px auto 6px auto;
+        }
+
     </style>
 </head>
 <body>
@@ -1271,6 +1494,7 @@
                     <button class="btn btn-primary" id="btnPlayPause" onclick="togglePlay()">Replay Trajectory</button>
                     <button class="btn btn-danger" id="btnSimLoss" onclick="simulateLoss()">Simulate Loss</button>
                     <button class="btn btn-success" id="btnRestoreGNSS" onclick="restoreGNSS()">Restore GNSS</button>
+                    <button class="btn btn-secondary" onclick="scrollToPhoneApp()" style="border-color:var(--accent-blue); color:var(--accent-blue);">📱 Phone App</button>
                     <button class="btn btn-secondary" onclick="resetDemo()">Reset</button>
                 </div>
                 <div class="telemetry-pills">
@@ -1437,6 +1661,151 @@
                         <span id="rt-judge-note-text" style="color:#cbd5e1;">
                             When <b>GNSS is ON</b>, error remains bounded near receiver precision (~0.8m). When <b>GNSS is OFF</b>, position error grows gracefully to ~5.25m (well under the SIH 10% limit), compared to baseline INS exploding past 18m+. When <b>GNSS returns</b>, the Gated Innovation filter smoothly eliminates accumulated drift without visual position jumps.
                         </span>
+                    </div>
+                </div>
+
+                <!-- ANDROID SMARTPHONE SIMULATOR PANEL -->
+                <div class="card-panel" id="android-phone-panel">
+                    <div class="card-header" style="flex-wrap:wrap; gap:8px;">
+                        <div>
+                            <div class="card-title" style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">
+                                <span>📱 ANDROID MOBILE NAVIGATION APP SIMULATOR</span>
+                                <span id="phone-engine-badge" class="rt-live-pulse" style="color:#38bdf8; background:rgba(56,189,248,0.15); border-color:rgba(56,189,248,0.4);">ONNX ENGINE ACTIVE</span>
+                            </div>
+                            <div class="card-subtitle">Real-Time Mobile Navigation HUD & On-Device Dead Reckoning Stream</div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span id="phone-conn-pill" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:rgba(52,211,153,0.15); color:#34d399; border:1px solid rgba(52,211,153,0.4);">100Hz SENSOR STREAM ONLINE</span>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns: 320px 1fr; gap:20px; align-items:start;" class="phone-simulator-grid">
+                        <!-- Left: Smartphone 3D Frame Container -->
+                        <div class="android-phone-container">
+                            <div class="android-phone-frame">
+                                <!-- Top Camera Notch & Speaker -->
+                                <div class="phone-notch">
+                                    <div class="phone-notch-camera"></div>
+                                    <div class="phone-notch-speaker"></div>
+                                </div>
+
+                                <!-- Smartphone System Status Bar -->
+                                <div class="phone-status-bar">
+                                    <span>19:42</span>
+                                    <span>AI-IDR OS</span>
+                                    <span>5G 📶 94%🔋</span>
+                                </div>
+
+                                <!-- App Navigation Header -->
+                                <div class="phone-app-header">
+                                    <div class="phone-app-title">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                        <span>AI-IDR Mobile</span>
+                                    </div>
+                                    <span id="phone-hdr-gnss" style="font-size:9.5px; font-weight:800; color:#34d399;">GNSS 14 Sats</span>
+                                </div>
+
+                                <!-- Speedometer & Telemetry HUD -->
+                                <div class="phone-hud-speed">
+                                    <div class="phone-speed-box">
+                                        <div id="phone-speed-val" class="phone-speed-num">32.4</div>
+                                        <div class="phone-speed-unit">SPEED (KM/H)</div>
+                                    </div>
+                                    <div class="phone-acc-box">
+                                        <div id="phone-acc-val" class="phone-acc-val">± 0.4 m</div>
+                                        <div class="phone-acc-lbl">EST. ACCURACY</div>
+                                    </div>
+                                </div>
+
+                                <!-- Navigation State Banner -->
+                                <div id="phone-mode-banner" class="phone-mode-banner phone-mode-aided">
+                                    <span id="phone-mode-dot" style="width:6px; height:6px; border-radius:50%; background:currentColor;"></span>
+                                    <span id="phone-mode-text">GNSS-AIDED NAVIGATION</span>
+                                </div>
+
+                                <!-- Mini Trajectory Map Canvas -->
+                                <div class="phone-map-wrap">
+                                    <canvas id="phoneMiniMapCanvas" width="308" height="175" style="width:100%; height:100%; display:block;"></canvas>
+
+                                    <!-- Toast Alert Popup -->
+                                    <div id="phone-toast-alert" class="phone-toast-alert" style="display:none;">
+                                        <span id="phone-toast-icon">⚠️</span>
+                                        <span id="phone-toast-msg">GNSS Lost! Autonomous DR Engaged</span>
+                                    </div>
+                                </div>
+
+                                <!-- Sensor Stream Telemetry Strip -->
+                                <div class="phone-sensor-feed">
+                                    <div class="phone-sensor-pill">
+                                        <div class="phone-sensor-lbl">ACCEL (100Hz)</div>
+                                        <div id="phone-accel-str" class="phone-sensor-val">0.1, -0.0, 9.8 m/s²</div>
+                                    </div>
+                                    <div class="phone-sensor-pill">
+                                        <div class="phone-sensor-lbl">GYRO (100Hz)</div>
+                                        <div id="phone-gyro-str" class="phone-sensor-val">0.01, 0.02 rad/s</div>
+                                    </div>
+                                    <div class="phone-sensor-pill">
+                                        <div class="phone-sensor-lbl">AI CONFIDENCE</div>
+                                        <div id="phone-conf-str" class="phone-sensor-val" style="color:#38bdf8;">98.5% (High)</div>
+                                    </div>
+                                    <div class="phone-sensor-pill">
+                                        <div class="phone-sensor-lbl">ENU POSITION</div>
+                                        <div id="phone-enu-str" class="phone-sensor-val" style="color:#34d399;">X:+14m Y:-8m</div>
+                                    </div>
+                                </div>
+
+                                <!-- Home Bottom Indicator Bar -->
+                                <div class="phone-home-indicator"></div>
+                            </div>
+                        </div>
+
+                        <!-- Right: Mobile App Explanations & Telemetry Breakdown -->
+                        <div style="display:flex; flex-direction:column; gap:12px;">
+                            <!-- Android App Mode Flow Description -->
+                            <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-radius:8px; padding:12px 14px;">
+                                <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+                                    <span>📱 ON-DEVICE SMARTPHONE NAVIGATION ARCHITECTURE</span>
+                                    <span style="font-size:9.5px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); padding:2px 6px; border-radius:4px; color:#38bdf8;">KOTLIN + ONNX RUNTIME</span>
+                                </div>
+                                <div style="font-size:11px; color:#cbd5e1; line-height:1.5;">
+                                    The mobile application interface shown on the left simulates the native Android app (<code>com.aiidr.navigation</code>) running on the phone. It continuously samples 100Hz Accelerometer/Gyroscope data, executes on-device ONNX ML velocity inference, and drives the Adaptive EKF state estimator during GNSS outages.
+                                </div>
+                            </div>
+
+                            <!-- Live Navigation Transition Monitor -->
+                            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Current Speed</div>
+                                    <div id="phone-side-speed" style="font-size:16px; font-weight:800; color:#38bdf8; margin-top:2px; font-family:'JetBrains Mono',monospace;">32.4 km/h</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nav Uncertainty</div>
+                                    <div id="phone-side-acc" style="font-size:16px; font-weight:800; color:#34d399; margin-top:2px; font-family:'JetBrains Mono',monospace;">± 0.4 m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">GNSS Fix Status</div>
+                                    <div id="phone-side-gnss" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px;">AVAILABLE (14 Sats)</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nav Mode State</div>
+                                    <div id="phone-side-mode" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px;">GNSS-AIDED</div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile App Codebase Reference Card -->
+                            <div style="background:rgba(15,23,42,0.9); border:1px solid #1e293b; border-radius:8px; padding:10px 12px; font-size:10.5px;">
+                                <div style="font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-size:9.5px; display:flex; justify-content:space-between;">
+                                    <span>ANDROID PROJECT COMPONENT MAPPING</span>
+                                    <span style="color:#94a3b8;">/android/app/src/main/java/</span>
+                                </div>
+                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; color:#94a3b8;">
+                                    <div>• <code>MainActivity.kt</code>: HUD & OsmDroid Map</div>
+                                    <div>• <code>SensorService.kt</code>: 100Hz Foreground Service</div>
+                                    <div>• <code>IDRInferenceEngine.kt</code>: ONNX Runtime</div>
+                                    <div>• <code>AdaptiveFusionEKF.kt</code>: State Estimator</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2898,6 +3267,9 @@
 
             // Update Real-Time Error vs Time Graph
             drawRealtimeGraph();
+
+            // Update Android Smartphone Simulator HUD & Mini Map
+            updateAndroidPhoneSimulator(curr, stateKey, satsNum, accM, drElapsed, isSmoothTransitioning);
         }
 
         function updateNavAlert(curr, stateKey, satsNum, accM, drElapsed, isSmoothTransitioning, recoveryStartFrame, recoveryTotalFrames) {
@@ -4212,6 +4584,211 @@
             let playBtn = document.getElementById('btnPlayPause');
             if (playBtn) playBtn.innerHTML = 'Replay Trajectory';
             drawTrajectory();
+        }
+
+        function scrollToPhoneApp() {
+            let el = document.getElementById('android-phone-panel');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                el.style.boxShadow = '0 0 30px rgba(56,189,248,0.4)';
+                setTimeout(() => { el.style.boxShadow = 'none'; }, 2000);
+            }
+        }
+
+        function updateAndroidPhoneSimulator(curr, stateKey, satsNum, accM, drElapsed, isSmoothTransitioning) {
+            let phoneSpeedVal = document.getElementById('phone-speed-val');
+            let phoneAccVal = document.getElementById('phone-acc-val');
+            let phoneHdrGnss = document.getElementById('phone-hdr-gnss');
+            let phoneModeBanner = document.getElementById('phone-mode-banner');
+            let phoneModeText = document.getElementById('phone-mode-text');
+            let phoneToastAlert = document.getElementById('phone-toast-alert');
+            let phoneToastMsg = document.getElementById('phone-toast-msg');
+            let phoneToastIcon = document.getElementById('phone-toast-icon');
+            let phoneSideSpeed = document.getElementById('phone-side-speed');
+            let phoneSideAcc = document.getElementById('phone-side-acc');
+            let phoneSideGnss = document.getElementById('phone-side-gnss');
+            let phoneSideMode = document.getElementById('phone-side-mode');
+            let phoneAccelStr = document.getElementById('phone-accel-str');
+            let phoneGyroStr = document.getElementById('phone-gyro-str');
+            let phoneConfStr = document.getElementById('phone-conf-str');
+            let phoneEnuStr = document.getElementById('phone-enu-str');
+
+            if (!phoneSpeedVal) return;
+
+            let curSpeed = curr.speed !== undefined ? curr.speed.toFixed(1) : "32.4";
+            phoneSpeedVal.innerText = curSpeed;
+            if (phoneSideSpeed) phoneSideSpeed.innerText = curSpeed + " km/h";
+
+            if (phoneAccVal) phoneAccVal.innerText = "± " + accM.toFixed(1) + " m";
+            if (phoneSideAcc) phoneSideAcc.innerText = "± " + accM.toFixed(1) + " m";
+
+            let enuX = curr.x !== undefined ? curr.x.toFixed(1) : "0.0";
+            let enuY = curr.y !== undefined ? curr.y.toFixed(1) : "0.0";
+            if (phoneEnuStr) phoneEnuStr.innerText = "X:" + (enuX > 0 ? "+" : "") + enuX + "m Y:" + (enuY > 0 ? "+" : "") + enuY + "m";
+
+            // Dynamic Sensor Telemetry stream simulation from current vehicle motion
+            let ax = (0.1 + 0.3 * Math.sin(currentIndex * 0.2)).toFixed(2);
+            let ay = (-0.05 + 0.2 * Math.cos(currentIndex * 0.15)).toFixed(2);
+            let az = (9.81 + 0.1 * Math.sin(currentIndex * 0.4)).toFixed(2);
+            if (phoneAccelStr) phoneAccelStr.innerText = ax + ", " + ay + ", " + az + " m/s²";
+
+            let gx = (0.01 * Math.sin(currentIndex * 0.3)).toFixed(2);
+            let gy = (0.02 * Math.cos(currentIndex * 0.25)).toFixed(2);
+            if (phoneGyroStr) phoneGyroStr.innerText = gx + ", " + gy + " rad/s";
+
+            // State Transitions
+            if (stateKey === "OFFLINE") {
+                if (phoneHdrGnss) { phoneHdrGnss.innerText = "GNSS LOST"; phoneHdrGnss.style.color = "#f87171"; }
+                if (phoneModeBanner) phoneModeBanner.className = "phone-mode-banner phone-mode-dr";
+                if (phoneModeText) phoneModeText.innerText = "DEAD RECKONING (AI-IDR)";
+                if (phoneToastAlert) {
+                    phoneToastAlert.style.display = "flex";
+                    if (phoneToastIcon) phoneToastIcon.innerText = "⚠️";
+                    if (phoneToastMsg) phoneToastMsg.innerText = "GNSS Lost! Autonomous AI-IDR DR Engaged (" + drElapsed.toFixed(1) + "s)";
+                }
+                if (phoneSideGnss) { phoneSideGnss.innerText = "LOST (0 Sats)"; phoneSideGnss.style.color = "#f87171"; }
+                if (phoneSideMode) { phoneSideMode.innerText = "DEAD RECKONING"; phoneSideMode.style.color = "#f87171"; }
+                if (phoneConfStr) { phoneConfStr.innerText = Math.max(72, (94 - drElapsed * 0.4)).toFixed(1) + "% (IMU DR)"; phoneConfStr.style.color = "#f59e0b"; }
+            } else if (isSmoothTransitioning) {
+                if (phoneHdrGnss) { phoneHdrGnss.innerText = "GNSS RESTORED"; phoneHdrGnss.style.color = "#38bdf8"; }
+                if (phoneModeBanner) phoneModeBanner.className = "phone-mode-banner phone-mode-recovered";
+                if (phoneModeText) phoneModeText.innerText = "GNSS-RECOVERED (Reconciling)";
+                if (phoneToastAlert) {
+                    phoneToastAlert.style.display = "flex";
+                    if (phoneToastIcon) phoneToastIcon.innerText = "🔄";
+                    if (phoneToastMsg) phoneToastMsg.innerText = "GNSS Restored! Kalman gain correcting position drift";
+                }
+                if (phoneSideGnss) { phoneSideGnss.innerText = "RECOVERED (Re-locking)"; phoneSideGnss.style.color = "#38bdf8"; }
+                if (phoneSideMode) { phoneSideMode.innerText = "GNSS-RECOVERED"; phoneSideMode.style.color = "#38bdf8"; }
+                if (phoneConfStr) { phoneConfStr.innerText = "96.8% (Gated Sync)"; phoneConfStr.style.color = "#38bdf8"; }
+            } else if (stateKey === "DEGRADED") {
+                if (phoneHdrGnss) { phoneHdrGnss.innerText = "GNSS DEGRADED"; phoneHdrGnss.style.color = "#f59e0b"; }
+                if (phoneModeBanner) phoneModeBanner.className = "phone-mode-banner phone-mode-degraded";
+                if (phoneModeText) phoneModeText.innerText = "GNSS-DEGRADED";
+                if (phoneToastAlert) {
+                    phoneToastAlert.style.display = "flex";
+                    if (phoneToastIcon) phoneToastIcon.innerText = "⚡";
+                    if (phoneToastMsg) phoneToastMsg.innerText = "GNSS Signal Degraded (" + satsNum + " Sats). R-covariance scaled";
+                }
+                if (phoneSideGnss) { phoneSideGnss.innerText = "DEGRADED (" + satsNum + " Sats)"; phoneSideGnss.style.color = "#f59e0b"; }
+                if (phoneSideMode) { phoneSideMode.innerText = "GNSS-DEGRADED"; phoneSideMode.style.color = "#f59e0b"; }
+                if (phoneConfStr) { phoneConfStr.innerText = "88.2% (Degraded)"; phoneConfStr.style.color = "#f59e0b"; }
+            } else {
+                if (phoneHdrGnss) { phoneHdrGnss.innerText = "GNSS " + satsNum + " Sats"; phoneHdrGnss.style.color = "#34d399"; }
+                if (phoneModeBanner) phoneModeBanner.className = "phone-mode-banner phone-mode-aided";
+                if (phoneModeText) phoneModeText.innerText = "GNSS-AIDED NAVIGATION";
+                if (phoneToastAlert) phoneToastAlert.style.display = "none";
+                if (phoneSideGnss) { phoneSideGnss.innerText = "AVAILABLE (" + satsNum + " Sats)"; phoneSideGnss.style.color = "#34d399"; }
+                if (phoneSideMode) { phoneSideMode.innerText = "GNSS-AIDED"; phoneSideMode.style.color = "#34d399"; }
+                if (phoneConfStr) { phoneConfStr.innerText = "98.5% (Optimal)"; phoneConfStr.style.color = "#38bdf8"; }
+            }
+
+            drawPhoneMiniMap();
+        }
+
+        function drawPhoneMiniMap() {
+            let cvs = document.getElementById('phoneMiniMapCanvas');
+            if (!cvs) return;
+            let ctx = cvs.getContext('2d');
+            let w = cvs.width;
+            let h = cvs.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Dark Map Background
+            ctx.fillStyle = '#050811';
+            ctx.fillRect(0, 0, w, h);
+
+            // Map Grid lines
+            ctx.strokeStyle = '#0f172a';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 30) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 30) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            if (!trajData || trajData.length === 0) return;
+
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            trajData.forEach(p => {
+                let rx = p.ref_x, ry = p.ref_y;
+                if (rx < minX) minX = rx; if (rx > maxX) maxX = rx;
+                if (ry < minY) minY = ry; if (ry > maxY) maxY = ry;
+            });
+            let margin = 18;
+            let scaleX = (w - 2 * margin) / (maxX - minX || 1);
+            let scaleY = (h - 2 * margin) / (maxY - minY || 1);
+            let scale = Math.min(scaleX, scaleY);
+
+            function toPhoneX(xVal) { return margin + (xVal - minX) * scale; }
+            function toPhoneY(yVal) { return h - (margin + (yVal - minY) * scale); }
+
+            // Draw GNSS Outage region background shading on phone map
+            let startIdx = simulatedLossFrame !== null ? simulatedLossFrame : gnssOutageStartFrame;
+            let endIdx = simulatedLossFrame !== null ? (simulatedLossFrame + Math.round((manualOutageDurSec || 30.0) * 10)) : gnssOutageEndFrame;
+
+            if (startIdx < trajData.length && endIdx <= trajData.length) {
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.12)';
+                ctx.beginPath();
+                for (let i = startIdx; i < Math.min(endIdx, trajData.length); i++) {
+                    let px = toPhoneX(trajData[i].ref_x);
+                    let py = toPhoneY(trajData[i].ref_y);
+                    if (i === startIdx) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+                ctx.lineWidth = 14;
+                ctx.strokeStyle = 'rgba(239, 68, 68, 0.2)';
+                ctx.stroke();
+            }
+
+            // Draw Ref Polyline (Cyan)
+            ctx.beginPath();
+            for (let i = 0; i < trajData.length; i++) {
+                let px = toPhoneX(trajData[i].ref_x);
+                let py = toPhoneY(trajData[i].ref_y);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Draw AI-IDR Fused Trajectory up to currentIndex (Emerald / Orange)
+            ctx.beginPath();
+            let limit = Math.min(currentIndex, trajData.length - 1);
+            for (let i = 0; i <= limit; i++) {
+                let pt = getFusedPointForFrame(i);
+                let px = toPhoneX(pt.x);
+                let py = toPhoneY(pt.y);
+                if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+            }
+            ctx.strokeStyle = (limit >= startIdx && limit <= endIdx) ? '#f97316' : '#34d399';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw Current Vehicle Position Marker & Heading Circle
+            if (limit >= 0 && limit < trajData.length) {
+                let currentPt = getFusedPointForFrame(limit);
+                let vx = toPhoneX(currentPt.x);
+                let vy = toPhoneY(currentPt.y);
+
+                // Uncertainty Halo
+                let accRadius = Math.min(22, Math.max(5, (currentPt.accM || 0.4) * 2.2));
+                ctx.fillStyle = (limit >= startIdx && limit <= endIdx) ? 'rgba(239,68,68,0.25)' : 'rgba(52,211,153,0.25)';
+                ctx.beginPath();
+                ctx.arc(vx, vy, accRadius, 0, 2 * Math.PI);
+                ctx.fill();
+
+                // Vehicle Dot
+                ctx.fillStyle = '#38bdf8';
+                ctx.beginPath();
+                ctx.arc(vx, vy, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
         }
 
         // Initial setup on load
