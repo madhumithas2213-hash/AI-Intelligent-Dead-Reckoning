@@ -1818,6 +1818,229 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             font-family: 'JetBrains Mono', monospace;
         }}
 
+        /* ANDROID SMARTPHONE SIMULATOR STYLES */
+        .android-phone-card {{
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }}
+        .android-phone-container {{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px 0;
+        }}
+        .android-phone-frame {{
+            width: 320px;
+            background: #090d16;
+            border: 6px solid #1e293b;
+            border-radius: 36px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(56,189,248,0.15);
+            position: relative;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #f8fafc;
+            user-select: none;
+        }}
+        .phone-notch {{
+            width: 96px;
+            height: 18px;
+            background: #000;
+            margin: 0 auto;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            z-index: 20;
+            position: relative;
+        }}
+        .phone-notch-camera {{
+            width: 8px;
+            height: 8px;
+            background: #0f172a;
+            border-radius: 50%;
+            border: 1px solid #334155;
+        }}
+        .phone-notch-speaker {{
+            width: 28px;
+            height: 3px;
+            background: #1e293b;
+            border-radius: 2px;
+        }}
+        .phone-status-bar {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 16px 2px 16px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+        }}
+        .phone-app-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 14px;
+            background: rgba(30, 41, 59, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }}
+        .phone-app-title {{
+            font-size: 12px;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }}
+        .phone-hud-speed {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 12px 14px;
+            background: linear-gradient(180deg, rgba(15,23,42,0.8) 0%, rgba(9,13,22,1) 100%);
+        }}
+        .phone-speed-box {{
+            display: flex;
+            flex-direction: column;
+        }}
+        .phone-speed-num {{
+            font-size: 32px;
+            font-weight: 900;
+            color: #38bdf8;
+            line-height: 1;
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .phone-speed-unit {{
+            font-size: 10px;
+            font-weight: 700;
+            color: #94a3b8;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }}
+        .phone-acc-box {{
+            text-align: right;
+        }}
+        .phone-acc-val {{
+            font-size: 16px;
+            font-weight: 800;
+            color: #34d399;
+            font-family: 'JetBrains Mono', monospace;
+        }}
+        .phone-acc-lbl {{
+            font-size: 9px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+        }}
+        .phone-mode-banner {{
+            padding: 6px 14px;
+            font-size: 10px;
+            font-weight: 800;
+            text-align: center;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }}
+        .phone-mode-aided {{
+            background: rgba(52, 211, 153, 0.2);
+            color: #34d399;
+            border-top: 1px solid rgba(52, 211, 153, 0.4);
+            border-bottom: 1px solid rgba(52, 211, 153, 0.4);
+        }}
+        .phone-mode-degraded {{
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border-top: 1px solid rgba(245, 158, 11, 0.4);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.4);
+        }}
+        .phone-mode-dr {{
+            background: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+            border-top: 1px solid rgba(239, 68, 68, 0.5);
+            border-bottom: 1px solid rgba(239, 68, 68, 0.5);
+            animation: phonePulseRed 1.5s infinite;
+        }}
+        @keyframes phonePulseRed {{
+            0%, 100% {{ background: rgba(239, 68, 68, 0.25); }}
+            50% {{ background: rgba(239, 68, 68, 0.45); }}
+        }}
+        .phone-mode-recovered {{
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border-top: 1px solid rgba(56, 189, 248, 0.4);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.4);
+        }}
+        .phone-map-wrap {{
+            position: relative;
+            width: 100%;
+            height: 175px;
+            background: #050811;
+            border-top: 1px solid #1e293b;
+            border-bottom: 1px solid #1e293b;
+            overflow: hidden;
+        }}
+        .phone-toast-alert {{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #ef4444;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 9.5px;
+            color: #f87171;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }}
+        .phone-sensor-feed {{
+            padding: 8px 12px;
+            background: rgba(15, 23, 42, 0.8);
+            font-size: 9px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }}
+        .phone-sensor-pill {{
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            padding: 4px 6px;
+        }}
+        .phone-sensor-lbl {{
+            color: #94a3b8;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }}
+        .phone-sensor-val {{
+            color: #f8fafc;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            margin-top: 1px;
+        }}
+        .phone-home-indicator {{
+            width: 100px;
+            height: 4px;
+            background: #475569;
+            border-radius: 2px;
+            margin: 8px auto 6px auto;
+        }}
+
     </style>
 </head>
 <body>
