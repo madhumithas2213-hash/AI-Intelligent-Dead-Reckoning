@@ -24,6 +24,16 @@ class HealthResponse(BaseModel):
     version: str
 
 
+class NavigationModeStatusResponse(BaseModel):
+    connectivity_mode: str
+    indicator_label: str
+    nav_state: str
+    is_offline: bool
+    description: str
+    tooltip_explanation: str
+    timeline_flow: List[str]
+
+
 class BenchmarkRequest(BaseModel):
     sequence: str = "S-A1"
     outage_duration_sec: float = 30.0
@@ -56,6 +66,47 @@ async def serve_dashboard():
 async def health_check():
     """Service health probe endpoint."""
     return HealthResponse(status="healthy", version="0.1.0")
+
+
+@app.get("/api/v1/navigation/status", response_model=NavigationModeStatusResponse)
+async def get_navigation_mode_status(
+    is_outage: bool = False,
+    is_recovering: bool = False,
+    accuracy_m: float = 8.0,
+    satellites: int = 14
+):
+    """
+    Query current Real-Time / Offline mode indicator state and active navigation state machine.
+    """
+    from navigation.replay.gnss_outage_simulator import GNSSOutageSimulator
+    sim = GNSSOutageSimulator()
+    if is_outage:
+        sim.trigger_outage()
+    elif is_recovering:
+        sim.restore_gnss(current_timestamp_sec=0.0)
+
+    quality = "GOOD"
+    if is_outage:
+        quality = "LOST"
+    elif accuracy_m > 25.0 or satellites < 6:
+        quality = "DEGRADED"
+
+    info = sim.update_state(0.0, gnss_quality=quality)
+    return NavigationModeStatusResponse(
+        connectivity_mode=info["connectivity_mode"],
+        indicator_label=info["indicator_label"],
+        nav_state=info["state"],
+        is_offline=info["is_offline"],
+        description=info["desc"],
+        tooltip_explanation=info["tooltip_explanation"],
+        timeline_flow=[
+            "GNSS-AIDED (🟢 GNSS Available)",
+            "GNSS-DEGRADED (🟡 Signal Getting Weak)",
+            "DEAD RECKONING (🔴 GNSS Lost — AI-IDR)",
+            "GNSS-RECOVERED (🔵 GNSS Signal Returns)",
+            "GNSS-AIDED (🟢 Navigation Restored)"
+        ]
+    )
 
 
 @app.api_route("/api/v1/benchmark/evaluate", methods=["GET", "POST"], response_model=BenchmarkResponse)

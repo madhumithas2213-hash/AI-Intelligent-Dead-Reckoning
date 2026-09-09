@@ -101,27 +101,43 @@ class GNSSOutageSimulator:
             elif gnss_quality == "GOOD":
                 self.current_state = "GNSS_AIDED"
 
-        # Format visual badge representations
+        # Format visual badge representations & Real-Time / Offline Mode Indicator
         badge_map = {
             "GNSS_AIDED": {
                 "badge": "🟢 GNSS AIDED",
                 "class": "badge-gnss",
-                "text": "GNSS + INS Aided Navigation Active"
+                "text": "GNSS + INS Aided Navigation Active",
+                "connectivity_mode": "ONLINE GNSS",
+                "indicator_label": "REAL-TIME / GNSS AVAILABLE",
+                "desc": "Live GNSS Assisted • Telemetry Synced with Edge Engine",
+                "is_offline": False,
             },
             "GNSS_DEGRADED": {
                 "badge": "🟡 GNSS DEGRADED",
                 "class": "badge-degraded",
-                "text": "GNSS Quality Degraded — Weighting Reduced"
+                "text": "GNSS Quality Degraded — Weighting Reduced",
+                "connectivity_mode": "DEGRADED GNSS",
+                "indicator_label": "GNSS DEGRADED",
+                "desc": "Weak Satellite Geometry • Elevating IMU & AI Velocity Weights",
+                "is_offline": False,
             },
             "DEAD_RECKONING": {
                 "badge": "🔴 DEAD RECKONING",
                 "class": "badge-dr",
-                "text": "GNSS Signal Lost — AI Dead Reckoning Active"
+                "text": "GNSS Signal Lost — AI Dead Reckoning Active",
+                "connectivity_mode": "OFFLINE MODE",
+                "indicator_label": "OFFLINE / DEAD RECKONING",
+                "desc": "No Internet / GNSS Required • Edge AI + IMU Local Inference Active",
+                "is_offline": True,
             },
             "GNSS_RECOVERED": {
                 "badge": "🔵 GNSS RECOVERED",
                 "class": "badge-recovered",
-                "text": "GNSS Restored — Performing Gated Smooth Recovery"
+                "text": "GNSS Restored — Performing Gated Smooth Recovery",
+                "connectivity_mode": "RECOVERY VALIDATION",
+                "indicator_label": "GNSS RECOVERING",
+                "desc": "Gated Innovation Verification • Smooth EKF Spatial Re-convergence",
+                "is_offline": False,
             },
         }
 
@@ -131,5 +147,10 @@ class GNSSOutageSimulator:
             "badge": info["badge"],
             "class": info["class"],
             "text": info["text"],
+            "connectivity_mode": info["connectivity_mode"],
+            "indicator_label": info["indicator_label"],
+            "desc": info["desc"],
+            "is_offline": info["is_offline"],
+            "tooltip_explanation": "Navigation continues locally when GNSS or internet connectivity is unavailable.",
             "is_masked": is_masked,
         }

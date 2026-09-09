@@ -199,6 +199,9 @@ class ReplayEngine:
             record = state.to_dict()
             record["nav_state"] = outage_info["state"]
             record["nav_badge"] = outage_info["badge"]
+            record["connectivity_mode"] = outage_info["connectivity_mode"]
+            record["indicator_label"] = outage_info["indicator_label"]
+            record["is_offline"] = outage_info["is_offline"]
             record["snapped_lat"] = match_res["snapped_lat"]
             record["snapped_lon"] = match_res["snapped_lon"]
             record["snapped_x"] = match_res.get("snapped_x", state.pos_x)
