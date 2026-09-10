@@ -2362,12 +2362,6 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             High-quality satellite signals are locked and phone mount orientation is fully compensated. The system weights satellite fixes with calibrated phone sensors to provide smoothed sub-meter positioning.
                         </div>
                     </div>
-
-                    <!-- Non-Technical Judge Explanation Note -->
-                    <div class="xai-judge-note">
-                        <span style="font-weight:700; color:var(--accent-blue);">Judge Clarity Note:</span>
-                        <span id="xai-judge-note-text">AI-IDR verifies 5 physical sensor checks on every step before deciding whether to trust satellites, rely on AI dead reckoning, or blend both.</span>
-                    </div>
                 </div>
 
                 <!-- LIVE DEVICE SENSORS & GNSS QUALITY PANEL -->
@@ -2600,7 +2594,11 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
         <div class="benchmark-section" id="benchmark-comparison-section">
             <div class="benchmark-header">
                 <div class="benchmark-title-wrap">
-                    <div class="benchmark-icon-box">📊</div>
+                    <div class="benchmark-icon-box"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg></div>
                     <div>
                         <div class="benchmark-title">SIH26168 PERFORMANCE BENCHMARK</div>
                         <div class="benchmark-subtitle">Real Outage Evaluation Pipeline Results vs SIH26168 Precision Target (&lt; 10% Drift)</div>
@@ -2634,9 +2632,10 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <!-- 1. Outage Duration -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#38bdf8;">⏱</span> Outage Duration
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg> <span>Outage Duration</span></div>
                                 </td>
                                 <td><span id="bm-outage-dur" class="tbl-result-val">30.0 s</span></td>
                                 <td><span id="bm-target-dur" class="tbl-target-val">30 s</span></td>
@@ -2645,9 +2644,11 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <!-- 2. Distance Travelled -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#34d399;">📏</span> Distance Travelled
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <circle cx="6" cy="19" r="3"></circle>
+                                            <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path>
+                                            <circle cx="18" cy="5" r="3"></circle>
+                                        </svg> <span>Distance Travelled</span></div>
                                 </td>
                                 <td><span id="bm-ref-dist" class="tbl-result-val">95.3 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
@@ -2656,9 +2657,10 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <!-- 3. Position Drift -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#f59e0b;">📍</span> Position Drift
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                            <circle cx="12" cy="10" r="3"></circle>
+                                        </svg> <span>Position Drift</span></div>
                                 </td>
                                 <td><span id="bm-pos-drift" class="tbl-result-val" style="color:var(--accent-amber);">5.25 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
@@ -2667,20 +2669,23 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <!-- 4. Drift % -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#34d399;">🎯</span> Drift %
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <circle cx="12" cy="12" r="6"></circle>
+                                            <circle cx="12" cy="12" r="2"></circle>
+                                        </svg> <span>Drift %</span></div>
                                 </td>
                                 <td><span id="bm-drift-pct" class="tbl-result-val" style="color:#34d399;">5.51 %</span></td>
                                 <td><span id="bm-target-drift-pct" class="tbl-target-val" style="font-weight:700; color:var(--accent-blue);">&lt; 10%</span></td>
-                                <td><span id="bm-status-drift-tag" class="tbl-status-tag tbl-tag-pass">PASS ✅</span></td>
+                                <td><span id="bm-status-drift-tag" class="tbl-status-tag tbl-tag-pass">PASS</span></td>
                             </tr>
                             <!-- 5. RMSE -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#a78bfa;">📐</span> RMSE
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+                                            <polyline points="16 7 22 7 22 13"></polyline>
+                                        </svg> <span>RMSE</span></div>
                                 </td>
                                 <td><span id="bm-rmse" class="tbl-result-val" style="color:#a78bfa;">2.41 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
@@ -2689,13 +2694,16 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                             <!-- 6. Recovery Position Jump -->
                             <tr>
                                 <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#38bdf8;">🔄</span> Recovery Jump
-                                    </div>
+                                    <div class="tbl-metric-name"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                                            <path d="M21 3v5h-5"></path>
+                                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                                            <path d="M8 16H3v5"></path>
+                                        </svg> <span>Recovery Jump</span></div>
                                 </td>
                                 <td><span id="bm-recovery-jump" class="tbl-result-val" style="color:#38bdf8;">0.06 m</span></td>
                                 <td><span class="tbl-target-val" style="font-weight:700; color:#38bdf8;">~0</span></td>
-                                <td><span id="bm-status-jump" class="tbl-status-tag tbl-tag-pass">PASS ✅</span></td>
+                                <td><span id="bm-status-jump" class="tbl-status-tag tbl-tag-pass">PASS</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -2705,7 +2713,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 <div class="benchmark-verdict-box">
                     <div id="bm-verdict-card" class="verdict-hero-card verdict-hero-pass">
                         <div class="verdict-pill-label">SIH26168 BENCHMARK VERDICT</div>
-                        <div id="bm-verdict-title" class="verdict-hero-title">PASS ✅</div>
+                        <div id="bm-verdict-title" class="verdict-hero-title">PASS <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-left:6px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
                         <div id="bm-verdict-desc" class="verdict-hero-sub">
                             Measured drift of <b>5.51%</b> satisfies the SIH26168 target threshold of <b>&lt; 10.0%</b> (<b>+4.49% safety margin</b>) with <b>0.06m</b> zero-jump recovery.
                         </div>
@@ -4018,7 +4026,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
             let bmStatusDriftTag = document.getElementById('bm-status-drift-tag');
             if (bmStatusDriftTag) {{
-                bmStatusDriftTag.innerText = passed ? 'PASS ✅' : 'FAIL ❌';
+                bmStatusDriftTag.innerText = passed ? 'PASS' : 'FAIL';
                 bmStatusDriftTag.className = passed ? 'tbl-status-tag tbl-tag-pass' : 'tbl-status-tag tbl-tag-fail';
             }}
 
@@ -4037,7 +4045,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
 
             if (passed) {{
                 if (bmVerdictCard) bmVerdictCard.className = 'verdict-hero-card verdict-hero-pass';
-                if (bmVerdictTitle) bmVerdictTitle.innerText = 'PASS ✅';
+                if (bmVerdictTitle) bmVerdictTitle.innerText = 'PASS';
                 let marginVal = Math.max(0.0, targetThresholdPct - calculatedDriftPct).toFixed(2);
                 if (bmVerdictDesc) {{
                     bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> satisfies the SIH26168 target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> (<b>+' + marginVal + '% safety margin</b>) with <b>' + recoveryJumpM.toFixed(2) + 'm</b> zero-jump recovery.';
@@ -4055,7 +4063,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 }}
             }} else {{
                 if (bmVerdictCard) bmVerdictCard.className = 'verdict-hero-card verdict-hero-fail';
-                if (bmVerdictTitle) bmVerdictTitle.innerText = 'FAIL ❌';
+                if (bmVerdictTitle) bmVerdictTitle.innerText = 'FAIL';
                 let overVal = Math.max(0.0, calculatedDriftPct - targetThresholdPct).toFixed(2);
                 if (bmVerdictDesc) {{
                     bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> exceeds the SIH26168 target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> by <b>+' + overVal + '%</b> under selected evaluation basis.';
@@ -4085,7 +4093,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             let targetPct = document.getElementById('bm-target-drift-pct') ? document.getElementById('bm-target-drift-pct').innerText : '< 10%';
             let rmse = document.getElementById('bm-rmse') ? document.getElementById('bm-rmse').innerText : '2.41 m';
             let jump = document.getElementById('bm-recovery-jump') ? document.getElementById('bm-recovery-jump').innerText : '0.06 m';
-            let verdict = document.getElementById('bm-verdict-title') ? document.getElementById('bm-verdict-title').innerText : 'PASS ✅';
+            let verdict = document.getElementById('bm-verdict-title') ? document.getElementById('bm-verdict-title').innerText : 'PASS';
             let desc = document.getElementById('bm-verdict-desc') ? document.getElementById('bm-verdict-desc').innerText : '';
 
             let report = "==================================================\\n" +
