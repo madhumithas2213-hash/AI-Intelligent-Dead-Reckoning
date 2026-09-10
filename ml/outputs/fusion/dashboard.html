@@ -3,12 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-IDR — Intelligent Dead Reckoning</title>
+    <title>AI-IDR — Intelligent Dead Reckoning Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0b1120;
-            --panel-bg: #131d31;
-            --card-inner-bg: #0f172a;
+            --bg-color: #070b14;
+            --panel-bg: #0d1527;
+            --panel-bg-glass: rgba(13, 21, 39, 0.75);
+            --card-inner-bg: #111c34;
             --accent-blue: #38bdf8;
             --accent-cyan: #06b6d4;
             --accent-green: #34d399;
@@ -16,33 +20,37 @@
             --accent-red: #f87171;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #1e293b;
-            --border-highlight: #334155;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(56, 189, 248, 0.35);
         }
         * { box-sizing: border-box; }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.07) 0%, transparent 40%),
+                radial-gradient(circle at 85% 60%, rgba(52, 211, 153, 0.05) 0%, transparent 40%);
             color: var(--text-main);
             margin: 0;
-            padding: 16px;
+            padding: 12px;
             -webkit-font-smoothing: antialiased;
         }
         .container {
-            max-width: 1480px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
         .error-banner {
             display: none;
-            background-color: rgba(220, 38, 38, 0.9);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(153, 27, 27, 0.9));
             color: white;
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 8px;
             font-weight: 700;
             text-align: center;
+            font-size: 13px;
         }
 
         /* HEADER */
@@ -50,164 +58,217 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 18px 24px;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            border-radius: 12px;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, rgba(19, 29, 49, 0.85), rgba(11, 18, 32, 0.95));
+            backdrop-filter: blur(12px);
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.35);
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 12px;
         }
         .header-title h1 {
             margin: 0;
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 800;
-            color: var(--accent-blue);
+            letter-spacing: -0.2px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .header-title h1 span.logo-badge {
+            background: linear-gradient(135deg, #0284c7, #38bdf8);
+            color: #040914;
+            font-size: 11px;
+            font-weight: 900;
+            padding: 2px 7px;
+            border-radius: 5px;
             letter-spacing: 0.5px;
+        }
+        .header-title p {
+            margin: 2px 0 0 0;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 500;
+        }
+
+        /* REAL-TIME / OFFLINE MODE INDICATOR */
+        .mode-indicator-box {
             display: flex;
             align-items: center;
             gap: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 12px;
         }
-        .header-title p {
-            margin: 4px 0 0 0;
-            color: var(--text-muted);
-            font-size: 13px;
-        }
-        .badge {
-            padding: 7px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
+        .conn-pill {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            text-transform: uppercase;
+        }
+        .conn-online {
+            background: rgba(52, 211, 153, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(52, 211, 153, 0.35);
+        }
+        .conn-offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.35);
+        }
+        .conn-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            display: inline-block;
+            box-shadow: 0 0 8px currentColor;
+        }
+        .badge {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
             transition: all 0.3s ease;
         }
-        .badge-gnss { background-color: rgba(6, 95, 70, 0.6); color: var(--accent-green); border: 1px solid #059669; box-shadow: 0 0 12px rgba(52, 211, 153, 0.25); }
-        .badge-dr { background-color: rgba(153, 27, 27, 0.6); color: var(--accent-red); border: 1px solid #dc2626; box-shadow: 0 0 12px rgba(248, 113, 113, 0.25); }
-        .badge-degraded { background-color: rgba(180, 83, 9, 0.6); color: var(--accent-amber); border: 1px solid #d97706; box-shadow: 0 0 12px rgba(245, 158, 11, 0.25); }
-        .badge-recovered { background-color: rgba(29, 78, 216, 0.6); color: var(--accent-blue); border: 1px solid #2563eb; box-shadow: 0 0 12px rgba(56, 189, 248, 0.25); }
+        .badge-gnss { background: rgba(6, 95, 70, 0.4); color: var(--accent-green); border: 1px solid #059669; }
+        .badge-dr { background: rgba(153, 27, 27, 0.4); color: var(--accent-red); border: 1px solid #dc2626; }
+        .badge-degraded { background: rgba(180, 83, 9, 0.4); color: var(--accent-amber); border: 1px solid #d97706; }
+        .badge-recovered { background: rgba(29, 78, 216, 0.4); color: var(--accent-blue); border: 1px solid #2563eb; }
 
         /* UNIFIED CONTROL CENTER */
         .control-center {
-            background: linear-gradient(135deg, #162032, #0d1525);
-            border-radius: 12px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 16px 20px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, rgba(17, 27, 47, 0.9), rgba(11, 17, 30, 0.95));
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
             display: flex;
             flex-direction: column;
-            gap: 14px;
-        }
-        .control-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
-        }
-        .control-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--accent-blue);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            gap: 10px;
         }
         .user-input-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        @media (max-width: 1024px) {
+            .user-input-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .user-input-grid { grid-template-columns: 1fr; }
         }
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 3px;
         }
         .input-group label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
         }
         .input-control {
             background-color: #070c18;
             border: 1px solid var(--border-color);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-main);
-            padding: 8px 12px;
-            font-size: 13px;
+            padding: 7px 10px;
+            font-size: 12px;
             font-weight: 600;
+            font-family: inherit;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
         .input-control:focus {
             border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.15);
         }
 
         /* ACTIONS & TELEMETRY STRIP */
         .actions-strip {
             display: grid;
-            grid-template-columns: 1.4fr 1.6fr;
-            gap: 14px;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
             align-items: center;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255,255,255,0.04);
+            padding-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.05);
         }
-        @media (max-width: 900px) {
+        @media (max-width: 960px) {
             .actions-strip { grid-template-columns: 1fr; }
         }
         .btn-row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         .btn {
-            padding: 8px 10px;
-            border: none;
-            border-radius: 7px;
+            padding: 7px 8px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             white-space: nowrap;
+            font-family: inherit;
         }
-        .btn-primary { background-color: #0284c7; color: white; }
-        .btn-primary:hover { background-color: #0369a1; }
-        .btn-danger { background-color: #dc2626; color: white; }
-        .btn-danger:hover { background-color: #b91c1c; }
-        .btn-success { background-color: #16a34a; color: white; }
-        .btn-success:hover { background-color: #15803d; }
-        .btn-secondary { background-color: #334155; color: white; }
-        .btn-secondary:hover { background-color: #475569; }
+        .btn-primary { background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border-color: rgba(56, 189, 248, 0.4); }
+        .btn-primary:hover { background: linear-gradient(135deg, #0369a1, #075985); }
+        .btn-danger { background: rgba(220, 38, 38, 0.25); color: #f87171; border-color: rgba(239, 68, 68, 0.4); }
+        .btn-danger:hover { background: rgba(220, 38, 38, 0.4); }
+        .btn-success { background: rgba(16, 185, 129, 0.25); color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
+        .btn-success:hover { background: rgba(16, 185, 129, 0.4); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); color: #cbd5e1; border-color: var(--border-color); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
 
         .telemetry-pills {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
         .pill-item {
-            background: rgba(255,255,255,0.03);
+            background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border-color);
-            border-radius: 7px;
-            padding: 6px 10px;
-            font-size: 11px;
+            border-radius: 6px;
+            padding: 5px 8px;
+            font-size: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-        .pill-label { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
-        .pill-value { font-size: 11px; font-weight: 700; color: #f8fafc; margin-top: 1px; display: flex; align-items: center; }
+        .pill-label { font-size: 8.5px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.3px; }
+        .pill-value { font-size: 10.5px; font-weight: 700; color: #f8fafc; margin-top: 1px; display: flex; align-items: center; gap: 4px; }
+        .dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+        .dot-green { background-color: #34d399; box-shadow: 0 0 6px #34d399; }
+        .dot-red { background-color: #f87171; box-shadow: 0 0 6px #f87171; }
+        .dot-amber { background-color: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
 
         /* TOP KPI CARDS */
         .grid-top {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
+            gap: 10px;
         }
         @media (max-width: 900px) {
             .grid-top { grid-template-columns: repeat(2, 1fr); }
@@ -216,31 +277,37 @@
             .grid-top { grid-template-columns: 1fr; }
         }
         .kpi-card {
-            background-color: var(--panel-bg);
-            padding: 14px 18px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(16, 25, 45, 0.7), rgba(9, 14, 25, 0.85));
+            padding: 10px 14px;
+            border-radius: 8px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .kpi-card:hover {
+            border-color: rgba(56, 189, 248, 0.3);
+            transform: translateY(-1px);
         }
         .kpi-title {
-            font-size: 11px;
+            font-size: 9.5px;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.8px;
+            letter-spacing: 0.6px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .kpi-value {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* MAIN BALANCED 2-COLUMN LAYOUT */
         .main-layout {
             display: grid;
             grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-            gap: 16px;
+            gap: 12px;
             align-items: start;
         }
         @media (max-width: 1080px) {
@@ -249,227 +316,431 @@
         .col-stack {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
         }
 
-        /* CARD CONTAINERS */
+        /* CARD PANELS */
         .card-panel {
-            background-color: var(--panel-bg);
-            border-radius: 12px;
+            background: var(--panel-bg);
+            border-radius: 10px;
             border: 1px solid var(--border-color);
-            padding: 16px;
+            padding: 12px 14px;
             box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             padding-bottom: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
             gap: 8px;
         }
         .card-title {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .card-subtitle {
-            font-size: 10.5px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* CANVAS STYLING */
-        canvas#trajCanvas {
-            width: 100%;
-            height: 380px;
-            background-color: #070c18;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-            display: block;
-        }
-        canvas#mapMatchCanvas {
-            width: 100%;
-            height: 220px;
-            background-color: #070c18;
-            border-radius: 8px;
-            border: 1px solid #1e293b;
-            display: block;
-        }
-
-        /* DOT INDICATORS */
-        .dot {
-            height: 7px;
-            width: 7px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        .dot-green { background-color: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
-        .dot-red { background-color: var(--accent-red); box-shadow: 0 0 6px var(--accent-red); }
-        .dot-amber { background-color: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }
-
-        /* SIH BENCHMARK CARD */
-        .sih-card {
-            background: linear-gradient(135deg, #172236, #0e1728);
-            border-radius: 12px;
-            border: 1.5px solid var(--accent-blue);
-            padding: 16px;
-            box-shadow: 0 4px 18px rgba(56, 189, 248, 0.12);
-        }
-        .sih-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
             color: var(--accent-blue);
-            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
+            gap: 6px;
+        }
+        .card-subtitle {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 1px;
+        }
+
+        /* EMERGENCY / NAVIGATION ALERT BAR (COMPACT) */
+        .nav-alert-card {
+            display: flex;
             justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: linear-gradient(135deg, #131d2e, #0b1220);
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        .nav-alert-left {
+            display: flex;
+            align-items: center;
             gap: 8px;
+            flex: 1;
+            min-width: 220px;
+        }
+        .nav-alert-icon-wrap {
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .nav-alert-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .nav-alert-title {
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .nav-alert-msg {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        .nav-alert-sub {
+            font-size: 9px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .nav-alert-badge {
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .nav-alert-mode-tag {
+            font-size: 8.5px;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        /* CANVAS STYLES */
+        #trajCanvas {
+            width: 100%;
+            height: 320px;
+            background: #050811;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: block;
+        }
+
+        /* REAL-TIME GRAPH */
+        .rt-live-pulse {
+            font-size: 8.5px;
+            font-weight: 900;
+            color: #34d399;
+            background: rgba(52, 211, 153, 0.15);
+            border: 1px solid rgba(52, 211, 153, 0.4);
+            padding: 1px 5px;
+            border-radius: 4px;
+            letter-spacing: 0.4px;
+            animation: pulse-badge 1.8s infinite;
+        }
+        @keyframes pulse-badge {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .rt-header-stats {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .rt-stat-pill {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 3px 7px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .rt-pill-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .rt-pill-val {
+            font-size: 10.5px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ANDROID SMARTPHONE SIMULATOR */
+        .phone-simulator-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+        @media (max-width: 768px) {
+            .phone-simulator-grid { grid-template-columns: 1fr; justify-items: center; }
+        }
+        .android-phone-frame {
+            width: 280px;
+            background: #020617;
+            border-radius: 28px;
+            border: 3.5px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 0 1.5px #0f172a;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .phone-notch {
+            height: 18px;
+            background: #020617;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .phone-notch-camera {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+        }
+        .phone-notch-speaker {
+            width: 36px;
+            height: 3px;
+            border-radius: 2px;
+            background: #1e293b;
+        }
+        .phone-status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 12px;
+            font-size: 8px;
+            color: #94a3b8;
+            font-weight: 700;
+            background: #060b18;
+        }
+        .phone-app-header {
+            background: #0c1427;
+            padding: 6px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #1e293b;
+        }
+        .phone-app-title {
+            font-size: 10.5px;
+            font-weight: 800;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .phone-hud-speed {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #080e1c;
+        }
+        .phone-speed-num {
+            font-size: 24px;
+            font-weight: 900;
+            color: #38bdf8;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1;
+        }
+        .phone-speed-unit { font-size: 7.5px; color: var(--text-muted); font-weight: 700; margin-top: 1px; }
+        .phone-acc-val { font-size: 13px; font-weight: 800; color: #34d399; font-family: 'JetBrains Mono', monospace; text-align: right; }
+        .phone-acc-lbl { font-size: 7.5px; color: var(--text-muted); font-weight: 700; text-align: right; }
+        .phone-mode-banner {
+            padding: 4px 10px;
+            font-size: 9px;
+            font-weight: 800;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            text-transform: uppercase;
+        }
+        .phone-mode-aided { background: rgba(52, 211, 153, 0.15); color: #34d399; border-top: 1px solid rgba(52,211,153,0.3); border-bottom: 1px solid rgba(52,211,153,0.3); }
+        .phone-mode-dr { background: rgba(239, 68, 68, 0.15); color: #f87171; border-top: 1px solid rgba(239,68,68,0.3); border-bottom: 1px solid rgba(239,68,68,0.3); }
+        .phone-mode-rec { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-top: 1px solid rgba(56,189,248,0.3); border-bottom: 1px solid rgba(56,189,248,0.3); }
+        .phone-map-wrap {
+            position: relative;
+            width: 100%;
+            height: 140px;
+            background: #050811;
+            overflow: hidden;
+        }
+        .phone-toast-alert {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #ef4444;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 8.5px;
+            color: #f87171;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 10;
+        }
+        .phone-sensor-feed {
+            padding: 6px 8px;
+            background: rgba(15, 23, 42, 0.9);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        .phone-sensor-pill {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #1e293b;
+            border-radius: 4px;
+            padding: 3px 5px;
+        }
+        .phone-sensor-lbl { color: #94a3b8; font-size: 7.5px; font-weight: 700; text-transform: uppercase; }
+        .phone-sensor-val { color: #f8fafc; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 8px; margin-top: 1px; }
+        .phone-home-indicator {
+            width: 80px;
+            height: 3px;
+            background: #475569;
+            border-radius: 2px;
+            margin: 6px auto 4px auto;
+        }
+
+        /* RIGHT COLUMN: BENCHMARK & XAI & TELEMETRY */
+        .sih-card {
+            background: linear-gradient(135deg, rgba(16, 25, 45, 0.85), rgba(9, 14, 25, 0.95));
+            border-radius: 10px;
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sih-title {
+            font-size: 11.5px;
+            font-weight: 800;
+            color: var(--accent-blue);
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
         }
         .sih-metric-row {
             display: flex;
             justify-content: space-between;
-            padding: 6.5px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.04);
-            font-size: 12.5px;
+            font-size: 11px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
         }
-
-        /* TOPIC CARD */
+        .sih-metric-row span:last-child {
+            font-family: 'JetBrains Mono', monospace;
+            color: #f8fafc;
+        }
         .topic-card {
-            margin-top: 12px;
-            background: rgba(11, 17, 32, 0.8);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 10px 12px;
-            font-size: 11.5px;
+            background: rgba(15, 23, 42, 0.85);
+            border-radius: 6px;
+            padding: 8px 10px;
+            border-left: 3px solid var(--accent-blue);
+            font-size: 10px;
+            color: #cbd5e1;
             line-height: 1.45;
         }
         .topic-title {
-            font-size: 10.5px;
             font-weight: 800;
-            color: var(--accent-amber);
+            color: var(--accent-blue);
             text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 4px;
+            letter-spacing: 0.4px;
+            margin-bottom: 2px;
+            font-size: 8.5px;
         }
 
-        /* AI EXPLAINABILITY CARD (WHY AI-IDR TRUSTS THIS ESTIMATE) */
+        /* AI EXPLAINABILITY CARD */
         .xai-card {
-            background: linear-gradient(135deg, #172236, #0e1728);
-            border-radius: 12px;
-            border: 1.5px solid var(--accent-blue);
-            padding: 16px 18px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+            background: var(--panel-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 12px 14px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            transition: all 0.3s ease;
+            gap: 8px;
         }
         .xai-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
-            padding-bottom: 10px;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .xai-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .xai-icon-box {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(56, 189, 248, 0.15);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-blue);
-            flex-shrink: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
         }
         .xai-title {
-            font-size: 13px;
+            font-size: 11.5px;
             font-weight: 800;
-            color: #f8fafc;
-            letter-spacing: 0.6px;
+            color: var(--accent-blue);
             text-transform: uppercase;
-        }
-        .xai-subtitle {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 1px;
-        }
-        .xai-badge-mode {
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 10px;
-            font-weight: 800;
             letter-spacing: 0.5px;
-            text-transform: uppercase;
-            border: 1px solid #059669;
+        }
+        .xai-subtitle { font-size: 9.5px; color: var(--text-muted); }
+        .xai-badge-mode {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 10px;
             background: rgba(52, 211, 153, 0.15);
             color: #34d399;
-            white-space: nowrap;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(52, 211, 153, 0.3);
         }
         .xai-factors-grid {
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 4px;
         }
         .xai-factor-row {
-            display: grid;
-            grid-template-columns: 24px 1fr auto;
+            display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 7px 10px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            transition: background 0.2s ease, border-color 0.2s ease;
-        }
-        .xai-factor-row:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(56, 189, 248, 0.25);
+            justify-content: space-between;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            gap: 8px;
         }
         .xai-check-icon {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 900;
-            background: rgba(52, 211, 153, 0.2);
+            background: rgba(52, 211, 153, 0.15);
             color: #34d399;
             border: 1px solid #059669;
             flex-shrink: 0;
-            transition: all 0.3s ease;
         }
         .xai-factor-content {
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            flex: 1;
             min-width: 0;
         }
-        .xai-factor-name {
-            font-size: 11px;
-            font-weight: 700;
-            color: #f1f5f9;
-            letter-spacing: 0.2px;
-        }
+        .xai-factor-name { font-size: 10.5px; font-weight: 700; color: #f1f5f9; }
         .xai-factor-desc {
-            font-size: 10px;
+            font-size: 9px;
             color: var(--text-muted);
             font-family: monospace;
             white-space: nowrap;
@@ -477,384 +748,217 @@
             text-overflow: ellipsis;
         }
         .xai-factor-tag {
-            font-size: 9px;
+            font-size: 8.5px;
             font-weight: 800;
-            padding: 2.5px 7px;
-            border-radius: 6px;
-            letter-spacing: 0.4px;
+            padding: 2px 6px;
+            border-radius: 4px;
             text-transform: uppercase;
             flex-shrink: 0;
-            transition: all 0.3s ease;
         }
-        .xai-tag-stable {
-            background: rgba(52, 211, 153, 0.15);
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, 0.35);
-        }
-        .xai-tag-amber {
-            background: rgba(245, 158, 11, 0.15);
-            color: #f59e0b;
-            border: 1px solid rgba(245, 158, 11, 0.35);
-        }
-        .xai-tag-red {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.35);
-        }
-        .xai-tag-blue {
-            background: rgba(56, 189, 248, 0.15);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.35);
-        }
+        .xai-tag-stable { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.35); }
+        .xai-tag-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.35); }
+        .xai-tag-red { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.35); }
+        .xai-tag-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); }
         .xai-decision-box {
-            background: rgba(7, 12, 24, 0.9);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            border-left: 3.5px solid var(--accent-blue);
-            border-radius: 8px;
-            padding: 10px 12px;
+            background: rgba(7, 12, 24, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 6px;
+            padding: 8px 10px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            transition: all 0.3s ease;
+            gap: 3px;
         }
-        .xai-decision-header {
+        .xai-decision-header { display: flex; justify-content: space-between; align-items: center; }
+        .xai-decision-label { font-size: 8.5px; font-weight: 800; color: var(--accent-blue); text-transform: uppercase; letter-spacing: 0.6px; }
+        .xai-decision-action { font-size: 11px; font-weight: 800; color: #ffffff; }
+        .xai-decision-explanation { font-size: 9.5px; color: #cbd5e1; line-height: 1.4; }
+        .xai-judge-note {
+            background: rgba(30, 41, 59, 0.4);
+            border-radius: 5px;
+            padding: 6px 8px;
+            font-size: 9.5px;
+            color: #94a3b8;
+            border: 1px dashed rgba(56, 189, 248, 0.2);
+            line-height: 1.35;
+        }
+
+        /* SENSORS & ALIGNMENT COMPACT PANEL */
+        .telemetry-compact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .telemetry-subcard {
+            background: #070c18;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 10px;
+        }
+        .telemetry-subcard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
         }
-        .xai-decision-label {
-            font-size: 10px;
+        .telemetry-subcard-title {
+            font-size: 9.5px;
             font-weight: 800;
             color: var(--accent-blue);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        /* BENCHMARK COMPARISON TABLE (SIH26168) */
+        .benchmark-section {
+            background-color: var(--panel-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            padding: 14px 16px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+        .benchmark-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .benchmark-title {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: #f8fafc;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .benchmark-subtitle { font-size: 9.5px; color: var(--text-muted); }
+        .benchmark-layout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 14px;
+            align-items: stretch;
+        }
+        @media (max-width: 960px) {
+            .benchmark-layout-grid { grid-template-columns: 1fr; }
+        }
+        .benchmark-table-container {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+        .benchmark-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+            text-align: left;
+        }
+        .benchmark-table th {
+            background: rgba(30, 41, 59, 0.7);
+            color: var(--text-muted);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 9px;
+            padding: 8px 10px;
+            border-bottom: 1px solid #1e293b;
+        }
+        .benchmark-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: #e2e8f0;
+            vertical-align: middle;
+        }
+        .benchmark-table tr:last-child td { border-bottom: none; }
+        .tbl-metric-name { font-weight: 700; color: #f1f5f9; display: flex; align-items: center; gap: 5px; }
+        .tbl-result-val { font-family: 'JetBrains Mono', monospace; font-weight: 800; font-size: 11.5px; color: #38bdf8; }
+        .tbl-target-val { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--text-muted); font-size: 10.5px; }
+        .tbl-status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            font-size: 8.5px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        .tbl-tag-pass { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid #059669; }
+        .tbl-tag-fail { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid #dc2626; }
+        .tbl-tag-info { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+
+        .benchmark-verdict-box {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: space-between;
+        }
+        .verdict-hero-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(7, 12, 24, 0.95));
+            border-radius: 8px;
+            border: 1.5px solid #1e293b;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .verdict-hero-pass {
+            border-color: rgba(52, 211, 153, 0.45);
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.12);
+        }
+        .verdict-hero-fail {
+            border-color: rgba(239, 68, 68, 0.45);
+            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.12);
+        }
+        .verdict-pill-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--text-muted);
             letter-spacing: 0.8px;
             text-transform: uppercase;
         }
-        .xai-decision-action {
-            font-size: 12.5px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: 0.3px;
+        .verdict-hero-title {
+            font-size: 24px;
+            font-weight: 900;
+            margin: 2px 0 4px 0;
         }
-        .xai-decision-explanation {
-            font-size: 11px;
+        .verdict-hero-pass .verdict-hero-title { color: #34d399; }
+        .verdict-hero-fail .verdict-hero-title { color: #f87171; }
+        .verdict-hero-sub {
+            font-size: 10px;
             color: #cbd5e1;
-            line-height: 1.45;
+            line-height: 1.4;
         }
-        .xai-judge-note {
-            background: rgba(30, 41, 59, 0.45);
+        .benchmark-specs-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+        .benchmark-spec-pill {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1e293b;
             border-radius: 6px;
-            padding: 7px 10px;
-            font-size: 10.5px;
-            color: #94a3b8;
-            border: 1px dashed rgba(56, 189, 248, 0.25);
+            padding: 6px 8px;
+        }
+        .spec-pill-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+        .spec-pill-val { font-size: 11.5px; font-weight: 800; color: #f8fafc; font-family: 'JetBrains Mono', monospace; margin-top: 1px; }
+        .benchmark-judge-note {
+            background: rgba(30, 41, 59, 0.4);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 9.5px;
+            color: #cbd5e1;
             line-height: 1.4;
         }
 
-        /* EMERGENCY / NAVIGATION ALERT SECTION */
-        .nav-alert-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 18px;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-color);
-            background: linear-gradient(135deg, #131d2e, #0b1220);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-            gap: 14px;
-            flex-wrap: wrap;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-alert-card::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: currentColor;
-            border-radius: 4px 0 0 4px;
-        }
-        .nav-alert-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-            min-width: 260px;
-        }
-        .nav-alert-icon-wrap {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 17px;
-            font-weight: 900;
-            flex-shrink: 0;
-            transition: all 0.3s ease;
-        }
-        .nav-alert-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .nav-alert-title {
-            font-size: 13.5px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .nav-alert-msg {
-            font-size: 12px;
-            font-weight: 700;
-            color: #f1f5f9;
-        }
-        .nav-alert-sub {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-top: 1px;
-            font-family: monospace;
-        }
-        .nav-alert-right {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .nav-alert-badge {
-            padding: 5px 12px;
-            border-radius: 12px;
-            font-size: 10.5px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        .nav-alert-mode-tag {
-            font-size: 9.5px;
-            color: var(--text-muted);
-            font-weight: 700;
-            font-family: monospace;
-            text-transform: uppercase;
-            padding: 3px 8px;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
-            white-space: nowrap;
-        }
-
-        /* Danger state (GNSS Lost / Outage Blackout) */
-        .nav-alert-danger {
-            border-color: rgba(239, 68, 68, 0.45);
-            background: linear-gradient(135deg, rgba(38, 12, 16, 0.95), rgba(20, 8, 12, 0.98));
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(248, 113, 113, 0.2);
-            color: #ef4444;
-        }
-        .nav-alert-danger .nav-alert-icon-wrap {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid #dc2626;
-            color: #f87171;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.35);
-            animation: alertPulseDanger 1.5s infinite alternate;
-        }
-        .nav-alert-danger .nav-alert-title { color: #f87171; }
-        .nav-alert-danger .nav-alert-badge {
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid #dc2626;
-        }
-
-        /* Warning state (GNSS Degraded / Multipath) */
-        .nav-alert-warning {
-            border-color: rgba(245, 158, 11, 0.45);
-            background: linear-gradient(135deg, rgba(36, 24, 10, 0.95), rgba(18, 14, 8, 0.98));
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.18), inset 0 1px 0 rgba(251, 191, 36, 0.2);
-            color: #f59e0b;
-        }
-        .nav-alert-warning .nav-alert-icon-wrap {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid #d97706;
-            color: #fbbf24;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.3);
-        }
-        .nav-alert-warning .nav-alert-title { color: #fbbf24; }
-        .nav-alert-warning .nav-alert-badge {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fcd34d;
-            border: 1px solid #d97706;
-        }
-
-        /* Recovery state (GNSS Recovered / Smooth Correction) */
-        .nav-alert-recovery {
-            border-color: rgba(56, 189, 248, 0.45);
-            background: linear-gradient(135deg, rgba(12, 28, 48, 0.95), rgba(8, 18, 32, 0.98));
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(125, 211, 252, 0.2);
-            color: #38bdf8;
-        }
-        .nav-alert-recovery .nav-alert-icon-wrap {
-            background: rgba(56, 189, 248, 0.2);
-            border: 1px solid #0284c7;
-            color: #38bdf8;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
-        }
-        .nav-alert-recovery .nav-alert-title { color: #38bdf8; }
-        .nav-alert-recovery .nav-alert-badge {
-            background: rgba(56, 189, 248, 0.2);
-            color: #7dd3fc;
-            border: 1px solid #0284c7;
-        }
-
-        /* Nominal state (GNSS Nominal / GPS+INS Online) */
-        .nav-alert-nominal {
-            border-color: rgba(52, 211, 153, 0.3);
-            background: linear-gradient(135deg, rgba(10, 30, 24, 0.85), rgba(6, 18, 16, 0.95));
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-            color: #34d399;
-        }
-        .nav-alert-nominal .nav-alert-icon-wrap {
-            background: rgba(52, 211, 153, 0.15);
-            border: 1px solid #059669;
-            color: #34d399;
-        }
-        .nav-alert-nominal .nav-alert-title { color: #34d399; }
-        .nav-alert-nominal .nav-alert-badge {
-            background: rgba(52, 211, 153, 0.15);
-            color: #6ee7b7;
-            border: 1px solid #059669;
-        }
-
-        @keyframes alertPulseDanger {
-            0% { transform: scale(1); box-shadow: 0 0 6px rgba(239, 68, 68, 0.4); }
-            100% { transform: scale(1.06); box-shadow: 0 0 16px rgba(239, 68, 68, 0.7); }
-        }
-
-        /* DEBUG PANEL */
-        .debug-panel {
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 16px;
-        }
-        .debug-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--accent-amber);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .debug-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(115px, 1fr));
-            gap: 8px;
-        }
-        .debug-item {
-            background: rgba(255,255,255,0.02);
-            padding: 6px 8px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-        }
-        .debug-label { font-size: 9.5px; color: var(--text-muted); text-transform: uppercase; }
-        .debug-val { font-size: 13.5px; font-weight: 700; color: #38bdf8; margin-top: 2px; }
-
-        /* REAL-TIME / OFFLINE MODE INDICATOR */
-        .mode-indicator-box {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-radius: 12px;
-            padding: 8px 14px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-        }
-        @media (max-width: 768px) {
-            .mode-indicator-box { align-items: flex-start; width: 100%; }
-        }
-        .mode-indicator-top {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .conn-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11.5px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        .conn-online {
-            background: rgba(6, 95, 70, 0.45);
-            color: var(--accent-green);
-            border: 1px solid #059669;
-            box-shadow: 0 0 12px rgba(52, 211, 153, 0.25);
-        }
-        .conn-offline {
-            background: rgba(153, 27, 27, 0.5);
-            color: #fca5a5;
-            border: 1px solid #dc2626;
-            box-shadow: 0 0 14px rgba(248, 113, 113, 0.35);
-            animation: pulse-offline 2s infinite ease-in-out;
-        }
-        .conn-degraded {
-            background: rgba(180, 83, 9, 0.45);
-            color: var(--accent-amber);
-            border: 1px solid #d97706;
-            box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
-        }
-        .conn-recovery {
-            background: rgba(2, 132, 199, 0.45);
-            color: var(--accent-blue);
-            border: 1px solid #0284c7;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
-        }
-        @keyframes pulse-offline {
-            0% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.3); }
-            50% { box-shadow: 0 0 16px rgba(239, 68, 68, 0.65); }
-            100% { box-shadow: 0 0 4px rgba(239, 68, 68, 0.3); }
-        }
-        .conn-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .conn-online .conn-dot { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
-        .conn-offline .conn-dot { background: #f87171; box-shadow: 0 0 6px #f87171; }
-        .conn-degraded .conn-dot { background: var(--accent-amber); box-shadow: 0 0 6px var(--accent-amber); }
-        .conn-recovery .conn-dot { background: var(--accent-blue); box-shadow: 0 0 6px var(--accent-blue); }
-
-        .mode-indicator-sub {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-            justify-content: flex-end;
-            width: 100%;
-        }
+        /* TOOLTIPS */
         .tooltip-wrapper {
             position: relative;
             display: inline-flex;
@@ -865,703 +969,38 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid #334155;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--accent-blue);
             color: var(--accent-blue);
-            font-size: 11px;
-            font-weight: 800;
-            transition: all 0.2s;
-        }
-        .tooltip-wrapper:hover .info-btn,
-        .tooltip-wrapper:focus .info-btn {
-            background: var(--accent-blue);
-            color: #0f172a;
+            font-size: 9px;
+            font-weight: 900;
         }
         .tooltip-bubble {
             visibility: hidden;
             opacity: 0;
-            width: 320px;
-            background-color: #0d1527;
-            color: #e2e8f0;
-            text-align: left;
-            border-radius: 10px;
-            padding: 12px 14px;
-            position: absolute;
-            z-index: 9999;
-            top: 135%;
-            right: 0;
-            font-size: 11px;
-            line-height: 1.5;
+            width: 280px;
+            background: #0f172a;
             border: 1px solid var(--accent-blue);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.85);
-            transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
-            transform: translateY(-4px);
-            pointer-events: none;
-        }
-        .tooltip-wrapper:hover .tooltip-bubble,
-        .tooltip-wrapper:focus .tooltip-bubble {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* BENCHMARK COMPARISON TABLE (SIH26168 PERFORMANCE) */
-        .benchmark-section {
-            background-color: var(--panel-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 18px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            margin-top: 4px;
-        }
-        .benchmark-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 12px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .benchmark-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .benchmark-icon-box {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: rgba(56, 189, 248, 0.15);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--accent-blue);
-            font-size: 15px;
-            font-weight: 800;
-        }
-        .benchmark-title {
-            font-size: 13.5px;
-            font-weight: 800;
-            color: #f8fafc;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-        }
-        .benchmark-subtitle {
-            font-size: 10.5px;
-            color: var(--text-muted);
-            margin-top: 1px;
-        }
-        .benchmark-header-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .benchmark-seq-badge {
-            font-size: 10.5px;
-            font-weight: 700;
-            color: var(--accent-blue);
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 3px 10px;
-            border-radius: 12px;
-        }
-        .benchmark-layout-grid {
-            display: grid;
-            grid-template-columns: 1.55fr 1fr;
-            gap: 18px;
-            align-items: stretch;
-        }
-        @media (max-width: 960px) {
-            .benchmark-layout-grid { grid-template-columns: 1fr; }
-        }
-        .benchmark-table-container {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid #1e293b;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .benchmark-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 11.5px;
-            text-align: left;
-        }
-        .benchmark-table th {
-            background: rgba(30, 41, 59, 0.7);
-            color: var(--text-muted);
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            font-size: 10px;
-            padding: 10px 14px;
-            border-bottom: 1px solid #1e293b;
-        }
-        .benchmark-table td {
-            padding: 11px 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             color: #e2e8f0;
-            vertical-align: middle;
-        }
-        .benchmark-table tr:last-child td {
-            border-bottom: none;
-        }
-        .benchmark-table tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-        }
-        .tbl-metric-name {
-            font-weight: 700;
-            color: #f1f5f9;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-        .tbl-result-val {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 800;
-            font-size: 12.5px;
-            color: #38bdf8;
-        }
-        .tbl-target-val {
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        .tbl-status-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 9.5px;
-            font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-        .tbl-tag-pass {
-            background: rgba(52, 211, 153, 0.15);
-            color: #34d399;
-            border: 1px solid #059669;
-        }
-        .tbl-tag-fail {
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            border: 1px solid #dc2626;
-        }
-        .tbl-tag-info {
-            background: rgba(56, 189, 248, 0.12);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        /* VERDICT & JUDGE SUMMARY RIGHT SIDE PANEL */
-        .benchmark-verdict-box {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            justify-content: space-between;
-        }
-        .verdict-hero-card {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(7, 12, 24, 0.95));
-            border-radius: 10px;
-            border: 1.5px solid #1e293b;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .verdict-hero-pass {
-            border-color: rgba(52, 211, 153, 0.45);
-            box-shadow: 0 4px 20px rgba(52, 211, 153, 0.15), inset 0 1px 0 rgba(52, 211, 153, 0.2);
-        }
-        .verdict-hero-fail {
-            border-color: rgba(239, 68, 68, 0.45);
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(239, 68, 68, 0.2);
-        }
-        .verdict-pill-label {
-            font-size: 10px;
-            font-weight: 800;
-            color: var(--text-muted);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .verdict-hero-title {
-            font-size: 30px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            margin: 2px 0 6px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .verdict-hero-pass .verdict-hero-title { color: #34d399; }
-        .verdict-hero-fail .verdict-hero-title { color: #f87171; }
-        .verdict-hero-sub {
-            font-size: 11px;
-            color: #cbd5e1;
-            line-height: 1.45;
-            max-width: 380px;
-        }
-        .benchmark-specs-strip {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .benchmark-spec-pill {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid #1e293b;
-            border-radius: 8px;
-            padding: 8px 10px;
-        }
-        .spec-pill-label {
-            font-size: 9.5px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        .spec-pill-val {
-            font-size: 13px;
-            font-weight: 800;
-            margin-top: 2px;
-            color: #f8fafc;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .benchmark-judge-note {
-            background: rgba(30, 41, 59, 0.4);
-            border: 1px solid rgba(56, 189, 248, 0.25);
-            border-left: 3px solid var(--accent-blue);
+            text-align: left;
             border-radius: 8px;
             padding: 10px 12px;
-            font-size: 11px;
-            color: #cbd5e1;
-            line-height: 1.45;
-        }
-
-        /* REAL-TIME GRAPH (POSITION ERROR VS TIME) */
-        .rt-live-pulse {
-            font-size: 9px;
-            font-weight: 800;
-            color: #34d399;
-            background: rgba(52, 211, 153, 0.15);
-            border: 1px solid rgba(52, 211, 153, 0.4);
-            padding: 2px 7px;
-            border-radius: 10px;
-            letter-spacing: 0.5px;
-            animation: pulseGlow 1.8s infinite;
-        }
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(0.96); }
-        }
-        .rt-header-stats {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .rt-stat-pill {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 3px 8px;
-        }
-        .rt-pill-label {
-            font-size: 9px;
-            font-weight: 700;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        .rt-pill-val {
-            font-size: 11px;
-            font-weight: 800;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* ANDROID SMARTPHONE SIMULATOR STYLES */
-        .android-phone-card {
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .android-phone-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 6px 0;
-        }
-        .android-phone-frame {
-            width: 320px;
-            background: #090d16;
-            border: 6px solid #1e293b;
-            border-radius: 36px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 25px rgba(56,189,248,0.15);
-            position: relative;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            color: #f8fafc;
-            user-select: none;
-        }
-        .phone-notch {
-            width: 96px;
-            height: 18px;
-            background: #000;
-            margin: 0 auto;
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            z-index: 20;
-            position: relative;
-        }
-        .phone-notch-camera {
-            width: 8px;
-            height: 8px;
-            background: #0f172a;
-            border-radius: 50%;
-            border: 1px solid #334155;
-        }
-        .phone-notch-speaker {
-            width: 28px;
-            height: 3px;
-            background: #1e293b;
-            border-radius: 2px;
-        }
-        .phone-status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 4px 16px 2px 16px;
-            font-size: 10px;
-            font-weight: 700;
-            color: #94a3b8;
-        }
-        .phone-app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 14px;
-            background: rgba(30, 41, 59, 0.4);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .phone-app-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: #38bdf8;
-            letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .phone-hud-speed {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            padding: 12px 14px;
-            background: linear-gradient(180deg, rgba(15,23,42,0.8) 0%, rgba(9,13,22,1) 100%);
-        }
-        .phone-speed-box {
-            display: flex;
-            flex-direction: column;
-        }
-        .phone-speed-num {
-            font-size: 32px;
-            font-weight: 900;
-            color: #38bdf8;
-            line-height: 1;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .phone-speed-unit {
-            font-size: 10px;
-            font-weight: 700;
-            color: #94a3b8;
-            margin-top: 2px;
-            text-transform: uppercase;
-        }
-        .phone-acc-box {
-            text-align: right;
-        }
-        .phone-acc-val {
-            font-size: 16px;
-            font-weight: 800;
-            color: #34d399;
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .phone-acc-lbl {
-            font-size: 9px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-        .phone-mode-banner {
-            padding: 6px 14px;
-            font-size: 10px;
-            font-weight: 800;
-            text-align: center;
-            letter-spacing: 0.5px;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .phone-mode-aided {
-            background: rgba(52, 211, 153, 0.2);
-            color: #34d399;
-            border-top: 1px solid rgba(52, 211, 153, 0.4);
-            border-bottom: 1px solid rgba(52, 211, 153, 0.4);
-        }
-        .phone-mode-degraded {
-            background: rgba(245, 158, 11, 0.2);
-            color: #f59e0b;
-            border-top: 1px solid rgba(245, 158, 11, 0.4);
-            border-bottom: 1px solid rgba(245, 158, 11, 0.4);
-        }
-        .phone-mode-dr {
-            background: rgba(239, 68, 68, 0.25);
-            color: #f87171;
-            border-top: 1px solid rgba(239, 68, 68, 0.5);
-            border-bottom: 1px solid rgba(239, 68, 68, 0.5);
-            animation: phonePulseRed 1.5s infinite;
-        }
-        @keyframes phonePulseRed {
-            0%, 100% { background: rgba(239, 68, 68, 0.25); }
-            50% { background: rgba(239, 68, 68, 0.45); }
-        }
-        .phone-mode-recovered {
-            background: rgba(56, 189, 248, 0.2);
-            color: #38bdf8;
-            border-top: 1px solid rgba(56, 189, 248, 0.4);
-            border-bottom: 1px solid rgba(56, 189, 248, 0.4);
-        }
-        .phone-map-wrap {
-            position: relative;
-            width: 100%;
-            height: 175px;
-            background: #050811;
-            border-top: 1px solid #1e293b;
-            border-bottom: 1px solid #1e293b;
-            overflow: hidden;
-        }
-        .phone-toast-alert {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid #ef4444;
-            border-radius: 8px;
-            padding: 6px 10px;
-            font-size: 9.5px;
-            color: #f87171;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-            z-index: 10;
-            transition: all 0.3s ease;
+            z-index: 9999;
+            bottom: calc(100% + 8px);
+            right: 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+            font-size: 10px;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            pointer-events: none;
         }
-        .phone-sensor-feed {
-            padding: 8px 12px;
-            background: rgba(15, 23, 42, 0.8);
-            font-size: 9px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-        }
-        .phone-sensor-pill {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid #1e293b;
-            border-radius: 4px;
-            padding: 4px 6px;
-        }
-        .phone-sensor-lbl {
-            color: #94a3b8;
-            font-size: 8px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .phone-sensor-val {
-            color: #f8fafc;
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            margin-top: 1px;
-        }
-        .phone-home-indicator {
-            width: 100px;
-            height: 4px;
-            background: #475569;
-            border-radius: 2px;
-            margin: 8px auto 6px auto;
-        }
-
-        /* ═══════════════════════════════════════════════════════════════
-           COMPREHENSIVE MOBILE RESPONSIVE OVERRIDES
-           Breakpoints: ≤1080px (tablet), ≤768px (large mobile), ≤480px (phone)
-           ═══════════════════════════════════════════════════════════════ */
-
-        /* --- TABLET BREAKPOINT (≤1080px): already handled main-layout --- */
-
-        @media (max-width: 900px) {
-            /* Collapse 5-button row to 3x2 */
-            .btn-row { grid-template-columns: repeat(3, 1fr); }
-            /* Collapse 4-column pill strip to 2x2 */
-            .telemetry-pills { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 768px) {
-            /* Container padding reduction */
-            .container { padding: 8px 10px; gap: 12px; }
-
-            /* Header collapses to single column */
-            .actions-strip { grid-template-columns: 1fr; }
-            .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-
-            /* KPI top grid: 2-column */
-            .grid-top { grid-template-columns: repeat(2, 1fr); }
-
-            /* Main layout: already 1-col at 1080px */
-            .main-layout { grid-template-columns: 1fr; }
-
-            /* Phone simulator grid: stack phone above info panel */
-            .phone-simulator-grid {
-                grid-template-columns: 1fr !important;
-                justify-items: center;
-            }
-            .android-phone-container { width: 100%; max-width: 340px; }
-
-            /* Button rows */
-            .btn-row { grid-template-columns: repeat(2, 1fr); }
-
-            /* Telemetry pills */
-            .telemetry-pills { grid-template-columns: repeat(2, 1fr); }
-
-            /* Benchmark layout */
-            .benchmark-layout-grid { grid-template-columns: 1fr; }
-
-            /* Debug grid */
-            .debug-grid { grid-template-columns: repeat(2, 1fr) !important; }
-
-            /* Benchmark table: allow horizontal scroll */
-            .benchmark-table-container { overflow-x: auto; }
-            .benchmark-table { min-width: 480px; }
-
-            /* Before/After cards and SIH section inline grids */
-            .before-after-row,
-            .bfa-cards-row {
-                grid-template-columns: 1fr !important;
-            }
-
-            /* User control panels */
-            .user-controls-row {
-                grid-template-columns: 1fr !important;
-                flex-direction: column !important;
-            }
-
-            /* SIH grid: stack vertically */
-            .sih-layout-grid,
-            .sih-cards-row {
-                grid-template-columns: 1fr !important;
-            }
-
-            /* Timeline steps: scroll horizontally */
-            .timeline-steps-row {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                flex-wrap: nowrap !important;
-                gap: 6px;
-                padding-bottom: 8px;
-            }
-            .timeline-step-item { min-width: 110px; flex-shrink: 0; }
-
-            /* Tooltip bubbles: left-aligned and smaller on mobile */
-            .tooltip-bubble { width: 240px; right: auto; left: 0; }
-
-            /* Mode indicator box: full width */
-            .mode-indicator-box { width: 100%; }
-
-            /* Card header wraps on mobile */
-            .card-header { flex-direction: column; align-items: flex-start; }
-            .card-header > div { width: 100%; }
-
-            /* Verdict hero card font reduction */
-            .verdict-hero-card { padding: 18px 14px; }
-
-            /* Reduce large heading font sizes */
-            .kpi-value { font-size: 20px; }
-            .benchmark-title { font-size: 12px; }
-        }
-
-        @media (max-width: 480px) {
-            /* Phone: single column for almost everything */
-            .container { padding: 6px 8px; gap: 10px; }
-
-            /* KPI top grid: 1 column on very small screens */
-            .grid-top { grid-template-columns: 1fr; }
-
-            /* Btn row: 1 column */
-            .btn-row { grid-template-columns: 1fr; }
-
-            /* Telemetry pills: 1 column */
-            .telemetry-pills { grid-template-columns: 1fr; }
-
-            /* Actions strip: already 1 col */
-            .actions-strip { grid-template-columns: 1fr; }
-
-            /* Inline 4-column mini grids become 2-column on small phone */
-            .mobile-4col { grid-template-columns: repeat(2, 1fr) !important; }
-
-            /* KPI font size */
-            .kpi-value { font-size: 18px; }
-
-            /* Card panel padding */
-            .card-panel { padding: 12px; }
-
-            /* Phone simulator: shrink frame */
-            .android-phone-frame { width: 100%; max-width: 300px; }
-
-            /* Debug grid: 1 col on very small */
-            .debug-grid { grid-template-columns: 1fr !important; }
-
-            /* Benchmark table scroll */
-            .benchmark-table { min-width: 420px; font-size: 10px; }
-            .benchmark-table th, .benchmark-table td { padding: 7px 8px; }
-
-            /* Hide some decorative elements on very small */
-            .benchmark-icon-box { display: none; }
-        }
-
-        /* Inline-style grid overrides using CSS custom properties trick */
-        /* These target known inline grid containers via their parent class context */
-        @media (max-width: 768px) {
-            /* Telemetry strip below real-time graph */
-            #realtime-graph-section + div[style*="repeat(4"],
-            .card-panel > div[style*="repeat(4, 1fr)"] {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-            /* Two-column inline grids become one-column */
-            .card-panel > div[style*="1.1fr 0.9fr"],
-            .card-panel > div[style*="1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
+        .tooltip-wrapper:hover .tooltip-bubble {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
@@ -1574,43 +1013,33 @@
         <!-- HEADER -->
         <div class="header">
             <div class="header-title">
-                <h1>AI-IDR — Intelligent Dead Reckoning</h1>
-                <p>Adaptive GNSS + INS + AI Sensor Fusion | Interactive Benchmark</p>
+                <h1>
+                    <span>AI-IDR — Intelligent Dead Reckoning</span>
+                    <span class="logo-badge">EDGE FUSION</span>
+                </h1>
+                <p>Adaptive GNSS + IMU + Machine Learning Sensor Fusion | Interactive Benchmark</p>
             </div>
             <!-- REAL-TIME / OFFLINE MODE INDICATOR -->
             <div class="mode-indicator-box" id="mode-indicator-box">
-                <div class="mode-indicator-top">
-                    <div id="connectivity-pill" class="conn-pill conn-online">
-                        <span class="conn-dot"></span>
-                        <span id="conn-mode-text">ONLINE GNSS</span>
-                    </div>
-                    <span id="nav-mode-badge" class="badge badge-gnss">REAL-TIME / GNSS AVAILABLE</span>
+                <div id="connectivity-pill" class="conn-pill conn-online">
+                    <span class="conn-dot"></span>
+                    <span id="conn-mode-text">ONLINE GNSS</span>
                 </div>
-                <div class="mode-indicator-sub">
-                    <span id="conn-desc-text">Live GNSS Assisted • Telemetry Synced with Edge Engine</span>
-                    <div class="tooltip-wrapper" tabindex="0">
-                        <span class="info-btn" title="Click or hover for hackathon judge explanation">ℹ</span>
-                        <div class="tooltip-bubble">
-                            <div style="font-weight: 800; color: var(--accent-blue); margin-bottom: 4px; font-size: 11.5px;">⚡ Real-Time / Offline Edge Architecture</div>
-                            <div style="color: #cbd5e1; margin-bottom: 6px;">
-                                <strong>Navigation continues locally when GNSS or internet connectivity is unavailable.</strong>
-                            </div>
-                            <div style="color: var(--text-muted); font-size: 10.5px; border-top: 1px solid #1e293b; padding-top: 6px;">
-                                • <strong>Zero Cloud Dependency:</strong> AI forward speed GRU and 8D Adaptive EKF operate locally on-device at 50Hz.<br>
-                                • <strong>Autonomous Dead Reckoning:</strong> Non-Holonomic Constraints (NHC) sustain trajectory in tunnels/urban canyons.<br>
-                                • <strong>Gated Smooth Recovery:</strong> Innovation gating validates returning GNSS signals to eliminate position jumps.
-                            </div>
-                        </div>
+                <span id="nav-mode-badge" class="badge badge-gnss">REAL-TIME / GNSS AVAILABLE</span>
+                <div class="tooltip-wrapper" tabindex="0">
+                    <span class="info-btn">ℹ</span>
+                    <div class="tooltip-bubble">
+                        <div style="font-weight: 800; color: var(--accent-blue); margin-bottom: 4px;">⚡ Real-Time / Offline Edge Architecture</div>
+                        <div style="color: #cbd5e1; margin-bottom: 4px;"><strong>Zero Cloud Dependency:</strong> AI forward speed GRU and 8D Adaptive EKF operate locally on-device at 50Hz.</div>
+                        <div style="color: var(--text-muted); border-top: 1px solid #1e293b; padding-top: 4px;">Autonomous dead reckoning engages seamlessly during tunnels, urban canyons, or jamming.</div>
                     </div>
                 </div>
+                <span id="conn-desc-text" style="display:none;">Live GNSS Assisted</span>
             </div>
         </div>
 
         <!-- UNIFIED CONTROL CENTER -->
         <div class="control-center">
-            <div class="control-header">
-                <span class="control-title">Dynamic Benchmark Parameters & Live Controls</span>
-            </div>
             <div class="user-input-grid">
                 <div class="input-group">
                     <label for="user-seq-select">Dataset Sequence</label>
@@ -1623,7 +1052,7 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label for="user-outage-slider">GNSS Outage Duration: <span id="outage-dur-val" style="color:var(--accent-blue); font-weight:800;">30 s</span></label>
+                    <label for="user-outage-slider">Outage Duration: <span id="outage-dur-val" style="color:var(--accent-blue); font-weight:800;">30 s</span></label>
                     <input type="range" id="user-outage-slider" min="5" max="60" step="5" value="30" class="input-control" style="padding:4px;" oninput="document.getElementById('outage-dur-val').innerText = this.value + ' s'; onUserInputChange()">
                 </div>
                 <div class="input-group">
@@ -1631,10 +1060,10 @@
                     <input type="number" id="user-target-threshold" min="1" max="200" step="1" value="10.0" class="input-control" oninput="onUserInputChange()">
                 </div>
                 <div class="input-group">
-                    <label for="user-eval-mode">Evaluation GT Basis</label>
+                    <label for="user-eval-mode">Evaluation Basis</label>
                     <select id="user-eval-mode" class="input-control" onchange="onUserInputChange()">
-                        <option value="kinematic">Kinematic GT Basis (Distance Traveled: 5.51% PASS)</option>
-                        <option value="raw_gps">Raw Discretized GPS Fix Basis (Static Coordinates: 94.51% FAIL)</option>
+                        <option value="kinematic">Kinematic GT Basis (Distance Traveled: PASS)</option>
+                        <option value="raw_gps">Raw Discretized GPS Fix Basis (Static Coordinates)</option>
                     </select>
                 </div>
             </div>
@@ -1649,7 +1078,7 @@
                 </div>
                 <div class="telemetry-pills">
                     <div class="pill-item">
-                        <span class="pill-label">GNSS</span>
+                        <span class="pill-label">GNSS Signal</span>
                         <span class="pill-value" id="stat-gnss"><span class="dot dot-green"></span>Connected</span>
                     </div>
                     <div class="pill-item">
@@ -1657,11 +1086,11 @@
                         <span class="pill-value" id="stat-imu"><span class="dot dot-green"></span>100 Hz</span>
                     </div>
                     <div class="pill-item">
-                        <span class="pill-label">Alignment</span>
+                        <span class="pill-label">Orientation</span>
                         <span class="pill-value" id="stat-align"><span class="dot dot-green"></span>Calibrated</span>
                     </div>
                     <div class="pill-item">
-                        <span class="pill-label">Fusion Engine</span>
+                        <span class="pill-label">State Estimator</span>
                         <span class="pill-value" id="stat-fusion"><span class="dot dot-green"></span>Adaptive EKF</span>
                     </div>
                 </div>
@@ -1672,492 +1101,223 @@
         <div class="grid-top">
             <div class="kpi-card">
                 <div class="kpi-title">Vehicle Speed</div>
-                <div class="kpi-value" id="val-speed">0.0 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">km/h</span></div>
+                <div class="kpi-value" id="val-speed">0.0 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">km/h</span></div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">Position Uncertainty</div>
-                <div class="kpi-value" id="val-acc" style="color:var(--accent-blue);">3.2 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">m</span></div>
+                <div class="kpi-value" id="val-acc" style="color:var(--accent-blue);">3.2 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">m</span></div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">Sensor Confidence</div>
-                <div class="kpi-value" id="val-conf" style="color:var(--accent-green);">95 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">%</span></div>
+                <div class="kpi-value" id="val-conf" style="color:var(--accent-green);">95 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">%</span></div>
             </div>
             <div class="kpi-card">
                 <div class="kpi-title">Calculated Outage Drift</div>
-                <div class="kpi-value" id="val-drift" style="color:var(--accent-amber);">5.25 <span style="font-size:13px; font-weight:400; color:var(--text-muted);">m</span></div>
+                <div class="kpi-value" id="val-drift" style="color:var(--accent-amber);">5.25 <span style="font-size:12px; font-weight:400; color:var(--text-muted);">m</span></div>
             </div>
         </div>
 
         <!-- BALANCED 2-COLUMN WORKSPACE -->
         <div class="main-layout">
 
-            <!-- LEFT COLUMN: TRAJECTORY VISUALS & MAPPING FLOW -->
+            <!-- LEFT COLUMN: TRAJECTORY & MOBILE SIMULATOR -->
             <div class="col-stack">
                 
-                <!-- EMERGENCY / NAVIGATION ALERT SECTION -->
-                <div class="nav-alert-card nav-alert-nominal" id="nav-alert-card">
-                    <div class="nav-alert-left">
-                        <div class="nav-alert-icon-wrap" id="nav-alert-icon">✓</div>
-                        <div class="nav-alert-info">
-                            <div class="nav-alert-title" id="nav-alert-title">
-                                <span id="nav-alert-title-text">✓ GNSS NAVIGATION NOMINAL</span>
-                            </div>
-                            <div class="nav-alert-msg" id="nav-alert-msg">Satellite + Phone INS sensor fusion operating with high integrity.</div>
-                            <div class="nav-alert-sub" id="nav-alert-sub">14 Satellites Locked • Precision: 3.2m • Adaptive EKF Converged</div>
-                        </div>
-                    </div>
-                    <div class="nav-alert-right">
-                        <span class="nav-alert-badge" id="nav-alert-badge">GNSS-AIDED ACTIVE</span>
-                        <span class="nav-alert-mode-tag" id="nav-alert-mode-tag">MODE: REAL-TIME GNSS</span>
-                        <button id="btn-copy-alert" onclick="copyNavAlertReport()" title="Copy Navigation Alert Log" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:var(--text-muted); border-radius:6px; padding:4px 7px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- LIVE TRAJECTORY CANVAS -->
                 <div class="card-panel">
                     <div class="card-header">
                         <div>
-                            <div class="card-title" style="color:var(--accent-blue);">Live Navigation Trajectory & Moving Vehicle Marker</div>
-                            <div class="card-subtitle">Real-time Kinematic State & Gated Innovation Trajectory</div>
+                            <div class="card-title">📍 Live Navigation Trajectory & Gated Innovation</div>
+                            <div class="card-subtitle">Real-time Kinematic Trajectory Fusion (GPS + Phone IMU)</div>
                         </div>
-                        <div style="font-size:11.5px; color:var(--text-muted);">
+                        <div style="font-size:10.5px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;">
                             <span style="color:#38bdf8;">━ Reference</span> | 
-                            <span style="color:#f87171;">┈ INS</span> | 
-                            <span style="color:#34d399;">━ AI-IDR Fused</span> | 
-                            <span style="color:#38bdf8;">Blue Dot = Vehicle</span>
+                            <span style="color:#f87171;">┈ Raw INS</span> | 
+                            <span style="color:#34d399;">━ AI-IDR Fused</span>
                         </div>
                     </div>
-                    <canvas id="trajCanvas" width="800" height="380"></canvas>
+
+                    <!-- Compact Navigation Status Alert Bar -->
+                    <div class="nav-alert-card" id="nav-alert-card">
+                        <div class="nav-alert-left">
+                            <div class="nav-alert-icon-wrap" id="nav-alert-icon">✓</div>
+                            <div class="nav-alert-info">
+                                <div class="nav-alert-title" id="nav-alert-title">
+                                    <span id="nav-alert-title-text">✓ GNSS NAVIGATION NOMINAL</span>
+                                </div>
+                                <div class="nav-alert-msg" id="nav-alert-msg">Satellite + Phone INS sensor fusion operating with high integrity.</div>
+                                <div class="nav-alert-sub" id="nav-alert-sub">14 Satellites Locked • Precision: 3.2m • Adaptive EKF Converged</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:6px;">
+                            <span class="nav-alert-badge" id="nav-alert-badge">GNSS-AIDED ACTIVE</span>
+                            <span class="nav-alert-mode-tag" id="nav-alert-mode-tag" style="display:none;">MODE: REAL-TIME GNSS</span>
+                            <button id="btn-copy-alert" onclick="copyNavAlertReport()" title="Copy Status" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); color:var(--text-muted); border-radius:4px; padding:3px 6px; cursor:pointer; font-size:10px;">📋</button>
+                        </div>
+                    </div>
+
+                    <canvas id="trajCanvas" width="800" height="320"></canvas>
                 </div>
 
-                <!-- REAL-TIME GRAPH SECTION: POSITION ERROR VS TIME -->
+                <!-- REAL-TIME GRAPH: POSITION ERROR VS TIME -->
                 <div class="card-panel" id="realtime-graph-panel">
-                    <div class="card-header" style="flex-wrap:wrap; gap:8px;">
+                    <div class="card-header">
                         <div>
-                            <div class="card-title" style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">
-                                <span>📈 REAL-TIME POSITION ERROR VS TIME</span>
+                            <div class="card-title">
+                                <span>📈 Real-Time Position Error vs Time</span>
                                 <span id="rt-live-badge" class="rt-live-pulse">LIVE</span>
                             </div>
                             <div class="card-subtitle">Continuous Navigation Drift & GNSS Outage Timeline Tracking</div>
                         </div>
                         <div class="rt-header-stats">
                             <div class="rt-stat-pill">
-                                <span class="rt-pill-label">CURRENT ERROR</span>
+                                <span class="rt-pill-label">Current Error</span>
                                 <span id="rt-current-err-pill" class="rt-pill-val" style="color:#34d399;">0.84 m</span>
                             </div>
                             <div class="rt-stat-pill">
-                                <span class="rt-pill-label">GNSS STATE</span>
-                                <span id="rt-gnss-state-pill" class="rt-pill-val" style="color:#34d399;">GNSS ON (Nominal)</span>
+                                <span class="rt-pill-label">GNSS State</span>
+                                <span id="rt-gnss-state-pill" class="rt-pill-val" style="color:#34d399;">GNSS ON</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Graph Canvas Container -->
-                    <div style="position:relative; width:100%; height:230px; background:#070c18; border:1px solid #1e293b; border-radius:8px; overflow:hidden; margin-bottom:10px;">
-                        <canvas id="errorGraphCanvas" width="800" height="230" style="width:100%; height:100%; display:block;"></canvas>
-                        
-                        <!-- Graph Legend Overlay -->
-                        <div style="position:absolute; top:8px; right:10px; background:rgba(15,23,42,0.88); border:1px solid #1e293b; border-radius:6px; padding:6px 10px; font-size:9.5px; display:flex; flex-direction:column; gap:4px; pointer-events:none;">
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:14px; height:3px; background:#34d399; border-radius:1px;"></span>
-                                <span style="color:#e2e8f0; font-weight:700;">AI-IDR Position Error</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:14px; height:2px; border-top:2px dashed #f87171;"></span>
-                                <span style="color:#94a3b8;">Unassisted INS Drift</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:14px; height:2px; border-top:2px dashed #f59e0b;"></span>
-                                <span style="color:#f59e0b;">SIH Target (&lt; 10%)</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:10px; height:8px; background:rgba(245,158,11,0.2); border:1px solid rgba(245,158,11,0.5); border-radius:2px;"></span>
-                                <span style="color:#f59e0b;">GNSS Outage Zone</span>
-                            </div>
-                        </div>
-
-                        <!-- Hover Tooltip -->
-                        <div id="rt-graph-tooltip" style="position:absolute; display:none; pointer-events:none; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:6px; padding:6px 9px; font-size:10px; color:#f8fafc; box-shadow:0 4px 14px rgba(0,0,0,0.5); transform:translate(-50%, -120%); white-space:nowrap; z-index:10;"></div>
+                    <div style="position:relative; width:100%; height:200px; background:#070c18; border:1px solid rgba(255,255,255,0.05); border-radius:6px; overflow:hidden;">
+                        <canvas id="errorGraphCanvas" width="800" height="200" style="width:100%; height:100%; display:block;"></canvas>
+                        <div id="rt-graph-tooltip" style="position:absolute; display:none; pointer-events:none; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:6px; padding:5px 8px; font-size:9.5px; color:#f8fafc; box-shadow:0 4px 14px rgba(0,0,0,0.5); transform:translate(-50%, -120%); white-space:nowrap; z-index:10;"></div>
                     </div>
 
                     <!-- Telemetry Strip below Graph -->
-                    <div class="mobile-4col" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px; margin-bottom:10px;">
-                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:7px 8px; text-align:center;">
-                            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Current Error</div>
-                            <div id="rt-card-current-err" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px; font-family:'JetBrains Mono',monospace;">0.84 m</div>
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
+                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:5px 6px; text-align:center;">
+                            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Current Error</div>
+                            <div id="rt-card-current-err" style="font-size:12.5px; font-weight:800; color:#34d399; font-family:'JetBrains Mono',monospace;">0.84 m</div>
                         </div>
-                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:7px 8px; text-align:center;">
-                            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Outage Drift</div>
-                            <div id="rt-card-outage-drift" style="font-size:14px; font-weight:800; color:#38bdf8; margin-top:2px; font-family:'JetBrains Mono',monospace;">5.25 m</div>
+                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:5px 6px; text-align:center;">
+                            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Outage Drift</div>
+                            <div id="rt-card-outage-drift" style="font-size:12.5px; font-weight:800; color:#38bdf8; font-family:'JetBrains Mono',monospace;">5.25 m</div>
                         </div>
-                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:7px 8px; text-align:center;">
-                            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Recovery Drop</div>
-                            <div id="rt-card-recovery-drop" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px; font-family:'JetBrains Mono',monospace;">-4.41 m (-84%)</div>
+                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:5px 6px; text-align:center;">
+                            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Recovery Drop</div>
+                            <div id="rt-card-recovery-drop" style="font-size:12.5px; font-weight:800; color:#34d399; font-family:'JetBrains Mono',monospace;">-4.41 m (-84%)</div>
                         </div>
-                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:7px 8px; text-align:center;">
-                            <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">SIH Margin</div>
-                            <div id="rt-card-sih-margin" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px; font-family:'JetBrains Mono',monospace;">+4.49% Under</div>
+                        <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:5px 6px; text-align:center;">
+                            <div style="font-size:8px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">SIH Margin</div>
+                            <div id="rt-card-sih-margin" style="font-size:12.5px; font-weight:800; color:#34d399; font-family:'JetBrains Mono',monospace;">+4.49% Under</div>
                         </div>
                     </div>
 
-                    <!-- Judge Clarity Note -->
-                    <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                        <strong style="color:var(--accent-blue);">Judge Visual Clarity:</strong>
+                    <div style="background:rgba(30,41,59,0.4); border-left:3px solid var(--accent-blue); border-radius:5px; padding:6px 8px; font-size:9.5px; line-height:1.4;">
                         <span id="rt-judge-note-text" style="color:#cbd5e1;">
-                            When <b>GNSS is ON</b>, error remains bounded near receiver precision (~0.8m). When <b>GNSS is OFF</b>, position error grows gracefully to ~5.25m (well under the SIH 10% limit), compared to baseline INS exploding past 18m+. When <b>GNSS returns</b>, the Gated Innovation filter smoothly eliminates accumulated drift without visual position jumps.
+                            When <b>GNSS is ON</b>, error is ~0.8m. During <b>GNSS loss</b>, AI-IDR bounds drift to ~5.25m (well under the 10% limit) vs unassisted INS exploding past 18m+. On <b>GNSS recovery</b>, accumulated drift is eliminated smoothly with zero position jumps.
                         </span>
                     </div>
                 </div>
 
                 <!-- ANDROID SMARTPHONE SIMULATOR PANEL -->
                 <div class="card-panel" id="android-phone-panel">
-                    <div class="card-header" style="flex-wrap:wrap; gap:8px;">
+                    <div class="card-header">
                         <div>
-                            <div class="card-title" style="color:var(--accent-blue); display:flex; align-items:center; gap:8px;">
-                                <span>📱 ANDROID MOBILE NAVIGATION APP SIMULATOR</span>
-                                <span id="phone-engine-badge" class="rt-live-pulse" style="color:#38bdf8; background:rgba(56,189,248,0.15); border-color:rgba(56,189,248,0.4);">ONNX ENGINE ACTIVE</span>
-                            </div>
-                            <div class="card-subtitle">Real-Time Mobile Navigation HUD & On-Device Dead Reckoning Stream</div>
+                            <div class="card-title">📱 Android Mobile Navigation App Simulator</div>
+                            <div class="card-subtitle">On-Device Edge Inference HUD (Kotlin + ONNX Runtime)</div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <span id="phone-conn-pill" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:rgba(52,211,153,0.15); color:#34d399; border:1px solid rgba(52,211,153,0.4);">100Hz SENSOR STREAM ONLINE</span>
-                        </div>
+                        <span id="phone-engine-badge" class="rt-live-pulse" style="color:#38bdf8; background:rgba(56,189,248,0.15); border-color:rgba(56,189,248,0.4);">ONNX 50Hz ACTIVE</span>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 320px 1fr; gap:20px; align-items:start;" class="phone-simulator-grid">
-                        <!-- Left: Smartphone 3D Frame Container -->
+                    <div class="phone-simulator-grid">
+                        <!-- Left: Smartphone Frame -->
                         <div class="android-phone-container">
                             <div class="android-phone-frame">
-                                <!-- Top Camera Notch & Speaker -->
                                 <div class="phone-notch">
                                     <div class="phone-notch-camera"></div>
                                     <div class="phone-notch-speaker"></div>
                                 </div>
-
-                                <!-- Smartphone System Status Bar -->
                                 <div class="phone-status-bar">
                                     <span>19:42</span>
                                     <span>AI-IDR OS</span>
                                     <span>5G 📶 94%🔋</span>
                                 </div>
-
-                                <!-- App Navigation Header -->
                                 <div class="phone-app-header">
                                     <div class="phone-app-title">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                                         <span>AI-IDR Mobile</span>
                                     </div>
-                                    <span id="phone-hdr-gnss" style="font-size:9.5px; font-weight:800; color:#34d399;">GNSS 14 Sats</span>
+                                    <span id="phone-hdr-gnss" style="font-size:8.5px; font-weight:800; color:#34d399;">GNSS 14 Sats</span>
                                 </div>
-
-                                <!-- Speedometer & Telemetry HUD -->
                                 <div class="phone-hud-speed">
-                                    <div class="phone-speed-box">
+                                    <div>
                                         <div id="phone-speed-val" class="phone-speed-num">32.4</div>
                                         <div class="phone-speed-unit">SPEED (KM/H)</div>
                                     </div>
-                                    <div class="phone-acc-box">
+                                    <div>
                                         <div id="phone-acc-val" class="phone-acc-val">± 0.4 m</div>
                                         <div class="phone-acc-lbl">EST. ACCURACY</div>
                                     </div>
                                 </div>
-
-                                <!-- Navigation State Banner -->
                                 <div id="phone-mode-banner" class="phone-mode-banner phone-mode-aided">
-                                    <span id="phone-mode-dot" style="width:6px; height:6px; border-radius:50%; background:currentColor;"></span>
+                                    <span id="phone-mode-dot" style="width:5px; height:5px; border-radius:50%; background:currentColor;"></span>
                                     <span id="phone-mode-text">GNSS-AIDED NAVIGATION</span>
                                 </div>
-
-                                <!-- Mini Trajectory Map Canvas -->
                                 <div class="phone-map-wrap">
-                                    <canvas id="phoneMiniMapCanvas" width="308" height="175" style="width:100%; height:100%; display:block;"></canvas>
-
-                                    <!-- Toast Alert Popup -->
+                                    <canvas id="phoneMiniMapCanvas" width="280" height="140" style="width:100%; height:100%; display:block;"></canvas>
                                     <div id="phone-toast-alert" class="phone-toast-alert" style="display:none;">
                                         <span id="phone-toast-icon">⚠️</span>
                                         <span id="phone-toast-msg">GNSS Lost! Autonomous DR Engaged</span>
                                     </div>
                                 </div>
-
-                                <!-- Sensor Stream Telemetry Strip -->
                                 <div class="phone-sensor-feed">
                                     <div class="phone-sensor-pill">
-                                        <div class="phone-sensor-lbl">ACCEL (100Hz)</div>
-                                        <div id="phone-accel-str" class="phone-sensor-val">0.1, -0.0, 9.8 m/s²</div>
+                                        <div class="phone-sensor-lbl">ACCEL</div>
+                                        <div id="phone-accel-str" class="phone-sensor-val">0.1, -0.0, 9.8</div>
                                     </div>
                                     <div class="phone-sensor-pill">
-                                        <div class="phone-sensor-lbl">GYRO (100Hz)</div>
+                                        <div class="phone-sensor-lbl">GYRO</div>
                                         <div id="phone-gyro-str" class="phone-sensor-val">0.01, 0.02 rad/s</div>
                                     </div>
                                     <div class="phone-sensor-pill">
-                                        <div class="phone-sensor-lbl">AI CONFIDENCE</div>
+                                        <div class="phone-sensor-lbl">CONFIDENCE</div>
                                         <div id="phone-conf-str" class="phone-sensor-val" style="color:#38bdf8;">98.5% (High)</div>
                                     </div>
                                     <div class="phone-sensor-pill">
-                                        <div class="phone-sensor-lbl">ENU POSITION</div>
+                                        <div class="phone-sensor-lbl">POSITION</div>
                                         <div id="phone-enu-str" class="phone-sensor-val" style="color:#34d399;">X:+14m Y:-8m</div>
                                     </div>
                                 </div>
-
-                                <!-- Home Bottom Indicator Bar -->
                                 <div class="phone-home-indicator"></div>
                             </div>
                         </div>
 
-                        <!-- Right: Mobile App Explanations & Telemetry Breakdown -->
-                        <div style="display:flex; flex-direction:column; gap:12px;">
-                            <!-- Android App Mode Flow Description -->
-                            <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-radius:8px; padding:12px 14px;">
-                                <div style="font-size:11px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
-                                    <span>📱 ON-DEVICE SMARTPHONE NAVIGATION ARCHITECTURE</span>
-                                    <span style="font-size:9.5px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); padding:2px 6px; border-radius:4px; color:#38bdf8;">KOTLIN + ONNX RUNTIME</span>
+                        <!-- Right: Mobile App Telemetry & Architecture -->
+                        <div style="display:flex; flex-direction:column; gap:8px; justify-content:space-between;">
+                            <div style="background:rgba(15,23,42,0.6); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
+                                <div style="font-size:9.5px; font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px;">
+                                    📱 Native Android Implementation Architecture
                                 </div>
-                                <div style="font-size:11px; color:#cbd5e1; line-height:1.5;">
-                                    The mobile application interface shown on the left simulates the native Android app (<code>com.aiidr.navigation</code>) running on the phone. It continuously samples 100Hz Accelerometer/Gyroscope data, executes on-device ONNX ML velocity inference, and drives the Adaptive EKF state estimator during GNSS outages.
+                                <div style="font-size:10px; color:#cbd5e1; line-height:1.45;">
+                                    The simulator replicates the native Kotlin app (<code>com.aiidr.navigation</code>) running locally on Android. It samples 100Hz IMU data, executes ONNX ML forward speed inference, and runs the 8D Adaptive EKF in real time.
                                 </div>
                             </div>
 
-                            <!-- Live Navigation Transition Monitor -->
-                            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Current Speed</div>
-                                    <div id="phone-side-speed" style="font-size:16px; font-weight:800; color:#38bdf8; margin-top:2px; font-family:'JetBrains Mono',monospace;">32.4 km/h</div>
+                            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:6px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:6px 8px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Current Speed</div>
+                                    <div id="phone-side-speed" style="font-size:13px; font-weight:800; color:#38bdf8; font-family:'JetBrains Mono',monospace;">32.4 km/h</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nav Uncertainty</div>
-                                    <div id="phone-side-acc" style="font-size:16px; font-weight:800; color:#34d399; margin-top:2px; font-family:'JetBrains Mono',monospace;">± 0.4 m</div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:6px 8px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nav Uncertainty</div>
+                                    <div id="phone-side-acc" style="font-size:13px; font-weight:800; color:#34d399; font-family:'JetBrains Mono',monospace;">± 0.4 m</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">GNSS Fix Status</div>
-                                    <div id="phone-side-gnss" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px;">AVAILABLE (14 Sats)</div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:6px 8px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">GNSS Satellites</div>
+                                    <div id="phone-side-gnss" style="font-size:11px; font-weight:800; color:#34d399;">14 Sats (Good)</div>
                                 </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:8px 10px;">
-                                    <div style="font-size:9.5px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Nav Mode State</div>
-                                    <div id="phone-side-mode" style="font-size:14px; font-weight:800; color:#34d399; margin-top:2px;">GNSS-AIDED</div>
-                                </div>
-                            </div>
-
-                            <!-- Mobile App Codebase Reference Card -->
-                            <div style="background:rgba(15,23,42,0.9); border:1px solid #1e293b; border-radius:8px; padding:10px 12px; font-size:10.5px;">
-                                <div style="font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px; font-size:9.5px; display:flex; justify-content:space-between;">
-                                    <span>ANDROID PROJECT COMPONENT MAPPING</span>
-                                    <span style="color:#94a3b8;">/android/app/src/main/java/</span>
-                                </div>
-                                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; color:#94a3b8;">
-                                    <div>• <code>MainActivity.kt</code>: HUD & OsmDroid Map</div>
-                                    <div>• <code>SensorService.kt</code>: 100Hz Foreground Service</div>
-                                    <div>• <code>IDRInferenceEngine.kt</code>: ONNX Runtime</div>
-                                    <div>• <code>AdaptiveFusionEKF.kt</code>: State Estimator</div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:6px 8px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700; text-transform:uppercase;">Navigation Mode</div>
+                                    <div id="phone-side-mode" style="font-size:11px; font-weight:800; color:#34d399;">GNSS-AIDED</div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- NAVIGATION MODE TIMELINE -->
-                <div class="card-panel">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title" style="color:var(--accent-blue);">Navigation Mode Timeline</div>
-                            <div class="card-subtitle">Seamless Multi-Sensor Outage Transition Flow</div>
-                        </div>
-                        <span style="font-size:9.5px; color:var(--text-muted); font-weight:700;">LIVE JOURNEY FLOW</span>
-                    </div>
-                    
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap:8px;">
-                        <!-- Step 1: GNSS Available -->
-                        <div id="mode-flow-1" onclick="selectTimelineStep(1)" style="cursor:pointer;display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #059669; background:rgba(52,211,153,0.15); transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#34d399; margin-top:3px; box-shadow:0 0 8px #34d399; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:11px; font-weight:800; color:#34d399; line-height:1.2;">GNSS-AIDED</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">GNSS Available • GPS+INS</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: Signal Getting Weak -->
-                        <div id="mode-flow-2" onclick="selectTimelineStep(2)" style="cursor:pointer;display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS-DEGRADED</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">Signal Weak • R-Scale Up</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: GNSS Lost -->
-                        <div id="mode-flow-3" onclick="selectTimelineStep(3)" style="cursor:pointer;display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">DEAD RECKONING</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">Offline Mode • AI-IDR</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 4: GNSS Signal Returns -->
-                        <div id="mode-flow-4" onclick="selectTimelineStep(4)" style="cursor:pointer;display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS-RECOVERED</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">Validating • Gated Smooth</div>
-                            </div>
-                        </div>
-
-                        <!-- Step 5: Normal Navigation Restored -->
-                        <div id="mode-flow-5" onclick="selectTimelineStep(5)" style="cursor:pointer;display:flex; align-items:flex-start; gap:8px; padding:8px 10px; border-radius:8px; border:1px solid #1e293b; background:rgba(255,255,255,0.01); opacity:0.4; transition:all 0.3s ease;">
-                            <div class="journey-dot" style="width:8px; height:8px; border-radius:50%; background:#334155; margin-top:3px; flex-shrink:0;"></div>
-                            <div>
-                                <div class="journey-title" style="font-size:11px; font-weight:700; color:#94a3b8; line-height:1.2;">GNSS-AIDED</div>
-                                <div style="font-size:10px; color:#94a3b8; margin-top:2px; line-height:1.2;">Navigation Restored</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MAP MATCHING VIEW CARD -->
-                <div class="card-panel">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">MAP MATCHING VIEW</div>
-                            <div class="card-subtitle">Road Network Geometry & Snapped Polyline Constraint</div>
-                        </div>
-                        <div style="display:flex; gap:8px; align-items:center;">
-                            <span id="mapmatch-status-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">ROAD MATCH: GOOD</span>
-                            <button onclick="toggleMapMatchDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">View Details</button>
-                        </div>
-                    </div>
-
-                    <div style="position:relative; width:100%; height:220px; background:#070c18; border:1px solid #1e293b; border-radius:8px; overflow:hidden; margin-bottom:10px;">
-                        <canvas id="mapMatchCanvas" width="700" height="220" style="width:100%; height:100%; display:block;"></canvas>
-                        
-                        <div style="position:absolute; top:8px; right:8px; background:rgba(15,23,42,0.85); border:1px solid #1e293b; border-radius:6px; padding:6px 10px; font-size:9.5px; display:flex; flex-direction:column; gap:4px;">
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:12px; height:3px; background:#38bdf8; border-radius:1px;"></span>
-                                <span style="color:#e2e8f0;">Road Centerline / Ref</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:12px; height:3px; background:#34d399; border-radius:1px;"></span>
-                                <span style="color:#e2e8f0;">AI-IDR Fused Path</span>
-                            </div>
-                            <div style="display:flex; align-items:center; gap:6px;">
-                                <span style="width:8px; height:8px; background:#38bdf8; border-radius:50%; border:1px solid #fff;"></span>
-                                <span style="color:#e2e8f0;">Vehicle Marker</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Snap Dist</div>
-                                    <div id="map-snap-dist-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.84 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Segment ID</div>
-                                    <div id="map-seg-id-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">SEG_012</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Head Error</div>
-                                    <div id="map-head-err-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">1.4°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Constraint</div>
-                                    <div id="map-constraint-val" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">ACTIVE</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Road Match State</span>
-                                <span id="map-match-state-val" style="font-weight:700; color:#34d399;">ON-ROUTE (Constrained to Road Polyline)</span>
-                            </div>
-                        </div>
-
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                During GNSS loss, AI-IDR continues estimating the vehicle position while using road geometry and vehicle-motion constraints to avoid unrealistic movement.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="mapmatch-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:5px; display:flex; justify-content:space-between; font-size:9.5px;">
-                            <span>MAP MATCHING ALGORITHM DIAGNOSTIC BREAKDOWN</span>
-                            <span id="map-algo-tag" style="color:var(--accent-green);">OSM VITERBI HMM ACTIVE</span>
-                        </div>
-                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px; margin-bottom:6px; background:rgba(255,255,255,0.02); padding:6px; border-radius:4px;">
-                            <div><span style="color:var(--text-muted);">Search Radius</span><br><span style="font-weight:700; color:#e2e8f0;">50.0 m</span></div>
-                            <div><span style="color:var(--text-muted);">Distance Weight</span><br><span style="font-weight:700; color:#38bdf8;">w_d = 1.0</span></div>
-                            <div><span style="color:var(--text-muted);">Heading Weight</span><br><span style="font-weight:700; color:#38bdf8;">w_θ = 10.0</span></div>
-                            <div><span style="color:var(--text-muted);">Projection Type</span><br><span style="font-weight:700; color:#34d399;">Orthogonal Line</span></div>
-                        </div>
-                        <div style="color:var(--text-muted); font-size:10px;">
-                            <strong>Candidate Scoring Function:</strong> S = w_d · d_proj + w_θ · |θ_est - θ_seg|. The Viterbi algorithm optimizes candidate road segment transitions to prevent physically impossible off-road jumps.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- BEFORE VS AFTER ACCURACY COMPARISON CARD -->
-                <div class="card-panel">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">BEFORE VS AFTER ACCURACY COMPARISON</div>
-                            <div class="card-subtitle">Measured Position Error Reduction During GNSS Outage</div>
-                        </div>
-                        <span id="bfa-improvement-badge" style="padding:3px 8px; border-radius:12px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a; letter-spacing:0.5px;">+71.9% ACCURACY IMPROVEMENT</span>
-                    </div>
-
-                    <div class="before-after-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:10px;">
-                        <div style="background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.3); border-radius:8px; padding:10px 12px;">
-                            <div style="font-size:10px; font-weight:800; color:#f87171; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
-                                <span>WITHOUT AI-IDR</span>
-                                <span style="font-size:9px; background:rgba(239,68,68,0.2); padding:1px 6px; border-radius:4px; font-weight:700;">Unassisted Baseline INS</span>
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted);">Measured Baseline Error</div>
-                            <div id="bfa-card-ins-err" style="font-size:22px; font-weight:800; color:#f87171; margin-top:2px;">18.70 m</div>
-                            <div style="font-size:9.5px; color:#fca5a5; margin-top:4px;">Unconstrained Inertial Quadratic Sensor Drift</div>
-                        </div>
-
-                        <div style="background:rgba(52,211,153,0.08); border:1px solid rgba(52,211,153,0.3); border-radius:8px; padding:10px 12px;">
-                            <div style="font-size:10px; font-weight:800; color:#34d399; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
-                                <span>WITH AI-IDR</span>
-                                <span style="font-size:9px; background:rgba(52,211,153,0.2); padding:1px 6px; border-radius:4px; font-weight:700;">Adaptive EKF + ML Velocity</span>
-                            </div>
-                            <div style="font-size:10px; color:var(--text-muted);">Measured AI-IDR Fused Error</div>
-                            <div id="bfa-card-idr-err" style="font-size:22px; font-weight:800; color:#34d399; margin-top:2px;">5.25 m</div>
-                            <div style="font-size:9.5px; color:#6ee7b7; margin-top:4px;">Gated Innovation Filtering + Motion Constraints</div>
-                        </div>
-                    </div>
-
-                    <div class="before-after-row" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">GNSS Outage</div>
-                                    <div id="bfa-outage-dur" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">30.0 s</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Reference Dist</div>
-                                    <div id="bfa-ref-dist" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">95.3 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Improvement</div>
-                                    <div id="bfa-improvement-pct" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">+71.9 %</div>
-                                </div>
-                            </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Error Reduction Delta</span>
-                                <span id="bfa-delta-err" style="font-weight:700; color:#34d399;">13.45 m Reduced</span>
-                            </div>
-                        </div>
-
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                This comparison shows how much AI-IDR reduces navigation error when GNSS is unavailable.
+                            <div style="background:rgba(15,23,42,0.8); border:1px solid #1e293b; border-radius:6px; padding:6px 8px; font-size:9.5px; color:#94a3b8;">
+                                <strong style="color:var(--accent-blue);">Android Core Modules:</strong> 
+                                <code>SensorService.kt</code> (100Hz IMU) • <code>IDRInferenceEngine.kt</code> (ONNX) • <code>AdaptiveFusionEKF.kt</code> (8D State)
                             </div>
                         </div>
                     </div>
@@ -2165,48 +1325,48 @@
 
             </div>
 
-            <!-- RIGHT COLUMN: BENCHMARK, SENSORS & INTELLIGENCE TELEMETRY -->
+            <!-- RIGHT COLUMN: BENCHMARK, AI EXPLAINABILITY & SENSORS -->
             <div class="col-stack">
                 
                 <!-- DYNAMIC BENCHMARK RESULT CARD -->
                 <div class="sih-card">
                     <div class="sih-title">
-                        <span>DYNAMIC BENCHMARK RESULT</span>
-                        <span id="sih-badge-result" style="padding:4px 10px; border-radius:12px; font-size:11px; font-weight:800; background:#34d399; color:#0f172a; flex-shrink:0;">PASS</span>
+                        <span>Dynamic Outage Benchmark Result</span>
+                        <span id="sih-badge-result" style="padding:2px 8px; border-radius:10px; font-size:10px; font-weight:800; background:#34d399; color:#0f172a;">PASS</span>
                     </div>
                     <div class="sih-metric-row">
-                        <span>Active Sequence</span>
+                        <span>Active Dataset Sequence</span>
                         <span id="sih-seq-name" style="font-weight:700;">S-A1</span>
                     </div>
                     <div class="sih-metric-row">
-                        <span>Selected Outage Duration</span>
+                        <span>Evaluated Outage Duration</span>
                         <span id="sih-outage-dur" style="font-weight:700;">30.0 s</span>
                     </div>
                     <div class="sih-metric-row">
-                        <span>Reference Distance</span>
+                        <span>Reference Travelled Distance</span>
                         <span id="sih-ref-dist" style="font-weight:700;">95.3 m</span>
                     </div>
                     <div class="sih-metric-row">
-                        <span>Calculated Drift Error</span>
+                        <span>Calculated Position Drift</span>
                         <span id="sih-drift-err" style="font-weight:700; color:var(--accent-amber);">5.25 m</span>
                     </div>
                     <div class="sih-metric-row">
                         <span>Calculated Drift Percentage</span>
-                        <span id="sih-drift-pct" style="font-weight:700; color:var(--accent-green);">5.51 %</span>
+                        <span id="sih-drift-pct" style="font-weight:800; color:var(--accent-green);">5.51 %</span>
                     </div>
                     <div class="sih-metric-row">
-                        <span>User Target Threshold</span>
+                        <span>Target Drift Threshold</span>
                         <span id="sih-target-val" style="font-weight:700; color:var(--accent-blue);">&lt; 10.0 %</span>
                     </div>
                     <div class="sih-metric-row">
                         <span>Validation Status</span>
-                        <span id="sih-status-final" style="font-weight:800; color:var(--accent-green);">PASS</span>
+                        <span id="sih-status-final" style="font-weight:900; color:var(--accent-green);">PASS</span>
                     </div>
 
                     <div class="topic-card">
-                        <div class="topic-title">DYNAMIC BENCHMARK EXPLANATION TOPIC</div>
+                        <div class="topic-title">BENCHMARK VERIFICATION REASONING</div>
                         <div id="sih-explanation-text">
-                            Evaluating sequence S-A1 under Kinematic GT Basis over a 30s outage. Calculated drift of 5.51% meets user target threshold (< 10.0%) → PASS.
+                            Evaluating sequence S-A1 over a 30s outage. Calculated drift of 5.51% strictly satisfies user target threshold (< 10.0%) → PASS.
                         </div>
                     </div>
                 </div>
@@ -2214,78 +1374,59 @@
                 <!-- AI EXPLAINABILITY CARD (WHY AI-IDR TRUSTS THIS ESTIMATE) -->
                 <div class="xai-card" id="ai-explainability-card">
                     <div class="xai-header">
-                        <div class="xai-title-wrap">
-                            <div class="xai-icon-box">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
-                                    <path d="M12 6v6l4 2"/>
-                                    <circle cx="12" cy="12" r="2"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <div class="xai-title">WHY AI-IDR TRUSTS THIS ESTIMATE</div>
-                                <div class="xai-subtitle">Real-Time Sensor State &amp; Explainable Decision Reasoning</div>
-                            </div>
+                        <div>
+                            <div class="xai-title">🧠 Explainable AI Decision Reasoning</div>
+                            <div class="xai-subtitle">Real-Time Sensor Health &amp; Autonomous Fusion State</div>
                         </div>
-                        <div style="display:flex; align-items:center; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
                             <span id="xai-nav-mode-badge" class="xai-badge-mode">REAL-TIME / GNSS-AIDED</span>
-                            <button id="btn-copy-xai" onclick="copyXaiReport()" title="Copy Explainability Summary" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:var(--text-muted); border-radius:6px; padding:4px 7px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s ease;">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                                </svg>
-                            </button>
+                            <button id="btn-copy-xai" onclick="copyXaiReport()" title="Copy XAI Report" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:var(--text-muted); border-radius:4px; padding:2px 5px; cursor:pointer; font-size:9px;">📋</button>
                         </div>
                     </div>
 
                     <!-- 5 Live System/Sensor Factors -->
                     <div class="xai-factors-grid">
-                        <!-- Factor 1: Accelerometer Quality -->
                         <div class="xai-factor-row" id="xai-row-accel">
                             <div class="xai-check-icon" id="xai-icon-accel">✓</div>
                             <div class="xai-factor-content">
                                 <div class="xai-factor-name" id="xai-label-accel">Stable Accelerometer</div>
-                                <div class="xai-factor-desc" id="xai-desc-accel">Low vibration (0.04 m/s²) • Conf: 94% • Noise bounded</div>
+                                <div class="xai-factor-desc" id="xai-desc-accel">Low vibration (0.04 m/s²) • Conf: 94%</div>
                             </div>
                             <span class="xai-factor-tag xai-tag-stable" id="xai-tag-accel">STABLE</span>
                         </div>
 
-                        <!-- Factor 2: Gyroscope Quality -->
                         <div class="xai-factor-row" id="xai-row-gyro">
                             <div class="xai-check-icon" id="xai-icon-gyro">✓</div>
                             <div class="xai-factor-content">
                                 <div class="xai-factor-name" id="xai-label-gyro">Stable Gyroscope</div>
-                                <div class="xai-factor-desc" id="xai-desc-gyro">Drift rate calibrated • Conf: 91% • Nominal angular turn</div>
+                                <div class="xai-factor-desc" id="xai-desc-gyro">Drift rate calibrated • Conf: 91%</div>
                             </div>
                             <span class="xai-factor-tag xai-tag-stable" id="xai-tag-gyro">STABLE</span>
                         </div>
 
-                        <!-- Factor 3: Phone Alignment -->
                         <div class="xai-factor-row" id="xai-row-align">
                             <div class="xai-check-icon" id="xai-icon-align">✓</div>
                             <div class="xai-factor-content">
-                                <div class="xai-factor-name" id="xai-label-align">Good Frame Alignment</div>
-                                <div class="xai-factor-desc" id="xai-desc-align">R_p2v active • Yaw: +4.2°, Pitch: +1.8° • Gravity matched</div>
+                                <div class="xai-factor-name" id="xai-label-align">Frame Alignment Compensated</div>
+                                <div class="xai-factor-desc" id="xai-desc-align">R_p2v active • Gravity matched</div>
                             </div>
                             <span class="xai-factor-tag xai-tag-stable" id="xai-tag-align">ALIGNED</span>
                         </div>
 
-                        <!-- Factor 4: Vehicle Motion Consistency -->
                         <div class="xai-factor-row" id="xai-row-motion">
                             <div class="xai-check-icon" id="xai-icon-motion">✓</div>
                             <div class="xai-factor-content">
-                                <div class="xai-factor-name" id="xai-label-motion">Vehicle Motion Consistent</div>
-                                <div class="xai-factor-desc" id="xai-desc-motion">Kinematic continuity • Smooth cruise (42.1 km/h) • NHC valid</div>
+                                <div class="xai-factor-name" id="xai-label-motion">Vehicle Motion Continuity</div>
+                                <div class="xai-factor-desc" id="xai-desc-motion">Kinematic continuity • NHC valid</div>
                             </div>
                             <span class="xai-factor-tag xai-tag-stable" id="xai-tag-motion">CONSISTENT</span>
                         </div>
 
-                        <!-- Factor 5: GNSS Availability -->
                         <div class="xai-factor-row" id="xai-row-gnss">
                             <div class="xai-check-icon" id="xai-icon-gnss">✓</div>
                             <div class="xai-factor-content">
-                                <div class="xai-factor-name" id="xai-label-gnss">GNSS Available</div>
-                                <div class="xai-factor-desc" id="xai-desc-gnss">14 satellites locked • Precision: 3.2 m • High integrity</div>
+                                <div class="xai-factor-name" id="xai-label-gnss">GNSS Availability</div>
+                                <div class="xai-factor-desc" id="xai-desc-gnss">14 satellites locked • Precision: 3.2 m</div>
                             </div>
                             <span class="xai-factor-tag xai-tag-stable" id="xai-tag-gnss">ONLINE</span>
                         </div>
@@ -2294,8 +1435,8 @@
                     <!-- Dynamic Decision Block -->
                     <div class="xai-decision-box" id="xai-decision-box">
                         <div class="xai-decision-header">
-                            <span class="xai-decision-label">Current Decision</span>
-                            <span id="xai-decision-badge" style="font-size:9.5px; font-weight:800; padding:2px 8px; border-radius:10px; background:rgba(52,211,153,0.18); color:#34d399; border:1px solid #059669;">ADAPTIVE EKF</span>
+                            <span class="xai-decision-label">Current Fusion Decision</span>
+                            <span id="xai-decision-badge" style="font-size:8.5px; font-weight:800; padding:1px 6px; border-radius:6px; background:rgba(52,211,153,0.18); color:#34d399;">ADAPTIVE EKF</span>
                         </div>
                         <div class="xai-decision-action" id="xai-decision-action">
                             Fuse GNSS + Phone IMU with Adaptive Kalman Filter
@@ -2305,312 +1446,75 @@
                         </div>
                     </div>
 
-                    <!-- Non-Technical Judge Explanation Note -->
                     <div class="xai-judge-note">
-                        <span style="font-weight:700; color:var(--accent-blue);">Judge Clarity Note:</span>
-                        <span id="xai-judge-note-text">AI-IDR verifies 5 physical sensor checks on every step before deciding whether to trust satellites, rely on AI dead reckoning, or blend both.</span>
+                        <strong style="color:var(--accent-blue);">Judge Clarity Note:</strong>
+                        <span id="xai-judge-note-text">AI-IDR evaluates 5 physical sensor checks on every step before deciding whether to trust satellites, rely on AI dead reckoning, or blend both.</span>
                     </div>
                 </div>
 
-                <!-- LIVE DEVICE SENSORS & GNSS QUALITY PANEL -->
-                <div class="card-panel">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                        <!-- Real-Time Phone Sensors -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
-                                <span id="sensor-stream-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">100Hz</span>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Accelerometer</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span></div>
-                                    <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span></div>
-                                    <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Gyroscope</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>Y: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span></div>
-                                    <div>P: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span></div>
-                                    <div>R: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Magnetometer</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span></div>
-                                    <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span></div>
-                                    <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- GNSS Signal Quality -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
-                                <span id="gnss-quality-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">GOOD</span>
-                            </div>
-                            <div style="display:flex; flex-direction:column; gap:5px; font-family:monospace; font-size:10.5px;">
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Satellites</span>
-                                    <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Accuracy</span>
-                                    <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Signal Quality</span>
-                                    <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Confidence</span>
-                                    <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS -->
+                <!-- UNIFIED LIVE SENSORS & MOUNT ALIGNMENT TELEMETRY -->
                 <div class="card-panel">
                     <div class="card-header">
                         <div>
-                            <div class="card-title">SENSOR CONFIDENCE & QUALITY</div>
-                            <div class="card-subtitle">Real-Time Sensor Weighting & Motion Telemetry</div>
+                            <div class="card-title">📡 Live Sensors & Phone Calibration</div>
+                            <div class="card-subtitle">Real-time 100Hz Streams, GNSS Fix & Phone Orientation</div>
                         </div>
-                        <button id="btnToggleDetails" onclick="toggleConfidenceDetails()" style="background:rgba(56,189,248,0.12); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">View Details</button>
+                        <span id="sensor-stream-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:4px; font-weight:700;">100Hz STREAM</span>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:14px;">
-                        <div>
-                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Input Confidence</div>
-                            
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Accelerometer</span>
-                                    <span id="conf-accel-val" style="font-weight:700; color:#38bdf8;">94%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-accel-bar" style="width:94%; height:100%; background:#38bdf8; border-radius:3px;"></div>
-                                </div>
+                    <div class="telemetry-compact-grid">
+                        <!-- Sensor Stream Box -->
+                        <div class="telemetry-subcard">
+                            <div class="telemetry-subcard-header">
+                                <span class="telemetry-subcard-title">IMU Telemetry</span>
+                                <span id="gnss-quality-tag" style="font-size:8px; color:#34d399; font-weight:700;">GOOD</span>
                             </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Gyroscope</span>
-                                    <span id="conf-gyro-val" style="font-weight:700; color:#34d399;">91%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gyro-bar" style="width:91%; height:100%; background:#34d399; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Magnetometer</span>
-                                    <span id="conf-mag-val" style="font-weight:700; color:#f59e0b;">86%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-mag-bar" style="width:86%; height:100%; background:#f59e0b; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>GNSS Receiver</span>
-                                    <span id="conf-gnss-val" style="font-weight:700; color:#34d399;">93%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gnss-bar" style="width:93%; height:100%; background:#34d399; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">Fusion Confidence</span>
-                                    <span id="conf-overall-val" style="font-weight:800; color:var(--accent-blue);">90%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-overall-bar" style="width:90%; height:100%; background:linear-gradient(90deg, #0284c7, #34d399); border-radius:3px;"></div>
-                                </div>
+                            <div style="font-size:9.5px; font-family:'JetBrains Mono',monospace; display:flex; flex-direction:column; gap:2px;">
+                                <div>ACC: <span id="live-ax" style="color:#38bdf8;">0.13</span>, <span id="live-ay" style="color:#38bdf8;">-0.08</span>, <span id="live-az" style="color:#38bdf8;">9.76</span></div>
+                                <div>GYR: <span id="live-gx" style="color:#34d399;">0.02</span>, <span id="live-gy" style="color:#34d399;">0.01</span>, <span id="live-gz" style="color:#34d399;">-0.03</span></div>
+                                <div>MAG: <span id="live-mx" style="color:#f59e0b;">21.4</span>, <span id="live-my" style="color:#f59e0b;">5.8</span>, <span id="live-mz" style="color:#f59e0b;">41.2</span></div>
                             </div>
                         </div>
 
-                        <div>
-                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Quality Summary</div>
-                            <div style="display:flex; flex-direction:column; gap:5px; font-size:10.5px;">
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Motion</span>
-                                    <span id="qual-motion-val" style="font-weight:700; color:#34d399;">SMOOTH</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Vibration</span>
-                                    <span id="qual-vibration-val" style="font-weight:700; color:#38bdf8;">LOW</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Alignment</span>
-                                    <span id="qual-align-val" style="font-weight:700; color:#34d399;">CALIBRATED</span>
-                                </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Timestamp</span>
-                                    <span id="qual-dt-val" style="font-weight:700; color:#34d399;">100 Hz</span>
-                                </div>
+                        <!-- GNSS Quality Box -->
+                        <div class="telemetry-subcard">
+                            <div class="telemetry-subcard-header">
+                                <span class="telemetry-subcard-title">GNSS Quality</span>
+                                <span id="gnss-sats-val" style="font-size:9px; font-weight:800; color:#38bdf8;">14 SATS</span>
+                            </div>
+                            <div style="font-size:9.5px; font-family:'JetBrains Mono',monospace; display:flex; flex-direction:column; gap:2px;">
+                                <div style="display:flex; justify-content:space-between;"><span>Accuracy:</span><span id="gnss-acc-val" style="color:#f8fafc;">3.2 m</span></div>
+                                <div style="display:flex; justify-content:space-between;"><span>Quality:</span><span id="gnss-sig-quality" style="color:#34d399;">GOOD</span></div>
+                                <div style="display:flex; justify-content:space-between;"><span>Confidence:</span><span id="gnss-sig-conf" style="color:#34d399;">93%</span></div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="confidence-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; display:flex; justify-content:space-between;">
-                            <span>CONFIDENCE DIAGNOSTIC EXPLANATION</span>
-                            <span id="details-state-tag" style="color:var(--accent-green); font-size:9.5px;">GNSS-AIDED ACTIVE</span>
-                        </div>
-                        <div id="details-reasoning-text" style="color:#e2e8f0;">
-                            GNSS receiver signal is connected with 14 satellites and 3.2m accuracy. Adaptive EKF sensor fusion is actively weighting GNSS position observations together with Step 4 calibrated Phone IMU streams. Overall confidence is HIGH at 94%.
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PHONE ALIGNMENT & DRIFT RISK DUAL PANEL -->
-                <div class="card-panel">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                        
-                        <!-- Phone Alignment Subcard -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">PHONE ALIGNMENT</span>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span id="align-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">GOOD</span>
-                                    <button onclick="toggleAlignDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
-                                </div>
+                    <!-- Phone Alignment & Confidence Row -->
+                    <div class="telemetry-compact-grid" style="margin-top:2px;">
+                        <div class="telemetry-subcard">
+                            <div class="telemetry-subcard-header">
+                                <span class="telemetry-subcard-title">Phone Alignment</span>
+                                <span id="align-status-badge" style="font-size:8px; font-weight:800; color:#34d399;">ALIGNED</span>
                             </div>
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">YAW</div>
-                                    <div id="align-yaw-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+4.2°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">PITCH</div>
-                                    <div id="align-pitch-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+1.8°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">ROLL</div>
-                                    <div id="align-roll-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+0.9°</div>
-                                </div>
+                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:2px; font-size:9.5px; text-align:center; font-family:'JetBrains Mono',monospace;">
+                                <div>Y: <span id="align-yaw-val" style="color:#38bdf8;">+4.2°</span></div>
+                                <div>P: <span id="align-pitch-val" style="color:#38bdf8;">+1.8°</span></div>
+                                <div>R: <span id="align-roll-val" style="color:#38bdf8;">+0.9°</span></div>
                             </div>
-                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="align-correction-val">ACTIVE (R_p2v Applied)</div>
-
-                            <div id="alignment-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">CALIBRATION DETAILS</span>
-                                    <span id="align-det-tag" style="color:var(--accent-green);">det(R)=1.0</span>
-                                </div>
-                                <div style="color:var(--text-muted);">Residual: <span id="align-grav-residual" style="color:#34d399; font-weight:700;">0.04 m/s²</span> | 50 frames</div>
-                            </div>
+                            <div id="align-correction-val" style="font-size:8px; color:#34d399; font-weight:700; text-align:center; margin-top:3px;">R_p2v Applied (Calibrated)</div>
                         </div>
 
-                        <!-- Drift Prediction Subcard -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">DRIFT RISK METER</span>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span id="risk-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">LOW</span>
-                                    <button onclick="toggleRiskDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
-                                </div>
+                        <div class="telemetry-subcard">
+                            <div class="telemetry-subcard-header">
+                                <span class="telemetry-subcard-title">Drift Risk Meter</span>
+                                <span id="risk-status-badge" style="font-size:8px; font-weight:800; color:#34d399;">LOW</span>
                             </div>
-                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">DRIFT</div>
-                                    <div id="risk-curr-drift-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.00m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">UNCERT</div>
-                                    <div id="risk-uncert-val" style="font-size:11px; font-weight:800; color:#38bdf8;">3.2m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">10s FCST</div>
-                                    <div id="risk-forecast-val" style="font-size:11px; font-weight:800; color:#38bdf8;">1.12m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">ELAPSED</div>
-                                    <div id="risk-dr-time-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.0s</div>
-                                </div>
+                            <div style="display:flex; justify-content:space-between; font-size:9.5px; font-family:'JetBrains Mono',monospace;">
+                                <span>10s FCST:</span>
+                                <span id="risk-forecast-val" style="color:#38bdf8; font-weight:700;">1.12 m</span>
                             </div>
-                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="risk-eval-state">STABLE (Low Growth)</div>
-
-                            <div id="risk-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">RISK BREAKDOWN</span>
-                                    <span id="risk-det-tag" style="color:var(--accent-green);">STABLE</span>
-                                </div>
-                                <div style="color:var(--text-muted);">Rate: <span id="risk-growth-rate" style="color:#34d399; font-weight:700;">0.08 m/s</span> | Penalty: <span id="risk-noise-penalty" style="color:#34d399; font-weight:700;">Low (+2%)</span></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- DEBUG METRICS TELEMETRY PANEL -->
-                <div class="debug-panel">
-                    <div class="debug-title">DEBUG METRICS TELEMETRY PANEL</div>
-                    <div class="debug-grid">
-                        <div class="debug-item">
-                            <div class="debug-label">dt Median</div>
-                            <div class="debug-val" id="dbg-dt-median">0.500 s</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">dt Max</div>
-                            <div class="debug-val" id="dbg-dt-max">0.506 s</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Accel Mag</div>
-                            <div class="debug-val" id="dbg-accel">9.81 m/s²</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Velocity (m/s)</div>
-                            <div class="debug-val" id="dbg-vel-mps">0.0 m/s</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Velocity (km/h)</div>
-                            <div class="debug-val" id="dbg-vel-kmh">0.0 km/h</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Outage Duration</div>
-                            <div class="debug-val" id="dbg-outage-dur">30.0 s</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Outage Distance</div>
-                            <div class="debug-val" id="dbg-ref-dist">95.3 m</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Current Error</div>
-                            <div class="debug-val" id="dbg-current-err">0.00 m</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Final Error</div>
-                            <div class="debug-val" id="dbg-final-err">5.25 m</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Max Error</div>
-                            <div class="debug-val" id="dbg-max-err">5.25 m</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Drift %</div>
-                            <div class="debug-val" id="dbg-drift-pct" style="color:var(--accent-green);">5.51 %</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Status</div>
-                            <div class="debug-val" id="dbg-sih-status" style="color:var(--accent-green);">PASS</div>
-                        </div>
-                        <div class="debug-item">
-                            <div class="debug-label">Selected Basis</div>
-                            <div class="debug-val" id="dbg-eval-mode-name">Kinematic</div>
+                            <div id="risk-eval-state" style="font-size:8px; color:#34d399; font-weight:700; text-align:right; margin-top:3px;">STABLE (Low Growth)</div>
                         </div>
                     </div>
                 </div>
@@ -2618,30 +1522,21 @@
             </div>
         </div>
 
-        <!-- BENCHMARK COMPARISON SECTION (SIH26168 PERFORMANCE) -->
+        <!-- BENCHMARK COMPARISON TABLE (SIH26168 PERFORMANCE) -->
         <div class="benchmark-section" id="benchmark-comparison-section">
             <div class="benchmark-header">
-                <div class="benchmark-title-wrap">
-                    <div class="benchmark-icon-box">📊</div>
-                    <div>
-                        <div class="benchmark-title">SIH26168 PERFORMANCE BENCHMARK</div>
-                        <div class="benchmark-subtitle">Real Outage Evaluation Pipeline Results vs SIH26168 Precision Target (&lt; 10% Drift)</div>
-                    </div>
+                <div>
+                    <div class="benchmark-title">📊 SIH26168 Performance Benchmark Table</div>
+                    <div class="benchmark-subtitle">Comprehensive Sensor Fusion Verification vs Target Drift Limit (&lt; 10% Drift)</div>
                 </div>
-                <div class="benchmark-header-actions">
-                    <span id="bm-seq-badge" class="benchmark-seq-badge">SEQUENCE: S-A1</span>
-                    <button id="btn-copy-benchmark" onclick="copyBenchmarkReport()" title="Copy Benchmark Report to Clipboard" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:var(--text-muted); border-radius:6px; padding:5px 10px; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:11px; font-weight:700; transition:all 0.2s ease;">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <span>Copy Table</span>
-                    </button>
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span id="bm-seq-badge" style="font-size:9.5px; font-weight:800; color:var(--accent-blue); background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:10px;">SEQUENCE: S-A1</span>
+                    <button id="btn-copy-benchmark" onclick="copyBenchmarkReport()" style="background:rgba(255,255,255,0.05); border:1px solid var(--border-color); color:var(--text-muted); border-radius:4px; padding:3px 8px; cursor:pointer; font-size:10px; font-weight:700;">Copy Table</button>
                 </div>
             </div>
 
             <div class="benchmark-layout-grid">
-                <!-- Left: Benchmark Table -->
+                <!-- Left: Table -->
                 <div class="benchmark-table-container">
                     <table class="benchmark-table">
                         <thead>
@@ -2653,77 +1548,47 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- 1. Outage Duration -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#38bdf8;">⏱</span> Outage Duration
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>⏱</span> Outage Duration</div></td>
                                 <td><span id="bm-outage-dur" class="tbl-result-val">30.0 s</span></td>
                                 <td><span id="bm-target-dur" class="tbl-target-val">30 s</span></td>
                                 <td><span id="bm-status-dur" class="tbl-status-tag tbl-tag-info">MATCH</span></td>
                             </tr>
-                            <!-- 2. Distance Travelled -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#34d399;">📏</span> Distance Travelled
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>📏</span> Distance Travelled</div></td>
                                 <td><span id="bm-ref-dist" class="tbl-result-val">95.3 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
                                 <td><span class="tbl-status-tag tbl-tag-info">MEASURED</span></td>
                             </tr>
-                            <!-- 3. Position Drift -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#f59e0b;">📍</span> Position Drift
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>📍</span> Position Drift</div></td>
                                 <td><span id="bm-pos-drift" class="tbl-result-val" style="color:var(--accent-amber);">5.25 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
                                 <td><span class="tbl-status-tag tbl-tag-info">MEASURED</span></td>
                             </tr>
-                            <!-- 4. Drift % -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#34d399;">🎯</span> Drift %
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>🎯</span> Drift %</div></td>
                                 <td><span id="bm-drift-pct" class="tbl-result-val" style="color:#34d399;">5.51 %</span></td>
                                 <td><span id="bm-target-drift-pct" class="tbl-target-val" style="font-weight:700; color:var(--accent-blue);">&lt; 10%</span></td>
                                 <td><span id="bm-status-drift-tag" class="tbl-status-tag tbl-tag-pass">PASS ✅</span></td>
                             </tr>
-                            <!-- 5. RMSE -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#a78bfa;">📐</span> RMSE
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>📐</span> RMSE</div></td>
                                 <td><span id="bm-rmse" class="tbl-result-val" style="color:#a78bfa;">2.41 m</span></td>
                                 <td><span class="tbl-target-val">—</span></td>
                                 <td><span id="bm-status-rmse" class="tbl-status-tag tbl-tag-pass">OPTIMAL</span></td>
                             </tr>
-                            <!-- 6. Recovery Position Jump -->
                             <tr>
-                                <td>
-                                    <div class="tbl-metric-name">
-                                        <span style="color:#38bdf8;">🔄</span> Recovery Jump
-                                    </div>
-                                </td>
+                                <td><div class="tbl-metric-name"><span>🔄</span> Recovery Jump</div></td>
                                 <td><span id="bm-recovery-jump" class="tbl-result-val" style="color:#38bdf8;">0.06 m</span></td>
-                                <td><span class="tbl-target-val" style="font-weight:700; color:#38bdf8;">~0</span></td>
+                                <td><span class="tbl-target-val" style="color:#38bdf8;">~0</span></td>
                                 <td><span id="bm-status-jump" class="tbl-status-tag tbl-tag-pass">PASS ✅</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Right: Prominent Verdict Card & Judge Clarity Summary -->
+                <!-- Right: Verdict Box -->
                 <div class="benchmark-verdict-box">
                     <div id="bm-verdict-card" class="verdict-hero-card verdict-hero-pass">
                         <div class="verdict-pill-label">SIH26168 BENCHMARK VERDICT</div>
@@ -2752,6 +1617,26 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- HIDDEN COMPATIBILITY CONTAINERS (Prevents any JS null ref errors) -->
+        <div style="display:none;" aria-hidden="true">
+            <span id="phone-conn-pill"></span>
+            <span id="btnToggleDetails"></span>
+            <span id="conf-accel-val"></span><div id="conf-accel-bar"></div>
+            <span id="conf-gyro-val"></span><div id="conf-gyro-bar"></div>
+            <span id="conf-mag-val"></span><div id="conf-mag-bar"></div>
+            <span id="conf-gnss-val"></span><div id="conf-gnss-bar"></div>
+            <span id="conf-overall-val"></span><div id="conf-overall-bar"></div>
+            <span id="qual-motion-val"></span><span id="qual-vibration-val"></span><span id="qual-align-val"></span><span id="qual-dt-val"></span>
+            <div id="confidence-details-box"></div><span id="details-state-tag"></span><div id="details-reasoning-text"></div>
+            <div id="alignment-details-box"></div><span id="align-det-tag"></span><span id="align-grav-residual"></span>
+            <span id="risk-curr-drift-val"></span><span id="risk-uncert-val"></span><span id="risk-dr-time-val"></span>
+            <div id="risk-details-box"></div><span id="risk-det-tag"></span><span id="risk-growth-rate"></span><span id="risk-noise-penalty"></span>
+            <span id="bfa-card-ins-err"></span><span id="bfa-card-idr-err"></span><span id="bfa-outage-dur"></span><span id="bfa-ref-dist"></span><span id="bfa-improvement-pct"></span><span id="bfa-improvement-badge"></span><span id="bfa-delta-err"></span>
+            <span id="map-snap-dist-val"></span><span id="map-seg-id-val"></span><span id="map-head-err-val"></span><span id="map-constraint-val"></span><span id="map-match-state-val"></span>
+            <canvas id="mapMatchCanvas" width="10" height="10"></canvas><div id="mapmatch-details-box"></div><span id="mapmatch-status-badge"></span>
+            <span id="dbg-dt-median"></span><span id="dbg-dt-max"></span><span id="dbg-accel"></span><span id="dbg-vel-mps"></span><span id="dbg-vel-kmh"></span><span id="dbg-outage-dur"></span><span id="dbg-ref-dist"></span><span id="dbg-current-err"></span><span id="dbg-final-err"></span><span id="dbg-max-err"></span><span id="dbg-drift-pct"></span><span id="dbg-sih-status"></span><span id="dbg-eval-mode-name"></span>
         </div>
     </div>
 
