@@ -3,7 +3,7 @@ services:
   - type: web
     name: ai-idr-dashboard
     runtime: static
-    staticPublishPath: ./ml/outputs/fusion
+    staticPublishPath: .
     pullRequestPreviewsEnabled: true
     routes:
       - type: rewrite
