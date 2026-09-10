@@ -2124,86 +2124,6 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
                 </div>
-
-                <!-- PHONE ALIGNMENT & DRIFT RISK DUAL PANEL -->
-                <div class="card-panel">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-                        
-                        <!-- Phone Alignment Subcard -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">PHONE ALIGNMENT</span>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span id="align-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">GOOD</span>
-                                    <button onclick="toggleAlignDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
-                                </div>
-                            </div>
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">YAW</div>
-                                    <div id="align-yaw-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+4.2°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">PITCH</div>
-                                    <div id="align-pitch-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+1.8°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">ROLL</div>
-                                    <div id="align-roll-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+0.9°</div>
-                                </div>
-                            </div>
-                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="align-correction-val">ACTIVE (R_p2v Applied)</div>
-
-                            <div id="alignment-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">CALIBRATION DETAILS</span>
-                                    <span id="align-det-tag" style="color:var(--accent-green);">det(R)=1.0</span>
-                                </div>
-                                <div style="color:var(--text-muted);">Residual: <span id="align-grav-residual" style="color:#34d399; font-weight:700;">0.04 m/s²</span> | 50 frames</div>
-                            </div>
-                        </div>
-
-                        <!-- Drift Prediction Subcard -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">DRIFT RISK METER</span>
-                                <div style="display:flex; gap:6px; align-items:center;">
-                                    <span id="risk-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">LOW</span>
-                                    <button onclick="toggleRiskDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
-                                </div>
-                            </div>
-                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">DRIFT</div>
-                                    <div id="risk-curr-drift-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.00m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">UNCERT</div>
-                                    <div id="risk-uncert-val" style="font-size:11px; font-weight:800; color:#38bdf8;">3.2m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">10s FCST</div>
-                                    <div id="risk-forecast-val" style="font-size:11px; font-weight:800; color:#38bdf8;">1.12m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
-                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">ELAPSED</div>
-                                    <div id="risk-dr-time-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.0s</div>
-                                </div>
-                            </div>
-                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="risk-eval-state">STABLE (Low Growth)</div>
-
-                            <div id="risk-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">RISK BREAKDOWN</span>
-                                    <span id="risk-det-tag" style="color:var(--accent-green);">STABLE</span>
-                                </div>
-                                <div style="color:var(--text-muted);">Rate: <span id="risk-growth-rate" style="color:#34d399; font-weight:700;">0.08 m/s</span> | Penalty: <span id="risk-noise-penalty" style="color:#34d399; font-weight:700;">Low (+2%)</span></div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
             </div>
 
             <!-- RIGHT COLUMN: BENCHMARK, SENSORS & INTELLIGENCE TELEMETRY -->
@@ -2541,6 +2461,85 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </div>
                 </div>
             </div>
+            </div>
+        </div>
+
+        <!-- PHONE ALIGNMENT & DRIFT RISK DUAL PANEL -->
+        <div class="card-panel" style="margin-bottom:18px;">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+
+                        
+                        <!-- Phone Alignment Subcard -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">PHONE ALIGNMENT</span>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span id="align-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">GOOD</span>
+                                    <button onclick="toggleAlignDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">YAW</div>
+                                    <div id="align-yaw-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+4.2°</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">PITCH</div>
+                                    <div id="align-pitch-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+1.8°</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8.5px; color:var(--text-muted); font-weight:700;">ROLL</div>
+                                    <div id="align-roll-val" style="font-size:12px; font-weight:800; color:#38bdf8;">+0.9°</div>
+                                </div>
+                            </div>
+                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="align-correction-val">ACTIVE (R_p2v Applied)</div>
+
+                            <div id="alignment-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                    <span style="color:var(--accent-blue); font-weight:800;">CALIBRATION DETAILS</span>
+                                    <span id="align-det-tag" style="color:var(--accent-green);">det(R)=1.0</span>
+                                </div>
+                                <div style="color:var(--text-muted);">Residual: <span id="align-grav-residual" style="color:#34d399; font-weight:700;">0.04 m/s²</span> | 50 frames</div>
+                            </div>
+                        </div>
+
+                        <!-- Drift Prediction Subcard -->
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
+                                <span style="font-size:11px; font-weight:800; color:var(--text-main); text-transform:uppercase;">DRIFT RISK METER</span>
+                                <div style="display:flex; gap:6px; align-items:center;">
+                                    <span id="risk-status-badge" style="padding:2px 6px; border-radius:10px; font-size:9px; font-weight:800; background:#34d399; color:#0f172a;">LOW</span>
+                                    <button onclick="toggleRiskDetails()" style="background:rgba(56,189,248,0.1); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:2px 5px; border-radius:4px; font-size:9px; font-weight:700; cursor:pointer;">Details</button>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:4px; text-align:center; margin-bottom:6px;">
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">DRIFT</div>
+                                    <div id="risk-curr-drift-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.00m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">UNCERT</div>
+                                    <div id="risk-uncert-val" style="font-size:11px; font-weight:800; color:#38bdf8;">3.2m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">10s FCST</div>
+                                    <div id="risk-forecast-val" style="font-size:11px; font-weight:800; color:#38bdf8;">1.12m</div>
+                                </div>
+                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:5px; padding:4px;">
+                                    <div style="font-size:8px; color:var(--text-muted); font-weight:700;">ELAPSED</div>
+                                    <div id="risk-dr-time-val" style="font-size:11px; font-weight:800; color:#38bdf8;">0.0s</div>
+                                </div>
+                            </div>
+                            <div style="font-size:9.5px; color:#34d399; font-weight:700; text-align:center;" id="risk-eval-state">STABLE (Low Growth)</div>
+
+                            <div id="risk-details-box" style="display:none; margin-top:8px; padding:6px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:5px; font-size:9.5px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                    <span style="color:var(--accent-blue); font-weight:800;">RISK BREAKDOWN</span>
+                                    <span id="risk-det-tag" style="color:var(--accent-green);">STABLE</span>
+                                </div>
+                                <div style="color:var(--text-muted);">Rate: <span id="risk-growth-rate" style="color:#34d399; font-weight:700;">0.08 m/s</span> | Penalty: <span id="risk-noise-penalty" style="color:#34d399; font-weight:700;">Low (+2%)</span></div>
+                            </div>
+                        </div>
             </div>
         </div>
 
