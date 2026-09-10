@@ -2028,37 +2028,28 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Snap Dist</div>
-                                    <div id="map-snap-dist-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.84 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Segment ID</div>
-                                    <div id="map-seg-id-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">SEG_012</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Head Error</div>
-                                    <div id="map-head-err-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">1.4°</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Constraint</div>
-                                    <div id="map-constraint-val" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">ACTIVE</div>
-                                </div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:6px;">
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Snap Dist</div>
+                                <div id="map-snap-dist-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">0.84 m</div>
                             </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Road Match State</span>
-                                <span id="map-match-state-val" style="font-weight:700; color:#34d399;">ON-ROUTE (Constrained to Road Polyline)</span>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Segment ID</div>
+                                <div id="map-seg-id-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">SEG_012</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Head Error</div>
+                                <div id="map-head-err-val" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">1.4°</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Constraint</div>
+                                <div id="map-constraint-val" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">ACTIVE</div>
                             </div>
                         </div>
-
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                During GNSS loss, AI-IDR continues estimating the vehicle position while using road geometry and vehicle-motion constraints to avoid unrealistic movement.
-                            </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
+                            <span style="color:var(--text-muted);">Road Match State</span>
+                            <span id="map-match-state-val" style="font-weight:700; color:#34d399;">ON-ROUTE (Constrained to Road Polyline)</span>
                         </div>
                     </div>
 
@@ -2111,33 +2102,24 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; align-items:start;">
-                        <div style="display:flex; flex-direction:column; gap:6px;">
-                            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">GNSS Outage</div>
-                                    <div id="bfa-outage-dur" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">30.0 s</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Reference Dist</div>
-                                    <div id="bfa-ref-dist" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">95.3 m</div>
-                                </div>
-                                <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
-                                    <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Improvement</div>
-                                    <div id="bfa-improvement-pct" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">+71.9 %</div>
-                                </div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:6px;">
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">GNSS Outage</div>
+                                <div id="bfa-outage-dur" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">30.0 s</div>
                             </div>
-                            <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
-                                <span style="color:var(--text-muted);">Error Reduction Delta</span>
-                                <span id="bfa-delta-err" style="font-weight:700; color:#34d399;">13.45 m Reduced</span>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Reference Dist</div>
+                                <div id="bfa-ref-dist" style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">95.3 m</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:6px; padding:6px; text-align:center;">
+                                <div style="font-size:9px; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Improvement</div>
+                                <div id="bfa-improvement-pct" style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">+71.9 %</div>
                             </div>
                         </div>
-
-                        <div style="background:rgba(30,41,59,0.5); border:1px solid rgba(56,189,248,0.2); border-left:3px solid var(--accent-blue); border-radius:6px; padding:8px 10px; font-size:10.5px; line-height:1.45;">
-                            <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; font-size:9.5px;">JUDGE EXPLANATION NOTE</div>
-                            <div style="color:#e2e8f0;">
-                                This comparison shows how much AI-IDR reduces navigation error when GNSS is unavailable.
-                            </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:5px 8px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b; font-size:10.5px;">
+                            <span style="color:var(--text-muted);">Error Reduction Delta</span>
+                            <span id="bfa-delta-err" style="font-weight:700; color:#34d399;">13.45 m Reduced</span>
                         </div>
                     </div>
                 </div>
