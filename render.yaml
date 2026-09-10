@@ -1,0 +1,25 @@
+services:
+  # High-Performance Static Site on Render (Recommended: Fast, Free Global CDN, Zero Cold Starts)
+  - type: web
+    name: ai-idr-dashboard
+    runtime: static
+    staticPublishPath: ./ml/outputs/fusion
+    pullRequestPreviewsEnabled: true
+    routes:
+      - type: rewrite
+        source: /
+        destination: /index.html
+      - type: rewrite
+        source: /dashboard
+        destination: /dashboard.html
+
+  # Python Lightweight Web Service (Runs standard library serve_dashboard.py)
+  - type: web
+    name: ai-idr-service
+    runtime: python
+    buildCommand: "python -m py_compile serve_dashboard.py"
+    startCommand: "python serve_dashboard.py"
+    plan: free
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
