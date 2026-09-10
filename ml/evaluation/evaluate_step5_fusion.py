@@ -881,7 +881,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             display: grid;
             grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
             gap: 16px;
-            align-items: stretch;
+            align-items: start;
         }}
         @media (max-width: 1080px) {{
             .main-layout {{ grid-template-columns: 1fr; }}
@@ -1604,7 +1604,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             display: grid;
             grid-template-columns: 1.55fr 1fr;
             gap: 18px;
-            align-items: stretch;
+            align-items: start;
         }}
         @media (max-width: 960px) {{
             .benchmark-layout-grid {{ grid-template-columns: 1fr; }}
@@ -2359,7 +2359,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 </div>
 
                 <!-- SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS -->
-                <div class="card-panel sensor-confidence-expanded" style="padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; flex-grow:1;">
+                <div class="card-panel sensor-confidence-expanded" style="padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; ">
                     <div>
                         <div class="card-header" style="margin-bottom:14px; padding-bottom:10px;">
                             <div>
