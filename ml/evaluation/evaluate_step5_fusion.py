@@ -1536,7 +1536,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             opacity: 1;
         }}
 
-        /* BENCHMARK COMPARISON TABLE (SIH26168 PERFORMANCE) */
+        /* BENCHMARK COMPARISON TABLE (SYSTEM PERFORMANCE) */
         .benchmark-section {{
             background-color: var(--panel-bg);
             border-radius: 12px;
@@ -2572,7 +2572,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     </div>
                 </div>
 
-        <!-- BENCHMARK COMPARISON SECTION (SIH26168 PERFORMANCE) -->
+        <!-- BENCHMARK COMPARISON SECTION (SYSTEM PERFORMANCE) -->
         <div class="benchmark-section" id="benchmark-comparison-section">
             <div class="benchmark-header">
                 <div class="benchmark-title-wrap">
@@ -2582,8 +2582,8 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg></div>
                     <div>
-                        <div class="benchmark-title">SIH26168 PERFORMANCE BENCHMARK</div>
-                        <div class="benchmark-subtitle">Real Outage Evaluation Pipeline Results vs SIH26168 Precision Target (&lt; 10% Drift)</div>
+                        <div class="benchmark-title">PERFORMANCE BENCHMARK</div>
+                        <div class="benchmark-subtitle">Real Outage Evaluation Pipeline Results vs Target Precision (&lt; 10% Drift)</div>
                     </div>
                 </div>
                 <div class="benchmark-header-actions">
@@ -2694,10 +2694,10 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 <!-- Right: Prominent Verdict Card & Judge Clarity Summary -->
                 <div class="benchmark-verdict-box">
                     <div id="bm-verdict-card" class="verdict-hero-card verdict-hero-pass">
-                        <div class="verdict-pill-label">SIH26168 BENCHMARK VERDICT</div>
+                        <div class="verdict-pill-label">BENCHMARK VERDICT</div>
                         <div id="bm-verdict-title" class="verdict-hero-title">PASS <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; margin-left:6px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></div>
                         <div id="bm-verdict-desc" class="verdict-hero-sub">
-                            Measured drift of <b>5.51%</b> satisfies the SIH26168 target threshold of <b>&lt; 10.0%</b> (<b>+4.49% safety margin</b>) with <b>0.06m</b> zero-jump recovery.
+                            Measured drift of <b>5.51%</b> satisfies the target threshold of <b>&lt; 10.0%</b> (<b>+4.49% safety margin</b>) with <b>0.06m</b> zero-jump recovery.
                         </div>
                     </div>
 
@@ -4030,7 +4030,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                 if (bmVerdictTitle) bmVerdictTitle.innerText = 'PASS';
                 let marginVal = Math.max(0.0, targetThresholdPct - calculatedDriftPct).toFixed(2);
                 if (bmVerdictDesc) {{
-                    bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> satisfies the SIH26168 target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> (<b>+' + marginVal + '% safety margin</b>) with <b>' + recoveryJumpM.toFixed(2) + 'm</b> zero-jump recovery.';
+                    bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> satisfies the target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> (<b>+' + marginVal + '% safety margin</b>) with <b>' + recoveryJumpM.toFixed(2) + 'm</b> zero-jump recovery.';
                 }}
                 if (bmSpecMargin) {{
                     bmSpecMargin.innerText = '+' + marginVal + ' % Under';
@@ -4041,14 +4041,14 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
                     bmSpecReconv.style.color = '#38bdf8';
                 }}
                 if (bmJudgeNote) {{
-                    bmJudgeNote.innerText = 'All values in this benchmark are calculated directly from recorded IO-VNBD sequence ' + activeSeqKey + ' during a ' + outageDurSec.toFixed(0) + 's outage. The measured ' + calculatedDriftPct.toFixed(2) + '% drift strictly satisfies the < ' + targetThresholdPct.toFixed(1) + '% SIH specification.';
+                    bmJudgeNote.innerText = 'All values in this benchmark are calculated directly from recorded IO-VNBD sequence ' + activeSeqKey + ' during a ' + outageDurSec.toFixed(0) + 's outage. The measured ' + calculatedDriftPct.toFixed(2) + '% drift strictly satisfies the < ' + targetThresholdPct.toFixed(1) + '% target specification.';
                 }}
             }} else {{
                 if (bmVerdictCard) bmVerdictCard.className = 'verdict-hero-card verdict-hero-fail';
                 if (bmVerdictTitle) bmVerdictTitle.innerText = 'FAIL';
                 let overVal = Math.max(0.0, calculatedDriftPct - targetThresholdPct).toFixed(2);
                 if (bmVerdictDesc) {{
-                    bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> exceeds the SIH26168 target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> by <b>+' + overVal + '%</b> under selected evaluation basis.';
+                    bmVerdictDesc.innerHTML = 'Measured drift of <b>' + calculatedDriftPct.toFixed(2) + '%</b> exceeds the target threshold of <b>&lt; ' + targetThresholdPct.toFixed(1) + '%</b> by <b>+' + overVal + '%</b> under selected evaluation basis.';
                 }}
                 if (bmSpecMargin) {{
                     bmSpecMargin.innerText = '+' + overVal + ' % Over';
@@ -4079,7 +4079,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
             let desc = document.getElementById('bm-verdict-desc') ? document.getElementById('bm-verdict-desc').innerText : '';
 
             let report = "==================================================\\n" +
-                         "AI-IDR SIH26168 PERFORMANCE BENCHMARK REPORT\\n" +
+                         "AI-IDR PERFORMANCE BENCHMARK REPORT\\n" +
                          "==================================================\\n" +
                          "Dataset Sequence     : " + seq + "\\n" +
                          "GNSS Outage Duration : " + dur + " (Target: 30 s)\\n" +
