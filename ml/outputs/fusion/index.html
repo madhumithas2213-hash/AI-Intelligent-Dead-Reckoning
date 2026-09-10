@@ -241,7 +241,7 @@
             display: grid;
             grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
             gap: 16px;
-            align-items: start;
+            align-items: stretch;
         }
         @media (max-width: 1080px) {
             .main-layout { grid-template-columns: 1fr; }
@@ -250,6 +250,7 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            height: 100%;
         }
 
         /* CARD CONTAINERS */
@@ -1726,66 +1727,91 @@
                     </div>
                 </div>
 
-                <!-- LIVE DEVICE SENSORS & GNSS QUALITY PANEL -->
-                <div class="card-panel">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                                <!-- LIVE DEVICE SENSORS & GNSS QUALITY PANEL -->
+                <div class="card-panel sensor-live-expanded" style="padding:18px 20px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
                         <!-- Real-Time Phone Sensors -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">LIVE DEVICE SENSORS</span>
-                                <span id="sensor-stream-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">100Hz</span>
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                    </svg>
+                                    <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.6px; text-transform:uppercase;">LIVE DEVICE SENSORS</span>
+                                </div>
+                                <span id="sensor-stream-tag" style="font-size:9.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:3px 8px; border-radius:6px; font-weight:800; border:1px solid #059669;">100Hz</span>
                             </div>
 
-                            <div style="margin-bottom:6px;">
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Accelerometer</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>X: <span id="live-ax" style="color:#38bdf8; font-weight:700;">0.13</span></div>
-                                    <div>Y: <span id="live-ay" style="color:#38bdf8; font-weight:700;">-0.08</span></div>
-                                    <div>Z: <span id="live-az" style="color:#38bdf8; font-weight:700;">9.76</span></div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:8px; padding:8px 10px;">
+                                <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; display:flex; justify-content:space-between;">
+                                    <span>Accelerometer</span>
+                                    <span style="color:#64748b; font-size:9px;">m/s²</span>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">X: <span id="live-ax" style="color:#38bdf8; font-weight:800;">0.13</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">Y: <span id="live-ay" style="color:#38bdf8; font-weight:800;">-0.08</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">Z: <span id="live-az" style="color:#38bdf8; font-weight:800;">9.76</span></div>
                                 </div>
                             </div>
 
-                            <div style="margin-bottom:6px;">
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Gyroscope</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>Y: <span id="live-gx" style="color:#34d399; font-weight:700;">0.02</span></div>
-                                    <div>P: <span id="live-gy" style="color:#34d399; font-weight:700;">0.01</span></div>
-                                    <div>R: <span id="live-gz" style="color:#34d399; font-weight:700;">-0.03</span></div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:8px; padding:8px 10px;">
+                                <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; display:flex; justify-content:space-between;">
+                                    <span>Gyroscope</span>
+                                    <span style="color:#64748b; font-size:9px;">rad/s</span>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">Y: <span id="live-gx" style="color:#34d399; font-weight:800;">0.02</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">P: <span id="live-gy" style="color:#34d399; font-weight:800;">0.01</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">R: <span id="live-gz" style="color:#34d399; font-weight:800;">-0.03</span></div>
                                 </div>
                             </div>
 
-                            <div>
-                                <div style="font-size:9.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:2px;">Magnetometer</div>
-                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; font-family:monospace; font-size:10.5px;">
-                                    <div>X: <span id="live-mx" style="color:#f59e0b; font-weight:700;">21.4</span></div>
-                                    <div>Y: <span id="live-my" style="color:#f59e0b; font-weight:700;">5.8</span></div>
-                                    <div>Z: <span id="live-mz" style="color:#f59e0b; font-weight:700;">41.2</span></div>
+                            <div style="background:rgba(255,255,255,0.02); border:1px solid #1e293b; border-radius:8px; padding:8px 10px;">
+                                <div style="font-size:10px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:4px; display:flex; justify-content:space-between;">
+                                    <span>Magnetometer</span>
+                                    <span style="color:#64748b; font-size:9px;">µT</span>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">X: <span id="live-mx" style="color:#f59e0b; font-weight:800;">21.4</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">Y: <span id="live-my" style="color:#f59e0b; font-weight:800;">5.8</span></div>
+                                    <div style="background:#070c18; padding:3px 6px; border-radius:4px; text-align:center;">Z: <span id="live-mz" style="color:#f59e0b; font-weight:800;">41.2</span></div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- GNSS Signal Quality -->
-                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:6px; margin-bottom:8px;">
-                                <span style="font-size:11px; font-weight:800; color:var(--accent-blue); letter-spacing:0.5px;">GNSS SIGNAL QUALITY</span>
-                                <span id="gnss-quality-tag" style="font-size:8.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:2px 5px; border-radius:6px; font-weight:700; border:1px solid #059669;">GOOD</span>
+                        <div style="background:#070c18; border:1px solid var(--border-color); border-radius:10px; padding:16px; display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:8px;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"></path>
+                                        <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"></path>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                        <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"></path>
+                                        <path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"></path>
+                                    </svg>
+                                    <span style="font-size:12px; font-weight:800; color:var(--accent-blue); letter-spacing:0.6px; text-transform:uppercase;">GNSS SIGNAL QUALITY</span>
+                                </div>
+                                <span id="gnss-quality-tag" style="font-size:9.5px; background:rgba(52,211,153,0.15); color:#34d399; padding:3px 8px; border-radius:6px; font-weight:800; border:1px solid #059669;">GOOD</span>
                             </div>
-                            <div style="display:flex; flex-direction:column; gap:5px; font-family:monospace; font-size:10.5px;">
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Satellites</span>
-                                    <span id="gnss-sats-val" style="font-weight:700; color:#f8fafc;">14</span>
+
+                            <div style="display:flex; flex-direction:column; gap:8px; font-family:'JetBrains Mono',monospace; font-size:11.5px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Satellites Locked</span>
+                                    <span id="gnss-sats-val" style="font-weight:800; color:#38bdf8; font-size:13px;">14</span>
                                 </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Accuracy</span>
-                                    <span id="gnss-acc-val" style="font-weight:700; color:#f8fafc;">3.2 m</span>
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Horizontal Accuracy</span>
+                                    <span id="gnss-acc-val" style="font-weight:800; color:#34d399; font-size:13px;">3.2 m</span>
                                 </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Signal Quality</span>
-                                    <span id="gnss-sig-quality" style="font-weight:800; color:#34d399;">GOOD</span>
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Fix Integrity</span>
+                                    <span id="gnss-sig-quality" style="font-weight:800; color:#34d399; font-size:12px; background:rgba(52,211,153,0.15); padding:2px 6px; border-radius:4px;">GOOD</span>
                                 </div>
-                                <div style="display:flex; justify-content:space-between;">
-                                    <span style="color:var(--text-muted);">Confidence</span>
-                                    <span id="gnss-sig-conf" style="font-weight:800; color:#34d399;">93%</span>
+                                <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                    <span style="color:var(--text-muted);">Confidence Score</span>
+                                    <span id="gnss-sig-conf" style="font-weight:800; color:#38bdf8; font-size:13px;">93%</span>
                                 </div>
                             </div>
                         </div>
@@ -1793,103 +1819,108 @@
                 </div>
 
                 <!-- SENSOR CONFIDENCE BREAKDOWN & QUALITY ANALYSIS -->
-                <div class="card-panel">
-                    <div class="card-header">
-                        <div>
-                            <div class="card-title">SENSOR CONFIDENCE & QUALITY</div>
-                            <div class="card-subtitle">Real-Time Sensor Weighting & Motion Telemetry</div>
-                        </div>
-                        <button id="btnToggleDetails" onclick="toggleConfidenceDetails()" style="background:rgba(56,189,248,0.12); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:3px 8px; border-radius:6px; font-size:10px; font-weight:700; cursor:pointer;">View Details</button>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap:14px;">
-                        <div>
-                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Input Confidence</div>
-                            
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Accelerometer</span>
-                                    <span id="conf-accel-val" style="font-weight:700; color:#38bdf8;">94%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-accel-bar" style="width:94%; height:100%; background:#38bdf8; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Gyroscope</span>
-                                    <span id="conf-gyro-val" style="font-weight:700; color:#34d399;">91%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gyro-bar" style="width:91%; height:100%; background:#34d399; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>Magnetometer</span>
-                                    <span id="conf-mag-val" style="font-weight:700; color:#f59e0b;">86%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-mag-bar" style="width:86%; height:100%; background:#f59e0b; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
-                            <div style="margin-bottom:6px;">
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span>GNSS Receiver</span>
-                                    <span id="conf-gnss-val" style="font-weight:700; color:#34d399;">93%</span>
-                                </div>
-                                <div style="width:100%; height:5px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-gnss-bar" style="width:93%; height:100%; background:#34d399; border-radius:3px;"></div>
-                                </div>
-                            </div>
-
+                <div class="card-panel sensor-confidence-expanded" style="padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; flex-grow:1;">
+                    <div>
+                        <div class="card-header" style="margin-bottom:14px; padding-bottom:10px;">
                             <div>
-                                <div style="display:flex; justify-content:space-between; font-size:10.5px; margin-bottom:2px;">
-                                    <span style="color:var(--accent-blue); font-weight:800;">Fusion Confidence</span>
-                                    <span id="conf-overall-val" style="font-weight:800; color:var(--accent-blue);">90%</span>
-                                </div>
-                                <div style="width:100%; height:6px; background:#1e293b; border-radius:3px; overflow:hidden;">
-                                    <div id="conf-overall-bar" style="width:90%; height:100%; background:linear-gradient(90deg, #0284c7, #34d399); border-radius:3px;"></div>
-                                </div>
+                                <div class="card-title" style="font-size:13.5px; letter-spacing:0.6px;">SENSOR CONFIDENCE & QUALITY</div>
+                                <div class="card-subtitle" style="font-size:11px;">Real-Time Sensor Weighting & Motion Telemetry</div>
                             </div>
+                            <button id="btnToggleDetails" onclick="toggleConfidenceDetails()" style="background:rgba(56,189,248,0.12); border:1px solid var(--accent-blue); color:var(--accent-blue); padding:4px 10px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">View Details</button>
                         </div>
 
-                        <div>
-                            <div style="font-size:10.5px; font-weight:700; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">Quality Summary</div>
-                            <div style="display:flex; flex-direction:column; gap:5px; font-size:10.5px;">
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Motion</span>
-                                    <span id="qual-motion-val" style="font-weight:700; color:#34d399;">SMOOTH</span>
+                        <div style="display:grid; grid-template-columns: 1.12fr 0.88fr; gap:18px;">
+                            <!-- Input Confidence Progress Bars -->
+                            <div>
+                                <div style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.6px;">Input Confidence</div>
+                                
+                                <div style="margin-bottom:10px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;">
+                                        <span style="color:#e2e8f0;">Accelerometer</span>
+                                        <span id="conf-accel-val" style="font-weight:800; color:#38bdf8;">94%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:#1e293b; border-radius:4px; overflow:hidden;">
+                                        <div id="conf-accel-bar" style="width:94%; height:100%; background:#38bdf8; border-radius:4px; box-shadow:0 0 8px rgba(56,189,248,0.4);"></div>
+                                    </div>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Vibration</span>
-                                    <span id="qual-vibration-val" style="font-weight:700; color:#38bdf8;">LOW</span>
+
+                                <div style="margin-bottom:10px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;">
+                                        <span style="color:#e2e8f0;">Gyroscope</span>
+                                        <span id="conf-gyro-val" style="font-weight:800; color:#34d399;">91%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:#1e293b; border-radius:4px; overflow:hidden;">
+                                        <div id="conf-gyro-bar" style="width:91%; height:100%; background:#34d399; border-radius:4px; box-shadow:0 0 8px rgba(52,211,153,0.4);"></div>
+                                    </div>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Alignment</span>
-                                    <span id="qual-align-val" style="font-weight:700; color:#34d399;">CALIBRATED</span>
+
+                                <div style="margin-bottom:10px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;">
+                                        <span style="color:#e2e8f0;">Magnetometer</span>
+                                        <span id="conf-mag-val" style="font-weight:800; color:#f59e0b;">86%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:#1e293b; border-radius:4px; overflow:hidden;">
+                                        <div id="conf-mag-bar" style="width:86%; height:100%; background:#f59e0b; border-radius:4px; box-shadow:0 0 8px rgba(245,158,11,0.4);"></div>
+                                    </div>
                                 </div>
-                                <div style="display:flex; justify-content:space-between; padding:3.5px 6px; background:rgba(255,255,255,0.02); border-radius:5px; border:1px solid #1e293b;">
-                                    <span style="color:var(--text-muted);">Timestamp</span>
-                                    <span id="qual-dt-val" style="font-weight:700; color:#34d399;">100 Hz</span>
+
+                                <div style="margin-bottom:12px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:4px;">
+                                        <span style="color:#e2e8f0;">GNSS Receiver</span>
+                                        <span id="conf-gnss-val" style="font-weight:800; color:#34d399;">93%</span>
+                                    </div>
+                                    <div style="width:100%; height:8px; background:#1e293b; border-radius:4px; overflow:hidden;">
+                                        <div id="conf-gnss-bar" style="width:93%; height:100%; background:#34d399; border-radius:4px; box-shadow:0 0 8px rgba(52,211,153,0.4);"></div>
+                                    </div>
+                                </div>
+
+                                <div style="padding-top:4px;">
+                                    <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;">
+                                        <span style="color:var(--accent-blue); font-weight:800; letter-spacing:0.4px;">Fusion Confidence</span>
+                                        <span id="conf-overall-val" style="font-weight:900; color:var(--accent-blue); font-size:14px;">90%</span>
+                                    </div>
+                                    <div style="width:100%; height:10px; background:#1e293b; border-radius:5px; overflow:hidden;">
+                                        <div id="conf-overall-bar" style="width:90%; height:100%; background:linear-gradient(90deg, #0284c7, #38bdf8, #34d399); border-radius:5px; box-shadow:0 0 10px rgba(56,189,248,0.5);"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quality Summary Tiles -->
+                            <div style="display:flex; flex-direction:column; justify-content:space-between;">
+                                <div style="font-size:11px; font-weight:800; color:var(--text-muted); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.6px;">Quality Summary</div>
+                                <div style="display:flex; flex-direction:column; gap:9px; font-size:11px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                        <span style="color:var(--text-muted);">Motion</span>
+                                        <span id="qual-motion-val" style="font-weight:800; color:#34d399; font-size:11.5px; background:rgba(52,211,153,0.12); padding:2px 7px; border-radius:4px;">SMOOTH</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                        <span style="color:var(--text-muted);">Vibration</span>
+                                        <span id="qual-vibration-val" style="font-weight:800; color:#38bdf8; font-size:11.5px; background:rgba(56,189,248,0.12); padding:2px 7px; border-radius:4px;">LOW (0.06 m/s²)</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                        <span style="color:var(--text-muted);">Alignment</span>
+                                        <span id="qual-align-val" style="font-weight:800; color:#34d399; font-size:11.5px; background:rgba(52,211,153,0.12); padding:2px 7px; border-radius:4px;">CALIBRATED</span>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; padding:7px 10px; background:rgba(255,255,255,0.02); border-radius:6px; border:1px solid #1e293b;">
+                                        <span style="color:var(--text-muted);">Sensor Rate</span>
+                                        <span id="qual-dt-val" style="font-weight:800; color:#34d399; font-size:11.5px; background:rgba(52,211,153,0.12); padding:2px 7px; border-radius:4px;">100 Hz</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div id="confidence-details-box" style="display:none; margin-top:10px; padding:8px 10px; background:rgba(15,23,42,0.9); border:1px solid var(--accent-blue); border-radius:6px; font-size:10.5px; line-height:1.45;">
-                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:3px; display:flex; justify-content:space-between;">
+                    <div id="confidence-details-box" style="display:none; margin-top:12px; padding:10px 12px; background:rgba(15,23,42,0.95); border:1px solid var(--accent-blue); border-radius:8px; font-size:11px; line-height:1.5;">
+                        <div style="font-weight:800; color:var(--accent-blue); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; justify-content:space-between;">
                             <span>CONFIDENCE DIAGNOSTIC EXPLANATION</span>
-                            <span id="details-state-tag" style="color:var(--accent-green); font-size:9.5px;">GNSS-AIDED ACTIVE</span>
+                            <span id="details-state-tag" style="color:var(--accent-green); font-size:10px;">GNSS-AIDED ACTIVE</span>
                         </div>
                         <div id="details-reasoning-text" style="color:#e2e8f0;">
                             GNSS receiver signal is connected with 14 satellites and 3.2m accuracy. Adaptive EKF sensor fusion is actively weighting GNSS position observations together with Step 4 calibrated Phone IMU streams. Overall confidence is HIGH at 94%.
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
 
