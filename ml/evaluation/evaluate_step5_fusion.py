@@ -1003,7 +1003,7 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
         }}
         .canvas-area {{
             width: 100%;
-            height: 500px;
+            height: 340px;
             position: relative;
             background: #090e18;
         }}
