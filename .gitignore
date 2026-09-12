@@ -83,3 +83,8 @@ android/.cxx/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# SQLite runtime databases
+*.db
+*.db-wal
+*.db-shm
