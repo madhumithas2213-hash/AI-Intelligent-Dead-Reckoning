@@ -48,7 +48,10 @@ class VehicleVelocityPredictor:
             self.scaler = pickle.load(f)
 
         # Load PyTorch Model
-        checkpoint = torch.load(self.model_path, map_location="cpu")
+        try:
+            checkpoint = torch.load(self.model_path, map_location="cpu", weights_only=False)
+        except TypeError:
+            checkpoint = torch.load(self.model_path, map_location="cpu")
         self.model = ForwardVelocityGRU(
             input_dim=INPUT_DIM,
             hidden_dim=HIDDEN_SIZE,

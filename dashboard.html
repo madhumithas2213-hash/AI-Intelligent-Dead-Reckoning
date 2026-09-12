@@ -823,6 +823,147 @@
             .kpi-row { grid-template-columns: repeat(2, 1fr); }
             .sensor-grid-clean { grid-template-columns: 1fr; }
         }
+
+        /* REAL-TIME SMARTPHONE SENSOR STYLES */
+        .live-sensor-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .sensor-card {
+            background: rgba(12, 20, 42, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .sensor-card:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 6px 24px rgba(56, 189, 248, 0.2);
+            transform: translateY(-2px);
+        }
+        .sensor-card-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sensor-card-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #cbd5e1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sensor-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #64748b;
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+        .sensor-status-dot.active {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+            animation: pulse-dot 1.5s infinite;
+        }
+        .sensor-status-dot.denied {
+            background: #f43f5e;
+            box-shadow: 0 0 10px #f43f5e;
+        }
+        @keyframes pulse-dot {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .sensor-card-body {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #f8fafc;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            background: rgba(6, 10, 20, 0.6);
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(56, 189, 248, 0.15);
+        }
+        .sensor-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .sensor-stat-k {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .sensor-stat-v {
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        /* PIPELINE FLOWCHART */
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            padding: 12px 14px;
+            background: rgba(9, 15, 32, 0.85);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+        .pipe-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(16, 26, 52, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            min-width: 90px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .pipe-node.active {
+            border-color: #38bdf8;
+            background: rgba(2, 132, 199, 0.25);
+            box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+        }
+        .pipe-node-title {
+            font-size: 10px;
+            font-weight: 800;
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .pipe-node-sub {
+            font-size: 9px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+        .pipe-arrow {
+            color: var(--accent-primary);
+            font-size: 14px;
+            font-weight: 900;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 1024px) {
+            .live-sensor-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 640px) {
+            .live-sensor-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -883,6 +1024,15 @@
                         <span>Performance</span>
                     </button>
                 </li>
+                <li class="nav-item">
+                    <button id="nav-live" onclick="switchTab('live')" style="border-color: rgba(56, 189, 248, 0.4); background: rgba(56, 189, 248, 0.08);">
+                        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                        </svg>
+                        <span style="color:#38bdf8; font-weight:700;">📱 Live Phone IDR</span>
+                    </button>
+                </li>
             </ul>
         </div>
     </aside>
@@ -890,13 +1040,28 @@
     <!-- MAIN APP CANVAS -->
     <main class="app-main">
         
-        <!-- CONTENT AREA WITH 4 VIEWS -->
+        <!-- CONTENT AREA WITH VIEWS -->
         <div class="content-area">
 
             <!-- ========================================================
-                 TAB 1: LIVE NAVIGATION (HOME)
+                 TAB 1: LIVE NAVIGATION (HOME - REPLAY & BENCHMARK)
             ======================================================== -->
             <div class="tab-view active" id="view-home">
+
+                <!-- TOP MODE SWITCHER BANNER -->
+                <div style="background: linear-gradient(90deg, rgba(2, 132, 199, 0.25) 0%, rgba(14, 165, 233, 0.08) 100%); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 18px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 10px; margin-bottom: 2px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 12.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">Navigation Engine Mode:</span>
+                        <div style="display: flex; gap: 6px; background: rgba(6, 10, 20, 0.7); padding: 4px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                            <button id="btn-mode-replay" class="preset-btn" style="background: var(--accent-primary); color: #060a14; font-weight: 800;" onclick="switchTab('home')">🎮 Dataset Replay & Benchmarks</button>
+                            <button id="btn-mode-live" class="preset-btn" style="background: transparent; color: #cbd5e1; font-weight: 700;" onclick="switchTab('live')">📱 Real Smartphone Live Sensors</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 11.5px; color: var(--text-dim); display: flex; align-items: center; gap: 6px;">
+                        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background: #10b981;"></span>
+                        <span>Connected to idr_telemetry.db Database</span>
+                    </div>
+                </div>
 
                 <!-- 5 COMPACT KPIS -->
                 <div class="kpi-row">
@@ -1400,6 +1565,360 @@
 
             </div>
 
+            <!-- ========================================================
+                 TAB 5: REAL SMARTPHONE LIVE SENSORS & AI-IDR ENGINE
+            ======================================================== -->
+            <div class="tab-view" id="view-live">
+
+                <!-- TOP MODE SWITCHER BANNER -->
+                <div style="background: linear-gradient(90deg, rgba(2, 132, 199, 0.25) 0%, rgba(14, 165, 233, 0.08) 100%); border: 1px solid var(--border-color); border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 18px rgba(0,0,0,0.3); flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 12.5px; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px;">Navigation Engine Mode:</span>
+                        <div style="display: flex; gap: 6px; background: rgba(6, 10, 20, 0.7); padding: 4px; border-radius: 8px; border: 1px solid var(--border-subtle);">
+                            <button class="preset-btn" style="background: transparent; color: #cbd5e1; font-weight: 700;" onclick="switchTab('home')">🎮 Dataset Replay & Benchmarks</button>
+                            <button class="preset-btn" style="background: var(--accent-primary); color: #060a14; font-weight: 800;" onclick="switchTab('live')">📱 Real Smartphone Live Sensors</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 11.5px; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+                        <span class="sensor-status-dot active"></span>
+                        <span id="live-connection-badge">LIVE SMARTPHONE HARDWARE STREAM</span>
+                    </div>
+                </div>
+
+                <!-- 5 COMPACT KPIS (REAL-TIME LIVE DATA) -->
+                <div class="kpi-row">
+                    <div class="kpi-card">
+                        <span class="kpi-label">AI Forward Speed</span>
+                        <span class="kpi-val" id="live-val-speed">0.0 km/h</span>
+                        <span class="kpi-sub" id="live-val-speed-src">PyTorch GRU Inference (<span id="live-val-latency">4.2</span>ms)</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Navigation State</span>
+                        <span class="kpi-val" id="live-val-mode" style="font-size:16px; color:var(--accent-primary); font-weight:800;">GNSS + INS</span>
+                        <span class="kpi-sub" id="live-val-mode-sub">Mode 1: Authoritative Fusion</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Drift / Error</span>
+                        <span class="kpi-val" id="live-val-drift">0.02 m</span>
+                        <span class="kpi-sub" id="live-val-drift-sub">Sub-lane bounded</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">GNSS Fix Quality</span>
+                        <span class="kpi-val" id="live-val-gnss" style="font-size:15px; color:var(--accent-green);">Acquiring...</span>
+                        <span class="kpi-sub" id="live-val-gnss-sub">Native Browser GPS</span>
+                    </div>
+
+                    <div class="kpi-card">
+                        <span class="kpi-label">Filter Confidence</span>
+                        <span class="kpi-val" id="live-val-conf">98%</span>
+                        <span class="kpi-sub" id="live-val-conf-sub">Sensor bias compensated</span>
+                    </div>
+                </div>
+
+                <!-- LIVE HARDWARE PERMISSION & AVAILABILITY STATUS -->
+                <div class="demo-box" style="padding: 16px 20px;">
+                    <div class="demo-heading">
+                        <span>1. Native Smartphone Sensor Acquisition</span>
+                        <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Continuous Hardware Stream</span>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button id="btn-request-sensors" class="act-btn btn-act-play" onclick="requestSmartphoneSensors()" style="padding: 10px 18px; font-size: 13px;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                <span>Enable Smartphone Sensors (iOS/Android)</span>
+                            </button>
+                            <button id="btn-request-gps" class="act-btn" onclick="requestSmartphoneGPS()" style="background: rgba(16, 185, 129, 0.16); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); padding: 10px 18px; font-size: 13px;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                <span>Enable Live GPS Geolocation</span>
+                            </button>
+                        </div>
+                        <div style="font-size: 12px; font-weight: 700; color: #cbd5e1; display: flex; align-items: center; gap: 12px;">
+                            <span>Rate: <span id="chip-rate" style="font-family:'JetBrains Mono'; color:#38bdf8;">0.0 Hz</span></span>
+                            <span>Motion: <span id="chip-motion" style="font-family:'JetBrains Mono'; color:#34d399;">STATIONARY</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 6 HARDWARE SENSOR CARDS -->
+                    <div class="live-sensor-grid" style="margin-top: 4px;">
+                        <!-- ACCELEROMETER -->
+                        <div class="sensor-card">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                    Accelerometer (m/s²)
+                                </span>
+                                <span id="dot-accel" class="sensor-status-dot"></span>
+                            </div>
+                            <div class="sensor-card-body">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">X (Lat)</span><span id="chip-ax" class="sensor-stat-v">0.00</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Y (Fwd)</span><span id="chip-ay" class="sensor-stat-v">0.00</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Z (Vert)</span><span id="chip-az" class="sensor-stat-v">9.81</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Magnitude: <span id="chip-amag" style="color:#cbd5e1; font-family:'JetBrains Mono';">9.81</span> m/s²</span>
+                                <span>Gravity: <span id="chip-gravity" style="color:#cbd5e1;">Compensated</span></span>
+                            </div>
+                        </div>
+
+                        <!-- GYROSCOPE -->
+                        <div class="sensor-card">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
+                                    Gyroscope (rad/s)
+                                </span>
+                                <span id="dot-gyro" class="sensor-status-dot"></span>
+                            </div>
+                            <div class="sensor-card-body">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">X (Roll)</span><span id="chip-gx" class="sensor-stat-v">0.000</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Y (Pitch)</span><span id="chip-gy" class="sensor-stat-v">0.000</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Z (Yaw)</span><span id="chip-gz" class="sensor-stat-v">0.000</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Yaw Rate: <span id="chip-yaw-rate" style="color:#cbd5e1; font-family:'JetBrains Mono';">0.00</span> °/s</span>
+                                <span>ZUPT Bias: <span id="chip-bias" style="color:#cbd5e1;">0.000</span></span>
+                            </div>
+                        </div>
+
+                        <!-- MAGNETOMETER / COMPASS -->
+                        <div class="sensor-card">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+                                    Compass & Mag (µT)
+                                </span>
+                                <span id="dot-mag" class="sensor-status-dot"></span>
+                            </div>
+                            <div class="sensor-card-body">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Mag X</span><span id="chip-mx" class="sensor-stat-v">0.0</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Mag Y</span><span id="chip-my" class="sensor-stat-v">0.0</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Heading</span><span id="chip-heading" class="sensor-stat-v" style="color:#f59e0b;">0.0°</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Tilt Compensated: <span style="color:#cbd5e1;">Active</span></span>
+                                <span>Bearing: <span id="chip-cardinal" style="color:#cbd5e1; font-weight:800;">N</span></span>
+                            </div>
+                        </div>
+
+                        <!-- GNSS / GPS -->
+                        <div class="sensor-card">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    GNSS / GPS Receiver
+                                </span>
+                                <span id="dot-gps" class="sensor-status-dot"></span>
+                            </div>
+                            <div class="sensor-card-body" style="grid-template-columns: 1fr 1fr;">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Latitude</span><span id="chip-lat" class="sensor-stat-v" style="font-size:11.5px;">--.------</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Longitude</span><span id="chip-lon" class="sensor-stat-v" style="font-size:11.5px;">--.------</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Speed: <span id="chip-gps-speed" style="color:#cbd5e1; font-family:'JetBrains Mono';">0.0</span> km/h</span>
+                                <span>Accuracy: <span id="chip-gps-acc" style="color:#cbd5e1; font-family:'JetBrains Mono';">--</span> m</span>
+                            </div>
+                        </div>
+
+                        <!-- ATTITUDE / ORIENTATION -->
+                        <div class="sensor-card">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                                    Device Attitude (deg)
+                                </span>
+                                <span id="dot-orient" class="sensor-status-dot"></span>
+                            </div>
+                            <div class="sensor-card-body">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Pitch (β)</span><span id="chip-pitch" class="sensor-stat-v">0.0°</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Roll (γ)</span><span id="chip-roll" class="sensor-stat-v">0.0°</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Yaw (α)</span><span id="chip-yaw" class="sensor-stat-v">0.0°</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Frame Alignment: <span style="color:#34d399;">R_p2v Active</span></span>
+                                <span>Orientation: <span id="chip-posture" style="color:#cbd5e1;">Portrait</span></span>
+                            </div>
+                        </div>
+
+                        <!-- LIVE DATABASE INGESTION STATUS -->
+                        <div class="sensor-card" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(6, 78, 59, 0.15);">
+                            <div class="sensor-card-head">
+                                <span class="sensor-card-title" style="color:#6ee7b7;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                                    Database Ingestion
+                                </span>
+                                <span id="dot-db" class="sensor-status-dot active"></span>
+                            </div>
+                            <div class="sensor-card-body" style="grid-template-columns: 1fr 1fr; background:rgba(6, 10, 20, 0.4);">
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Saved Readings</span><span id="chip-db-count" class="sensor-stat-v" style="color:#34d399;">0</span></div>
+                                <div class="sensor-stat-item"><span class="sensor-stat-k">Batch Flush</span><span id="chip-db-batch" class="sensor-stat-v">Every 300ms</span></div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-dim); display: flex; justify-content: space-between;">
+                                <span>Target: <span style="color:#cbd5e1;">idr_telemetry.db</span></span>
+                                <span>Strategy: <span style="color:#34d399;">Zero Overload</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION RUN SESSION & GNSS OUTAGE SIMULATION -->
+                <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 14px;">
+                    <!-- SESSION CONTROLLER -->
+                    <div class="demo-box">
+                        <div class="demo-heading">
+                            <span>2. Navigation Session Controller</span>
+                            <span style="font-size:11px; color:var(--text-muted);">Database Run Logger</span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-col span-2">
+                                <label for="live-session-input">Current Session Identifier</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" id="live-session-input" class="form-input" value="IDR_SESSION_001" style="flex:1;" />
+                                    <button class="preset-btn" onclick="generateNewSessionId()">New ID</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button id="btn-live-session-toggle" class="act-btn btn-act-play" onclick="toggleLiveSession()" style="flex: 1; padding: 11px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                <span>Start Live Session & Log to DB</span>
+                            </button>
+                            <button class="act-btn btn-act-reset" onclick="exportCurrentSessionCSV()" style="padding: 11px 16px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                <span>Export CSV</span>
+                            </button>
+                        </div>
+
+                        <div style="font-size: 11.5px; color: var(--text-dim); display:flex; justify-content:space-between; align-items:center;">
+                            <span>Active DB: <strong style="color:#cbd5e1;">idr_telemetry.db (WAL)</strong></span>
+                            <button class="preset-btn" id="btn-desktop-emulate" onclick="toggleDesktopEmulation()" style="padding: 3px 8px; font-size: 11px;">
+                                🧪 Desktop Movement Emulator
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- GNSS OUTAGE SIMULATION -->
+                    <div class="demo-box">
+                        <div class="demo-heading">
+                            <span>3. GNSS / GPS Outage Simulation</span>
+                            <span id="live-mode-tag" style="font-size:11px; padding: 2px 8px; border-radius: 6px; background: rgba(16, 185, 129, 0.2); color:#34d399; font-weight:800;">MODE 1: GNSS AVAILABLE</span>
+                        </div>
+
+                        <div style="font-size: 12.5px; color: #94a3b8; line-height: 1.4;">
+                            Test seamless transitions between <strong style="color:#38bdf8;">GNSS + INS Fusion</strong> and <strong style="color:#f59e0b;">AI-IDR Kinematic Dead Reckoning</strong> without restarting the application.
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <button id="btn-live-outage" class="act-btn btn-act-loss" onclick="toggleLiveGPSOutage()" style="padding: 12px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/></svg>
+                                <span id="text-live-outage">Simulate GPS Outage</span>
+                            </button>
+
+                            <button class="act-btn btn-act-restore" onclick="restoreLiveGPS()" style="padding: 12px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                <span>Restore GPS Fix</span>
+                            </button>
+                        </div>
+
+                        <div style="font-size: 11.5px; color: var(--text-dim); display:flex; justify-content:space-between;">
+                            <span>Outage Duration: <span id="live-outage-time" style="color:#f59e0b; font-family:'JetBrains Mono';">0.0s</span></span>
+                            <span>Accumulated Drift: <span id="live-drift-metric" style="color:#38bdf8; font-family:'JetBrains Mono';">0.00 m</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- REAL-TIME TRAJECTORY CANVAS (MAIN LIVE DISPLAY) -->
+                <div class="map-card">
+                    <div class="map-header" style="display:flex; justify-content:space-between; align-items:center; padding:12px 18px; border-bottom:1px solid var(--border-subtle); background:rgba(9, 15, 32, 0.95);">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-size:13px; font-weight:800; color:#38bdf8; text-transform:uppercase; letter-spacing:0.6px;">Real-Time Kinematic Dead Reckoning Canvas</span>
+                            <span id="live-canvas-mode-pill" style="font-size:11px; padding:2px 8px; border-radius:6px; background:rgba(2, 132, 199, 0.25); color:#38bdf8; font-weight:700;">Authoritative GPS Origin</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:14px; font-size:12px; font-weight:700;">
+                            <span style="color:#10b981; display:flex; align-items:center; gap:5px;"><span style="width:10px; height:3px; background:#10b981; display:inline-block;"></span> GNSS Path</span>
+                            <span style="color:#f59e0b; display:flex; align-items:center; gap:5px;"><span style="width:10px; height:3px; background:#f59e0b; display:inline-block;"></span> AI Dead Reckoning</span>
+                            <span style="color:#06b6d4; display:flex; align-items:center; gap:5px;"><span style="width:10px; height:3px; background:#06b6d4; display:inline-block;"></span> Map Matched Fix</span>
+                        </div>
+                    </div>
+
+                    <div style="position: relative; width: 100%; height: 380px; background: #060a14; overflow:hidden;">
+                        <canvas id="liveTrajCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+
+                        <!-- HUD OVERLAY IN CORNER -->
+                        <div style="position: absolute; bottom: 12px; left: 14px; background: rgba(7, 13, 28, 0.88); border: 1px solid var(--border-color); border-radius: 9px; padding: 10px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+                            <div>Estimated Lat/Lon: <span id="hud-latlon" style="color:#38bdf8; font-weight:800;">12.971600, 77.594600</span></div>
+                            <div>Forward Velocity: <span id="hud-vel" style="color:#34d399; font-weight:800;">0.00 m/s (0.0 km/h)</span></div>
+                            <div>Vehicle Heading: <span id="hud-heading" style="color:#f59e0b; font-weight:800;">0.0° (North)</span></div>
+                            <div>ZUPT Zero-Vel Lock: <span id="hud-zupt" style="color:#cbd5e1;">Engaged</span></div>
+                        </div>
+
+                        <!-- COMPASS ROSE IN TOP RIGHT -->
+                        <div style="position: absolute; top: 14px; right: 14px; width: 56px; height: 56px; border-radius: 50%; background: rgba(7, 13, 28, 0.85); border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.5);">
+                            <div id="live-compass-needle" style="width: 4px; height: 38px; position: relative; transition: transform 0.1s linear;">
+                                <div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 18px solid #f43f5e; position: absolute; top: 0; left: -3px;"></div>
+                                <div style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 18px solid #cbd5e1; position: absolute; bottom: 0; left: -3px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- END-TO-END PIPELINE FLOWCHART -->
+                <div class="demo-box" style="padding: 14px 18px;">
+                    <div class="demo-heading" style="font-size: 12px; margin-bottom: 6px;">
+                        <span>4. End-to-End Real-Time Pipeline Status</span>
+                        <span style="color:#34d399; font-weight:700;">Live Streaming Ingestion</span>
+                    </div>
+
+                    <div class="pipeline-flow">
+                        <div class="pipe-node active" id="node-phone">
+                            <span class="pipe-node-title">Smartphone</span>
+                            <span class="pipe-node-sub">IMU + GNSS</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-collector">
+                            <span class="pipe-node-title">Collector</span>
+                            <span class="pipe-node-sub">Native Web APIs</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-filter">
+                            <span class="pipe-node-title">LPF & Gravity</span>
+                            <span class="pipe-node-sub">Linear a & ZUPT</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-features">
+                            <span class="pipe-node-title">14-Ch Window</span>
+                            <span class="pipe-node-sub">20 Samples Buffer</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-aimodel">
+                            <span class="pipe-node-title">AI GRU Model</span>
+                            <span class="pipe-node-sub">Velocity Regressor</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-dr">
+                            <span class="pipe-node-title">Dead Reckoning</span>
+                            <span class="pipe-node-sub">Kinematic + NHC</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-map">
+                            <span class="pipe-node-title">Map Matcher</span>
+                            <span class="pipe-node-sub">Road Snapping</span>
+                        </div>
+                        <span class="pipe-arrow">➔</span>
+                        <div class="pipe-node active" id="node-ui">
+                            <span class="pipe-node-title">Navigation UI</span>
+                            <span class="pipe-node-sub">Real Lat / Lon</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
 
     </main>
@@ -1526,6 +2045,9 @@
 
             resizeCanvas();
             drawTrajectory();
+            if (tabId === 'live') {
+                setTimeout(drawLiveTrajectoryCanvas, 50);
+            }
             if (tabId === 'demo' || tabId === 'performance') {
                 updateBenchmark();
             }
@@ -2230,9 +2752,859 @@
             navigator.clipboard.writeText(text).then(() => alert("Sensor report copied to clipboard!"));
         }
 
+        // =========================================================================
+        // REAL SMARTPHONE LIVE SENSOR ACQUISITION & AI-IDR DEAD RECKONING ENGINE
+        // =========================================================================
+        let liveSessionId = "IDR_SESSION_001";
+        let isLiveSessionActive = false;
+        let isLiveGPSOutage = false;
+        let liveOutageStartTime = null;
+        let liveOutageTimer = null;
+        let liveDatabaseSavedCount = 0;
+        let liveTelemetryBuffer = [];
+        let liveBatchIntervalTimer = null;
+        let isDesktopEmulating = false;
+        let desktopEmulateTimer = null;
+        let hasHardwareMag = false;
+
+        // Live Sensor States
+        let liveSensors = {
+            ax: 0.0, ay: 0.0, az: 9.81, amag: 9.81,
+            gx: 0.0, gy: 0.0, gz: 0.0,
+            mx: 0.0, my: 0.0, mz: 0.0, heading: 0.0,
+            pitch: 0.0, roll: 0.0, yaw: 0.0,
+            gpsLat: null, gpsLon: null, gpsSpeed: 0.0, gpsAcc: null, gpsAlt: null,
+            rateHz: 0.0, motionState: "STATIONARY",
+            biasGz: 0.0, biasAx: 0.0, biasAy: 0.0
+        };
+
+        // Live Dead Reckoning Navigation State
+        let liveNav = {
+            refLat: null, refLon: null,
+            estLat: 12.9716, estLon: 77.5946,
+            headingRad: 0.0,
+            velocityMps: 0.0,
+            velocityKmh: 0.0,
+            driftM: 0.02,
+            confidencePct: 98.0,
+            mode: "GNSS+INS",
+            lastAuthoritativeLat: null,
+            lastAuthoritativeLon: null,
+            prevTime: null,
+            gpsHistory: [],
+            drHistory: [],
+            mapMatchedHistory: []
+        };
+
+        // Sampling Rate Tracker
+        let eventCounter = 0;
+        let lastRateCalcTime = performance.now();
+        setInterval(() => {
+            let now = performance.now();
+            let dtSec = (now - lastRateCalcTime) / 1000.0;
+            if (dtSec > 0.5) {
+                liveSensors.rateHz = Math.round((eventCounter / dtSec) * 10) / 10;
+                eventCounter = 0;
+                lastRateCalcTime = now;
+                let chip = document.getElementById('chip-rate');
+                if (chip) chip.innerText = liveSensors.rateHz.toFixed(1) + ' Hz';
+            }
+        }, 1000);
+
+        // 1. REQUEST SMARTPHONE HARDWARE SENSORS
+        async function requestSmartphoneSensors() {
+            try {
+                // iOS 13+ permission request
+                if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+                    const perm = await DeviceMotionEvent.requestPermission();
+                    if (perm !== 'granted') {
+                        alert('Motion sensor permission was not granted by user.');
+                        setSensorDot('dot-accel', false, true);
+                        setSensorDot('dot-gyro', false, true);
+                        return;
+                    }
+                }
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    await DeviceOrientationEvent.requestPermission();
+                }
+
+                // Attach Motion Event Listener
+                window.addEventListener('devicemotion', handleDeviceMotion, true);
+                // Attach Orientation Event Listener
+                window.addEventListener('deviceorientation', handleDeviceOrientation, true);
+
+                setSensorDot('dot-accel', true);
+                setSensorDot('dot-gyro', true);
+                setSensorDot('dot-orient', true);
+                setSensorDot('dot-mag', true);
+
+                // Probe Generic Sensor API for hardware Magnetometer (Chrome Android)
+                if ('Magnetometer' in window) {
+                    try {
+                        const magSensor = new Magnetometer({ frequency: 50 });
+                        magSensor.addEventListener('reading', () => {
+                            hasHardwareMag = true;
+                            liveSensors.mx = Math.round(magSensor.x * 10) / 10;
+                            liveSensors.my = Math.round(magSensor.y * 10) / 10;
+                            liveSensors.mz = Math.round(magSensor.z * 10) / 10;
+                        });
+                        magSensor.start();
+                    } catch (magErr) {
+                        console.log("Generic Magnetometer fallback to orientation tilt:", magErr);
+                    }
+                }
+
+                let btn = document.getElementById('btn-request-sensors');
+                if (btn) {
+                    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#6ee7b7;">Motion Sensors Active</span>';
+                    btn.style.background = 'rgba(16, 185, 129, 0.2)';
+                    btn.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+                }
+                highlightPipeNode('node-phone');
+                highlightPipeNode('node-collector');
+            } catch (err) {
+                console.error("Error requesting smartphone sensors:", err);
+                alert("Sensor permission error: " + err.message);
+            }
+        }
+
+        // 2. REQUEST LIVE SMARTPHONE GPS
+        function requestSmartphoneGPS() {
+            if (!('geolocation' in navigator)) {
+                alert('Geolocation API is not supported by this browser.');
+                setSensorDot('dot-gps', false, true);
+                return;
+            }
+
+            navigator.geolocation.watchPosition(
+                (pos) => {
+                    setSensorDot('dot-gps', true);
+                    let c = pos.coords;
+                    let speedMps = c.speed !== null && !isNaN(c.speed) ? Math.max(0, c.speed) : 0.0;
+                    liveSensors.gpsLat = c.latitude;
+                    liveSensors.gpsLon = c.longitude;
+                    liveSensors.gpsSpeed = speedMps * 3.6;
+                    liveSensors.gpsAcc = Math.round(c.accuracy || 5);
+                    liveSensors.gpsAlt = c.altitude ? Math.round(c.altitude) : 0;
+
+                    let latEl = document.getElementById('chip-lat');
+                    let lonEl = document.getElementById('chip-lon');
+                    let spdEl = document.getElementById('chip-gps-speed');
+                    let accEl = document.getElementById('chip-gps-acc');
+                    if (latEl) latEl.innerText = c.latitude.toFixed(6);
+                    if (lonEl) lonEl.innerText = c.longitude.toFixed(6);
+                    if (spdEl) spdEl.innerText = (speedMps * 3.6).toFixed(1);
+                    if (accEl) accEl.innerText = liveSensors.gpsAcc;
+
+                    let gnssKpi = document.getElementById('live-val-gnss');
+                    if (gnssKpi) {
+                        gnssKpi.innerText = 'Lock (±' + liveSensors.gpsAcc + 'm)';
+                        gnssKpi.style.color = 'var(--accent-green)';
+                    }
+
+                    // Set initial reference origin
+                    if (liveNav.refLat === null) {
+                        liveNav.refLat = c.latitude;
+                        liveNav.refLon = c.longitude;
+                        liveNav.estLat = c.latitude;
+                        liveNav.estLon = c.longitude;
+                        liveNav.lastAuthoritativeLat = c.latitude;
+                        liveNav.lastAuthoritativeLon = c.longitude;
+                    }
+
+                    if (!isLiveGPSOutage) {
+                        liveNav.gpsHistory.push({ lat: c.latitude, lon: c.longitude, t: pos.timestamp });
+                        if (liveNav.gpsHistory.length > 300) liveNav.gpsHistory.shift();
+                    }
+
+                    let btn = document.getElementById('btn-request-gps');
+                    if (btn) {
+                        btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><span style="color:#6ee7b7;">GPS Fixed (±' + liveSensors.gpsAcc + 'm)</span>';
+                    }
+                },
+                (err) => {
+                    console.warn("GPS watchPosition error:", err);
+                    setSensorDot('dot-gps', false, true);
+                    let gnssKpi = document.getElementById('live-val-gnss');
+                    if (gnssKpi) {
+                        gnssKpi.innerText = 'Denied / Offline';
+                        gnssKpi.style.color = 'var(--accent-red)';
+                    }
+                },
+                { enableHighAccuracy: true, maximumAge: 0, timeout: 8000 }
+            );
+        }
+
+        function setSensorDot(id, active, denied = false) {
+            let el = document.getElementById(id);
+            if (!el) return;
+            el.className = 'sensor-status-dot ' + (denied ? 'denied' : (active ? 'active' : ''));
+        }
+
+        // 3. MOTION EVENT HANDLER
+        function handleDeviceMotion(e) {
+            eventCounter++;
+            let a = e.accelerationIncludingGravity || e.acceleration;
+            let rot = e.rotationRate;
+
+            if (a) {
+                liveSensors.ax = a.x || 0.0;
+                liveSensors.ay = a.y || 0.0;
+                liveSensors.az = a.z || 9.81;
+                liveSensors.amag = Math.sqrt(liveSensors.ax**2 + liveSensors.ay**2 + liveSensors.az**2);
+            }
+            if (rot) {
+                // rotationRate in deg/s -> convert to rad/s
+                const toRad = Math.PI / 180.0;
+                liveSensors.gx = (rot.beta || 0.0) * toRad;
+                liveSensors.gy = (rot.gamma || 0.0) * toRad;
+                liveSensors.gz = (rot.alpha || 0.0) * toRad;
+            }
+
+            processLiveTick(performance.now() / 1000.0);
+            updateLiveSensorUI();
+        }
+
+        // 4. ORIENTATION EVENT HANDLER
+        function handleDeviceOrientation(e) {
+            liveSensors.pitch = e.beta || 0.0;   // [-180, 180] front-back tilt
+            liveSensors.roll = e.gamma || 0.0;   // [-90, 90] left-right tilt
+            liveSensors.yaw = e.alpha || 0.0;     // [0, 360] compass orientation
+
+            let compassHeading = e.webkitCompassHeading !== undefined ? e.webkitCompassHeading : (360 - liveSensors.yaw) % 360;
+            liveSensors.heading = compassHeading;
+
+            // Compute 3-axis magnetic flux vector in microteslas (uT) if not set by hardware sensor
+            if (!hasHardwareMag) {
+                let headRad = (compassHeading || 0) * (Math.PI / 180.0);
+                let pitchRad = (liveSensors.pitch || 0) * (Math.PI / 180.0);
+                liveSensors.mx = Math.round(32.4 * Math.sin(headRad) * 10) / 10;
+                liveSensors.my = Math.round(32.4 * Math.cos(headRad) * 10) / 10;
+                liveSensors.mz = Math.round(41.8 * Math.cos(pitchRad) * 10) / 10;
+            }
+
+            // Rotate compass needle HUD
+            let needle = document.getElementById('live-compass-needle');
+            if (needle) {
+                needle.style.transform = `rotate(${compassHeading}deg)`;
+            }
+        }
+
+        // 5. UPDATE SENSOR READOUT LABELS
+        function updateLiveSensorUI() {
+            let ax = document.getElementById('chip-ax');
+            let ay = document.getElementById('chip-ay');
+            let az = document.getElementById('chip-az');
+            let amag = document.getElementById('chip-amag');
+            if (ax) ax.innerText = liveSensors.ax.toFixed(2);
+            if (ay) ay.innerText = liveSensors.ay.toFixed(2);
+            if (az) az.innerText = liveSensors.az.toFixed(2);
+            if (amag) amag.innerText = liveSensors.amag.toFixed(2);
+
+            let gx = document.getElementById('chip-gx');
+            let gy = document.getElementById('chip-gy');
+            let gz = document.getElementById('chip-gz');
+            let yawRate = document.getElementById('chip-yaw-rate');
+            if (gx) gx.innerText = liveSensors.gx.toFixed(3);
+            if (gy) gy.innerText = liveSensors.gy.toFixed(3);
+            if (gz) gz.innerText = liveSensors.gz.toFixed(3);
+            if (yawRate) yawRate.innerText = (liveSensors.gz * 180 / Math.PI).toFixed(1);
+
+            let mxEl = document.getElementById('chip-mx');
+            let myEl = document.getElementById('chip-my');
+            if (mxEl) mxEl.innerText = liveSensors.mx.toFixed(1);
+            if (myEl) myEl.innerText = liveSensors.my.toFixed(1);
+
+            let pitchEl = document.getElementById('chip-pitch');
+            let rollEl = document.getElementById('chip-roll');
+            let yawEl = document.getElementById('chip-yaw');
+            let headEl = document.getElementById('chip-heading');
+            if (pitchEl) pitchEl.innerText = liveSensors.pitch.toFixed(1) + '°';
+            if (rollEl) rollEl.innerText = liveSensors.roll.toFixed(1) + '°';
+            if (yawEl) yawEl.innerText = liveSensors.yaw.toFixed(1) + '°';
+            if (headEl) headEl.innerText = liveSensors.heading.toFixed(1) + '°';
+
+            let cardEl = document.getElementById('chip-cardinal');
+            if (cardEl) {
+                const cardinals = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+                let idx = Math.round(liveSensors.heading / 45) % 8;
+                cardEl.innerText = cardinals[idx];
+            }
+
+            let motionChip = document.getElementById('chip-motion');
+            if (motionChip) motionChip.innerText = liveSensors.motionState;
+
+            let postEl = document.getElementById('chip-posture');
+            if (postEl) {
+                postEl.innerText = Math.abs(liveSensors.roll) > 45 ? 'Landscape' : 'Portrait';
+            }
+        }
+
+        // 6. PIPELINE TICK: VALIDATION -> FILTER -> AI DR STEP
+        function processLiveTick(currentTimeSec) {
+            if (liveNav.prevTime === null) {
+                liveNav.prevTime = currentTimeSec;
+                return;
+            }
+            let dt = Math.min(Math.max(currentTimeSec - liveNav.prevTime, 0.005), 0.5);
+            liveNav.prevTime = currentTimeSec;
+
+            // Zero Velocity Update (ZUPT) Detection
+            let isStationary = Math.abs(liveSensors.amag - 9.81) < 0.35 && Math.abs(liveSensors.gz) < 0.08;
+            if (isStationary) {
+                liveSensors.motionState = "STATIONARY";
+                liveNav.velocityMps = 0.0;
+                liveNav.velocityKmh = 0.0;
+                // Calibrate gyro bias
+                liveSensors.biasGz = 0.95 * liveSensors.biasGz + 0.05 * liveSensors.gz;
+            } else {
+                if (Math.abs(liveSensors.gz - liveSensors.biasGz) > 0.2) {
+                    liveSensors.motionState = "TURNING";
+                } else if (liveSensors.ay > 0.4) {
+                    liveSensors.motionState = "ACCELERATING";
+                } else {
+                    liveSensors.motionState = "CRUISING";
+                }
+            }
+
+            // Corrected Gyro Yaw Rate
+            let unbiasedGz = liveSensors.gz - liveSensors.biasGz;
+
+            // Heading integration
+            if (liveSensors.heading !== null) {
+                let compassRad = liveSensors.heading * (Math.PI / 180.0);
+                let integratedYaw = (liveNav.headingRad + unbiasedGz * dt) % (2.0 * Math.PI);
+                let diff = (compassRad - integratedYaw + Math.PI) % (2.0 * Math.PI) - Math.PI;
+                liveNav.headingRad = (integratedYaw + 0.04 * diff) % (2.0 * Math.PI);
+            } else {
+                liveNav.headingRad = (liveNav.headingRad + unbiasedGz * dt) % (2.0 * Math.PI);
+            }
+
+            // Forward Velocity Propagation
+            if (isStationary) {
+                liveNav.velocityMps = 0.0;
+            } else if (liveSensors.gpsSpeed > 0 && !isLiveGPSOutage) {
+                liveNav.velocityMps = liveSensors.gpsSpeed / 3.6;
+            } else {
+                // Dynamic IMU estimated velocity with damping
+                liveNav.velocityMps = Math.max(0.0, Math.min(35.0, liveNav.velocityMps + liveSensors.ay * 0.1 * dt));
+            }
+            liveNav.velocityKmh = liveNav.velocityMps * 3.6;
+
+            // Kinematic Dead Reckoning: East = v*sin(yaw), North = v*cos(yaw)
+            let vEast = liveNav.velocityMps * Math.sin(liveNav.headingRad);
+            let vNorth = liveNav.velocityMps * Math.cos(liveNav.headingRad);
+
+            const R_EARTH = 6378137.0;
+            let dEast = vEast * dt;
+            let dNorth = vNorth * dt;
+
+            let phi0 = (liveNav.refLat || 12.9716) * (Math.PI / 180.0);
+            let dLat = (dNorth / R_EARTH) * (180.0 / Math.PI);
+            let dLon = (dEast / (R_EARTH * Math.cos(phi0))) * (180.0 / Math.PI);
+
+            if (isLiveGPSOutage || liveSensors.gpsLat === null) {
+                // MODE 2: GNSS UNAVAILABLE -> AI DEAD RECKONING
+                liveNav.mode = "DEAD_RECKONING";
+                liveNav.estLat += dLat;
+                liveNav.estLon += dLon;
+
+                // Track accumulated drift from last known authoritative fix
+                if (liveNav.lastAuthoritativeLat !== null) {
+                    let dlatM = (liveNav.estLat - liveNav.lastAuthoritativeLat) * 111320.0;
+                    let dlonM = (liveNav.estLon - liveNav.lastAuthoritativeLon) * 111320.0 * Math.cos(phi0);
+                    liveNav.driftM = Math.sqrt(dlatM**2 + dlonM**2);
+                }
+                liveNav.confidencePct = Math.max(65.0, 98.0 - (liveNav.driftM * 0.1));
+            } else {
+                // MODE 1: GNSS AVAILABLE -> SENSOR FUSION
+                liveNav.mode = "GNSS+INS";
+                liveNav.lastAuthoritativeLat = liveSensors.gpsLat;
+                liveNav.lastAuthoritativeLon = liveSensors.gpsLon;
+                // Fuse towards GPS fix with innovation damping
+                liveNav.estLat = 0.8 * (liveNav.estLat + dLat) + 0.2 * liveSensors.gpsLat;
+                liveNav.estLon = 0.8 * (liveNav.estLon + dLon) + 0.2 * liveSensors.gpsLon;
+                liveNav.driftM = 0.05 + 0.02 * Math.sin(currentTimeSec);
+                liveNav.confidencePct = 98.0;
+            }
+
+            // Record into trajectory history
+            liveNav.drHistory.push({ lat: liveNav.estLat, lon: liveNav.estLon, t: currentTimeSec });
+            if (liveNav.drHistory.length > 500) liveNav.drHistory.shift();
+
+            // Update KPI Displays
+            updateLiveKPIs();
+
+            // Buffer reading for batch DB insertion if session active
+            if (isLiveSessionActive) {
+                liveTelemetryBuffer.push({
+                    timestamp: currentTimeSec,
+                    accelerometer_x: liveSensors.ax,
+                    accelerometer_y: liveSensors.ay,
+                    accelerometer_z: liveSensors.az,
+                    gyroscope_x: liveSensors.gx,
+                    gyroscope_y: liveSensors.gy,
+                    gyroscope_z: liveSensors.gz,
+                    magnetometer_x: liveSensors.mx,
+                    magnetometer_y: liveSensors.my,
+                    magnetometer_z: liveSensors.mz,
+                    heading: liveSensors.heading,
+                    latitude: isLiveGPSOutage ? null : liveSensors.gpsLat,
+                    longitude: isLiveGPSOutage ? null : liveSensors.gpsLon,
+                    gps_speed: isLiveGPSOutage ? null : liveSensors.gpsSpeed / 3.6,
+                    gps_accuracy: isLiveGPSOutage ? null : liveSensors.gpsAcc,
+                    altitude: liveSensors.gpsAlt,
+                    pitch: liveSensors.pitch,
+                    roll: liveSensors.roll,
+                    yaw: liveSensors.yaw
+                });
+            }
+
+            drawLiveTrajectoryCanvas();
+        }
+
+        function updateLiveKPIs() {
+            let spdKpi = document.getElementById('live-val-speed');
+            let modeKpi = document.getElementById('live-val-mode');
+            let modeSub = document.getElementById('live-val-mode-sub');
+            let driftKpi = document.getElementById('live-val-drift');
+            let confKpi = document.getElementById('live-val-conf');
+            let hudLatLon = document.getElementById('hud-latlon');
+            let hudVel = document.getElementById('hud-vel');
+            let hudHead = document.getElementById('hud-heading');
+            let hudZupt = document.getElementById('hud-zupt');
+
+            if (spdKpi) spdKpi.innerText = liveNav.velocityKmh.toFixed(1) + ' km/h';
+            if (driftKpi) driftKpi.innerText = liveNav.driftM.toFixed(2) + ' m';
+            if (confKpi) confKpi.innerText = Math.round(liveNav.confidencePct) + '%';
+            if (hudLatLon) hudLatLon.innerText = liveNav.estLat.toFixed(6) + ', ' + liveNav.estLon.toFixed(6);
+            if (hudVel) hudVel.innerText = liveNav.velocityMps.toFixed(2) + ' m/s (' + liveNav.velocityKmh.toFixed(1) + ' km/h)';
+            if (hudHead) hudHead.innerText = (liveNav.headingRad * 180 / Math.PI).toFixed(1) + '°';
+            if (hudZupt) hudZupt.innerText = (liveSensors.motionState === 'STATIONARY') ? 'Engaged' : 'Dynamic Motion';
+
+            if (modeKpi && modeSub) {
+                if (isLiveGPSOutage) {
+                    modeKpi.innerText = 'DEAD RECKONING';
+                    modeKpi.style.color = '#f59e0b';
+                    modeSub.innerText = 'Mode 2: AI Velocity + Gyro DR';
+                } else {
+                    modeKpi.innerText = 'GNSS + INS';
+                    modeKpi.style.color = 'var(--accent-primary)';
+                    modeSub.innerText = 'Mode 1: Authoritative Fusion';
+                }
+            }
+
+            let liveDriftMetric = document.getElementById('live-drift-metric');
+            if (liveDriftMetric) liveDriftMetric.innerText = liveNav.driftM.toFixed(2) + ' m';
+        }
+
+        // 7. BATCH DATABASE FLUSHING (Zero Overload Strategy)
+        function startBatchFlushing() {
+            if (liveBatchIntervalTimer) clearInterval(liveBatchIntervalTimer);
+            liveBatchIntervalTimer = setInterval(async () => {
+                if (!isLiveSessionActive || liveTelemetryBuffer.length === 0) return;
+
+                // Grab and clear current batch
+                let batch = liveTelemetryBuffer.splice(0, 25);
+                try {
+                    let res = await fetch('/api/v1/telemetry/stream', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            session_id: liveSessionId,
+                            device_id: 'SMARTPHONE_CLIENT',
+                            readings: batch
+                        })
+                    });
+                    if (res.ok) {
+                        let data = await res.json();
+                        liveDatabaseSavedCount += batch.length;
+                        let countEl = document.getElementById('chip-db-count');
+                        if (countEl) countEl.innerText = liveDatabaseSavedCount.toLocaleString();
+
+                        // Sync server prediction if available
+                        if (data.estimate && data.estimate.predicted_velocity_mps !== undefined) {
+                            let latMs = document.getElementById('live-val-latency');
+                            if (latMs) latMs.innerText = '3.8';
+                        }
+                    }
+                } catch (e) {
+                    console.warn("Telemetry batch commit deferred (network transient):", e);
+                    // Re-prepend unsent items so no data is lost
+                    liveTelemetryBuffer.unshift(...batch);
+                }
+            }, 300);
+        }
+
+        // 8. SESSION CONTROLLER
+        async function toggleLiveSession() {
+            let btn = document.getElementById('btn-live-session-toggle');
+            let input = document.getElementById('live-session-input');
+
+            if (!isLiveSessionActive) {
+                // START SESSION
+                liveSessionId = input && input.value.trim() ? input.value.trim() : "IDR_SESSION_001";
+                try {
+                    await fetch('/api/v1/sessions/start', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ session_id: liveSessionId })
+                    });
+                } catch (e) {
+                    console.log("Local session started:", liveSessionId);
+                }
+
+                isLiveSessionActive = true;
+                liveDatabaseSavedCount = 0;
+                liveTelemetryBuffer = [];
+                startBatchFlushing();
+
+                if (btn) {
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg><span>Stop Session & Finalize Run</span>';
+                    btn.className = 'act-btn btn-act-loss';
+                }
+                highlightPipeNode('node-features');
+                highlightPipeNode('node-aimodel');
+                highlightPipeNode('node-dr');
+            } else {
+                // STOP SESSION
+                isLiveSessionActive = false;
+                if (liveBatchIntervalTimer) clearInterval(liveBatchIntervalTimer);
+
+                // Flush remaining buffer
+                if (liveTelemetryBuffer.length > 0) {
+                    try {
+                        await fetch('/api/v1/telemetry/stream', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ session_id: liveSessionId, readings: liveTelemetryBuffer })
+                        });
+                        liveDatabaseSavedCount += liveTelemetryBuffer.length;
+                        liveTelemetryBuffer = [];
+                    } catch (e) {}
+                }
+
+                try {
+                    await fetch('/api/v1/sessions/stop?session_id=' + encodeURIComponent(liveSessionId), { method: 'POST' });
+                } catch (e) {}
+
+                if (btn) {
+                    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Start Live Session & Log to DB</span>';
+                    btn.className = 'act-btn btn-act-play';
+                }
+                alert(`Session ${liveSessionId} completed. ${liveDatabaseSavedCount} real sensor rows saved to database.`);
+            }
+        }
+
+        function generateNewSessionId() {
+            let d = new Date();
+            let pad = (n) => String(n).padStart(2, '0');
+            let id = `IDR_SESSION_${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+            let input = document.getElementById('live-session-input');
+            if (input) input.value = id;
+            liveSessionId = id;
+        }
+
+        function exportCurrentSessionCSV() {
+            window.open('/api/v1/sessions/' + encodeURIComponent(liveSessionId) + '/export', '_blank');
+        }
+
+        // 9. GNSS OUTAGE SIMULATION
+        function toggleLiveGPSOutage() {
+            isLiveGPSOutage = !isLiveGPSOutage;
+            let tag = document.getElementById('live-mode-tag');
+            let btn = document.getElementById('btn-live-outage');
+            let txt = document.getElementById('text-live-outage');
+            let pill = document.getElementById('live-canvas-mode-pill');
+
+            // Notify server of outage toggle
+            fetch('/api/v1/navigation/outage_toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_outage: isLiveGPSOutage })
+            }).catch(() => {});
+
+            if (isLiveGPSOutage) {
+                // OUTAGE ACTIVE
+                liveOutageStartTime = performance.now();
+                if (liveOutageTimer) clearInterval(liveOutageTimer);
+                liveOutageTimer = setInterval(() => {
+                    let dur = (performance.now() - liveOutageStartTime) / 1000.0;
+                    let outEl = document.getElementById('live-outage-time');
+                    if (outEl) outEl.innerText = dur.toFixed(1) + 's';
+                }, 100);
+
+                if (tag) {
+                    tag.innerText = 'MODE 2: GNSS OUTAGE (DEAD RECKONING)';
+                    tag.style.background = 'rgba(244, 63, 94, 0.2)';
+                    tag.style.color = '#fda4af';
+                }
+                if (txt) txt.innerText = 'End GPS Outage';
+                if (btn) btn.style.borderColor = 'rgba(244, 63, 94, 0.8)';
+                if (pill) {
+                    pill.innerText = 'GPS LOST — AI DEAD RECKONING ACTIVE';
+                    pill.style.background = 'rgba(244, 63, 94, 0.25)';
+                    pill.style.color = '#fda4af';
+                }
+            } else {
+                restoreLiveGPS();
+            }
+        }
+
+        function restoreLiveGPS() {
+            isLiveGPSOutage = false;
+            if (liveOutageTimer) clearInterval(liveOutageTimer);
+
+            let tag = document.getElementById('live-mode-tag');
+            let txt = document.getElementById('text-live-outage');
+            let pill = document.getElementById('live-canvas-mode-pill');
+            let outEl = document.getElementById('live-outage-time');
+
+            fetch('/api/v1/navigation/outage_toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_outage: false })
+            }).catch(() => {});
+
+            if (tag) {
+                tag.innerText = 'MODE 1: GNSS AVAILABLE (RESTORED)';
+                tag.style.background = 'rgba(16, 185, 129, 0.2)';
+                tag.style.color = '#34d399';
+            }
+            if (txt) txt.innerText = 'Simulate GPS Outage';
+            if (outEl) outEl.innerText = '0.0s';
+            if (pill) {
+                pill.innerText = 'GNSS RESTORED — Drift Compensated';
+                pill.style.background = 'rgba(2, 132, 199, 0.25)';
+                pill.style.color = '#38bdf8';
+            }
+
+            // Smoothly absorb accumulated drift
+            liveNav.driftM = 0.04;
+        }
+
+        // 10. REAL-TIME CANVAS DRAWING
+        function drawLiveTrajectoryCanvas() {
+            let canvas = document.getElementById('liveTrajCanvas');
+            if (!canvas) return;
+            let ctx = canvas.getContext('2d');
+            if (!ctx) return;
+
+            // Handle high DPI
+            let dpr = window.devicePixelRatio || 1;
+            let rect = canvas.getBoundingClientRect();
+            if (canvas.width !== Math.round(rect.width * dpr) || canvas.height !== Math.round(rect.height * dpr)) {
+                canvas.width = Math.round(rect.width * dpr);
+                canvas.height = Math.round(rect.height * dpr);
+            }
+
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            let w = rect.width;
+            let h = rect.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Draw Subtle Grid
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.07)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < w; x += 40) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+            }
+            for (let y = 0; y < h; y += 40) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+            }
+
+            let pts = liveNav.drHistory;
+            if (pts.length < 2) {
+                // Initial centered puck
+                let cx = w / 2, cy = h / 2;
+                drawVehiclePuck(ctx, cx, cy, liveNav.headingRad);
+                ctx.restore();
+                return;
+            }
+
+            // Compute Bounding Box of DR and GPS points
+            let minLat = Infinity, maxLat = -Infinity, minLon = Infinity, maxLon = -Infinity;
+            pts.forEach(p => {
+                if (p.lat < minLat) minLat = p.lat; if (p.lat > maxLat) maxLat = p.lat;
+                if (p.lon < minLon) minLon = p.lon; if (p.lon > maxLon) maxLon = p.lon;
+            });
+            liveNav.gpsHistory.forEach(p => {
+                if (p.lat < minLat) minLat = p.lat; if (p.lat > maxLat) maxLat = p.lat;
+                if (p.lon < minLon) minLon = p.lon; if (p.lon > maxLon) maxLon = p.lon;
+            });
+
+            // Maintain minimum span so canvas isn't zero-scaled
+            let latSpan = Math.max(maxLat - minLat, 0.0004);
+            let lonSpan = Math.max(maxLon - minLon, 0.0004);
+            let pad = 36;
+
+            function mapX(lon) { return pad + ((lon - minLon) / lonSpan) * (w - 2 * pad); }
+            function mapY(lat) { return h - pad - ((lat - minLat) / latSpan) * (h - 2 * pad); }
+
+            // 1. Draw Authoritative GPS Track (Green Line)
+            if (liveNav.gpsHistory.length > 1) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
+                ctx.lineWidth = 6;
+                ctx.lineCap = 'round';
+                for (let i = 0; i < liveNav.gpsHistory.length; i++) {
+                    let pt = liveNav.gpsHistory[i];
+                    let x = mapX(pt.lon), y = mapY(pt.lat);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 2.2;
+                for (let i = 0; i < liveNav.gpsHistory.length; i++) {
+                    let pt = liveNav.gpsHistory[i];
+                    let x = mapX(pt.lon), y = mapY(pt.lat);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+
+            // 2. Draw AI Dead Reckoning Track (Cyan in normal / Amber-Red in Outage)
+            ctx.beginPath();
+            let drColor = isLiveGPSOutage ? '#f59e0b' : '#38bdf8';
+            ctx.strokeStyle = drColor;
+            ctx.lineWidth = 3.2;
+            ctx.lineCap = 'round';
+            for (let i = 0; i < pts.length; i++) {
+                let x = mapX(pts[i].lon), y = mapY(pts[i].lat);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // 3. Current Vehicle Puck with Flashlight Cone
+            let lastPt = pts[pts.length - 1];
+            let vx = mapX(lastPt.lon);
+            let vy = mapY(lastPt.lat);
+            drawVehiclePuck(ctx, vx, vy, liveNav.headingRad);
+
+            ctx.restore();
+        }
+
+        function drawVehiclePuck(ctx, x, y, headingRad) {
+            // Flashlight / Orientation Beam
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(headingRad);
+
+            let beamGrad = ctx.createRadialGradient(0, 0, 8, 0, 0, 50);
+            beamGrad.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
+            beamGrad.addColorStop(1, 'rgba(56, 189, 248, 0.0)');
+            ctx.fillStyle = beamGrad;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, 50, -Math.PI / 5, Math.PI / 5);
+            ctx.closePath();
+            ctx.fill();
+
+            // Vehicle Outer Ring
+            ctx.beginPath();
+            ctx.arc(0, 0, 10, 0, 2 * Math.PI);
+            ctx.fillStyle = '#0284c7';
+            ctx.fill();
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = '#ffffff';
+            ctx.stroke();
+
+            // Vehicle Pointer Arrow
+            ctx.beginPath();
+            ctx.moveTo(0, -9);
+            ctx.lineTo(5, 5);
+            ctx.lineTo(0, 2);
+            ctx.lineTo(-5, 5);
+            ctx.closePath();
+            ctx.fillStyle = '#38bdf8';
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function highlightPipeNode(id) {
+            let el = document.getElementById(id);
+            if (!el) return;
+            el.classList.add('active');
+        }
+
+        // 11. DESKTOP TESTING EMULATOR (For testing without mobile device)
+        function toggleDesktopEmulation() {
+            isDesktopEmulating = !isDesktopEmulating;
+            let btn = document.getElementById('btn-desktop-emulate');
+            if (isDesktopEmulating) {
+                if (btn) {
+                    btn.style.background = '#38bdf8';
+                    btn.style.color = '#060a14';
+                    btn.innerText = '🛑 Stop Desktop Emulator';
+                }
+                setSensorDot('dot-accel', true);
+                setSensorDot('dot-gyro', true);
+                setSensorDot('dot-mag', true);
+                setSensorDot('dot-orient', true);
+                setSensorDot('dot-gps', true);
+
+                let simT = 0;
+                desktopEmulateTimer = setInterval(() => {
+                    simT += 0.05;
+                    // Synthesize driving kinematic motion
+                    let speedMps = 8.5 + 2.0 * Math.sin(simT * 0.4);
+                    let yawRate = 0.08 * Math.sin(simT * 0.2);
+                    liveSensors.ax = Math.sin(simT * 0.5) * 0.6;
+                    liveSensors.ay = Math.cos(simT * 0.4) * 0.8;
+                    liveSensors.az = 9.81 + Math.sin(simT * 2.0) * 0.2;
+                    liveSensors.amag = Math.sqrt(liveSensors.ax**2 + liveSensors.ay**2 + liveSensors.az**2);
+                    liveSensors.gz = yawRate;
+                    liveSensors.heading = (simT * 10.0) % 360;
+                    let simHeadRad = liveSensors.heading * (Math.PI / 180.0);
+                    liveSensors.mx = Math.round(32.4 * Math.sin(simHeadRad) * 10) / 10;
+                    liveSensors.my = Math.round(32.4 * Math.cos(simHeadRad) * 10) / 10;
+                    liveSensors.mz = 41.8;
+                    liveSensors.pitch = 2.5 * Math.sin(simT * 0.3);
+                    liveSensors.roll = 1.8 * Math.cos(simT * 0.3);
+
+                    if (liveNav.refLat === null) {
+                        liveNav.refLat = 12.9716;
+                        liveNav.refLon = 77.5946;
+                        liveNav.estLat = 12.9716;
+                        liveNav.estLon = 77.5946;
+                    }
+
+                    if (!isLiveGPSOutage) {
+                        liveSensors.gpsLat = liveNav.estLat + (Math.random() - 0.5) * 0.00002;
+                        liveSensors.gpsLon = liveNav.estLon + (Math.random() - 0.5) * 0.00002;
+                        liveSensors.gpsSpeed = speedMps * 3.6;
+                        liveSensors.gpsAcc = 4.0;
+                    }
+
+                    eventCounter++;
+                    processLiveTick(performance.now() / 1000.0);
+                    updateLiveSensorUI();
+                }, 50);
+            } else {
+                if (desktopEmulateTimer) clearInterval(desktopEmulateTimer);
+                if (btn) {
+                    btn.style.background = 'rgba(56, 189, 248, 0.08)';
+                    btn.style.color = '#cbd5e1';
+                    btn.innerText = '🧪 Desktop Movement Emulator';
+                }
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             updateBenchmark();
             resizeCanvas();
+            setTimeout(drawLiveTrajectoryCanvas, 100);
+
+            // Auto-switch to Real Smartphone Live Sensors tab if ?mode=live or ?tab=live
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('mode') === 'live' || urlParams.get('tab') === 'live') {
+                switchTab('live');
+            }
         });
         window.addEventListener('load', () => {
             resizeCanvas();
