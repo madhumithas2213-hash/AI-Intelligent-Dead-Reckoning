@@ -2194,7 +2194,8 @@ def generate_html_dashboard(multi_seq_bundles: Dict[str, Dict[str, Any]]):
         const multiTrajData = {multi_traj_str};
         let activeSeqKey = "S-A1";
         let trajData = multiTrajData[activeSeqKey] || [];
-        let currentIndex = 0;
+        let currentIndex = 24;
+        let isFocusZone = true;
         let isPlaying = false;
         let isForcedBlackout = false;
         let isRecoveredMode = false;
