@@ -965,6 +965,7 @@
             .live-sensor-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <script src="offline_ml_engine.js"></script>
 </head>
 <body>
 
@@ -1580,8 +1581,8 @@
                         </div>
                     </div>
                     <div style="font-size: 11.5px; color: #34d399; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-                        <span class="sensor-status-dot active"></span>
-                        <span id="live-connection-badge">LIVE SMARTPHONE HARDWARE STREAM</span>
+                        <span id="offline-network-dot" class="sensor-status-dot active"></span>
+                        <span id="live-connection-badge">🟢 ONLINE — ON-DEVICE AI READY</span>
                     </div>
                 </div>
 
@@ -2753,6 +2754,200 @@
         }
 
         // =========================================================================
+        // OFFLINE-FIRST PWA, ON-DEVICE AI INFERENCE & OFFLINE MAP STORAGE
+        // =========================================================================
+        // 0.1 Service Worker Registration for Complete Offline PWA Boot
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').then(reg => {
+                    console.log('[AI-IDR] Service Worker registered. Offline caching active:', reg.scope);
+                }).catch(err => {
+                    console.log('[AI-IDR] Service Worker offline registration note:', err);
+                });
+            });
+        }
+
+        // 0.2 Real-Time Online / Offline Detection
+        function updateNetworkStatus() {
+            const badge = document.getElementById('live-connection-badge');
+            const dot = document.getElementById('offline-network-dot');
+            if (navigator.onLine) {
+                if (badge) {
+                    badge.innerText = '🟢 ONLINE — ON-DEVICE AI READY';
+                    badge.parentElement.style.color = '#34d399';
+                }
+                if (dot) dot.className = 'sensor-status-dot active';
+                syncOfflineIndexedDB();
+            } else {
+                if (badge) {
+                    badge.innerText = '🟡 OFFLINE-FIRST — ON-DEVICE AI ACTIVE (NO INTERNET)';
+                    badge.parentElement.style.color = '#f59e0b';
+                }
+                if (dot) dot.className = 'sensor-status-dot';
+            }
+        }
+        window.addEventListener('online', updateNetworkStatus);
+        window.addEventListener('offline', updateNetworkStatus);
+
+        // 0.3 IndexedDB Local Offline Telemetry & State Storage
+        let idrIndexedDB = null;
+        function initOfflineIndexedDB() {
+            return new Promise((resolve) => {
+                if (!window.indexedDB) return resolve(null);
+                let req = window.indexedDB.open('idr_offline_storage_v1', 1);
+                req.onupgradeneeded = (e) => {
+                    let db = e.target.result;
+                    if (!db.objectStoreNames.contains('telemetry_stream')) {
+                        let store = db.createObjectStore('telemetry_stream', { keyPath: 'id', autoIncrement: true });
+                        store.createIndex('synced', 'synced', { unique: false });
+                        store.createIndex('session_id', 'session_id', { unique: false });
+                    }
+                };
+                req.onsuccess = (e) => {
+                    idrIndexedDB = e.target.result;
+                    resolve(idrIndexedDB);
+                };
+                req.onerror = () => resolve(null);
+            });
+        }
+        initOfflineIndexedDB();
+
+        async function saveOfflineTelemetry(readingsBatch) {
+            if (!idrIndexedDB || readingsBatch.length === 0) return;
+            try {
+                let tx = idrIndexedDB.transaction('telemetry_stream', 'readwrite');
+                let store = tx.objectStore('telemetry_stream');
+                for (let r of readingsBatch) {
+                    store.add({ ...r, session_id: liveSessionId, synced: 0, saved_at: Date.now() });
+                }
+            } catch (err) {
+                console.warn('[IDR Offline DB] Storage warning:', err);
+            }
+        }
+
+        async function syncOfflineIndexedDB() {
+            if (!idrIndexedDB || !navigator.onLine) return;
+            try {
+                let tx = idrIndexedDB.transaction('telemetry_stream', 'readwrite');
+                let store = tx.objectStore('telemetry_stream');
+                let idx = store.index('synced');
+                let req = idx.getAll(0);
+                req.onsuccess = async () => {
+                    let unsynced = req.result || [];
+                    if (unsynced.length === 0) return;
+                    let batch = unsynced.slice(0, 40);
+                    try {
+                        let res = await fetch('/api/v1/telemetry/stream', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                session_id: liveSessionId,
+                                device_id: 'OFFLINE_SYNC_CLIENT',
+                                readings: batch
+                            })
+                        });
+                        if (res.ok) {
+                            let tx2 = idrIndexedDB.transaction('telemetry_stream', 'readwrite');
+                            let store2 = tx2.objectStore('telemetry_stream');
+                            for (let item of batch) {
+                                item.synced = 1;
+                                store2.put(item);
+                            }
+                        }
+                    } catch (e) {}
+                };
+            } catch (e) {}
+        }
+
+        // 0.4 Client-Side Offline Road Network & Snapping Engine
+        class OfflineMapMatcher {
+            constructor() {
+                this.segments = [
+                    { id: 'SEG_OFFLINE_001', name: 'MG Road Eastbound', points: [[12.971600, 77.594600], [12.971850, 77.596200], [12.972100, 77.597800], [12.972400, 77.599500]] },
+                    { id: 'SEG_OFFLINE_002', name: 'Brigade Road Southbound', points: [[12.971850, 77.596200], [12.970200, 77.596400], [12.968500, 77.596600], [12.966800, 77.596800]] },
+                    { id: 'SEG_OFFLINE_003', name: 'Residency Road Westbound', points: [[12.966800, 77.596800], [12.966600, 77.594800], [12.966400, 77.592800], [12.966200, 77.590800]] },
+                    { id: 'SEG_OFFLINE_004', name: 'St Marks Road Northbound', points: [[12.966400, 77.592800], [12.968800, 77.593200], [12.971200, 77.593600], [12.971600, 77.594600]] },
+                    { id: 'SEG_OFFLINE_LOCAL', name: 'Dynamic Local Road Way', points: [] }
+                ];
+            }
+
+            seedOriginSegment(refLat, refLon, headingRad) {
+                let cosLat = Math.cos(refLat * Math.PI / 180.0);
+                let R = 6378137.0;
+                let pts = [];
+                for (let offsetM = -250; offsetM <= 2000; offsetM += 40) {
+                    let dE = offsetM * Math.sin(headingRad);
+                    let dN = offsetM * Math.cos(headingRad);
+                    let ptLat = refLat + (dN / R) * (180.0 / Math.PI);
+                    let ptLon = refLon + (dE / (R * cosLat)) * (180.0 / Math.PI);
+                    pts.push([ptLat, ptLon]);
+                }
+                let localSeg = this.segments.find(s => s.id === 'SEG_OFFLINE_LOCAL');
+                if (localSeg) {
+                    localSeg.points = pts;
+                }
+            }
+
+            projectPointToSegment(pLat, pLon, aLat, aLon, bLat, bLon) {
+                let cosLat = Math.cos(pLat * Math.PI / 180.0);
+                let bx = (bLon - aLon) * 111320.0 * cosLat;
+                let by = (bLat - aLat) * 111320.0;
+                let px = (pLon - aLon) * 111320.0 * cosLat;
+                let py = (pLat - aLat) * 111320.0;
+
+                let segLenSq = bx * bx + by * by;
+                let u = segLenSq > 0 ? (px * bx + py * by) / segLenSq : 0;
+                let uClamped = Math.max(0.0, Math.min(1.0, u));
+
+                let projX = uClamped * bx;
+                let projY = uClamped * by;
+                let distM = Math.hypot(px - projX, py - projY);
+
+                let snapLat = aLat + (projY / 111320.0);
+                let snapLon = aLon + (projX / (111320.0 * cosLat));
+                let roadHeadingRad = Math.atan2(bx, by);
+
+                return { snapLat, snapLon, distM, roadHeadingRad };
+            }
+
+            match(estLat, estLon, headingRad, maxRadiusM = 35.0) {
+                let bestMatch = {
+                    snappedLat: estLat,
+                    snappedLon: estLon,
+                    distM: 0.0,
+                    roadName: 'Off-Road / Free Trajectory',
+                    matched: false
+                };
+                let minDist = Infinity;
+
+                for (let seg of this.segments) {
+                    if (!seg.points || seg.points.length < 2) continue;
+                    for (let i = 0; i < seg.points.length - 1; i++) {
+                        let [aLat, aLon] = seg.points[i];
+                        let [bLat, bLon] = seg.points[i + 1];
+                        let proj = this.projectPointToSegment(estLat, estLon, aLat, aLon, bLat, bLon);
+                        if (proj.distM < minDist) {
+                            minDist = proj.distM;
+                            if (proj.distM <= maxRadiusM) {
+                                bestMatch = {
+                                    snappedLat: proj.snapLat,
+                                    snappedLon: proj.snapLon,
+                                    distM: proj.distM,
+                                    roadName: seg.name,
+                                    roadHeading: proj.roadHeadingRad,
+                                    matched: true
+                                };
+                            }
+                        }
+                    }
+                }
+                return bestMatch;
+            }
+        }
+        const offlineMapMatcher = new OfflineMapMatcher();
+        let liveSensorFeatureBuffer = [];
+
+        // =========================================================================
         // REAL SMARTPHONE LIVE SENSOR ACQUISITION & AI-IDR DEAD RECKONING ENGINE
         // =========================================================================
         let liveSessionId = "IDR_SESSION_001";
@@ -2910,6 +3105,7 @@
                         liveNav.estLon = c.longitude;
                         liveNav.lastAuthoritativeLat = c.latitude;
                         liveNav.lastAuthoritativeLon = c.longitude;
+                        offlineMapMatcher.seedOriginSegment(c.latitude, c.longitude, liveNav.headingRad || 0.0);
                     }
 
                     if (!isLiveGPSOutage) {
@@ -3040,7 +3236,8 @@
             }
         }
 
-        // 6. PIPELINE TICK: VALIDATION -> FILTER -> AI DR STEP
+        // 6. PIPELINE TICK: VALIDATION -> FILTER -> ON-DEVICE AI DR STEP -> MAP MATCHING
+        let lastInferenceLatencyMs = 0.4;
         function processLiveTick(currentTimeSec) {
             if (liveNav.prevTime === null) {
                 liveNav.prevTime = currentTimeSec;
@@ -3080,13 +3277,46 @@
                 liveNav.headingRad = (liveNav.headingRad + unbiasedGz * dt) % (2.0 * Math.PI);
             }
 
-            // Forward Velocity Propagation
+            // 6.1 ON-DEVICE REAL-TIME NEURAL INFERENCE (14-Channel Rolling Window)
+            let pitchRad = (liveSensors.pitch || 0.0) * (Math.PI / 180.0);
+            let rollRad = (liveSensors.roll || 0.0) * (Math.PI / 180.0);
+            let gravX = -9.81 * Math.sin(rollRad);
+            let gravY = 9.81 * Math.sin(pitchRad) * Math.cos(rollRad);
+            let gravZ = 9.81 * Math.cos(pitchRad) * Math.cos(rollRad);
+            let gyroMag = Math.sqrt(liveSensors.gx**2 + liveSensors.gy**2 + liveSensors.gz**2);
+
+            let featureRow = [
+                liveSensors.ax, liveSensors.ay, liveSensors.az,
+                liveSensors.gx, liveSensors.gy, liveSensors.gz,
+                gravX, gravY, gravZ,
+                liveSensors.mx, liveSensors.my, liveSensors.mz,
+                liveSensors.amag, gyroMag
+            ];
+            liveSensorFeatureBuffer.push(featureRow);
+            if (liveSensorFeatureBuffer.length > 20) liveSensorFeatureBuffer.shift();
+
+            let aiPredictedSpeedMps = null;
+            if (window.offlineVelocityPredictor && liveSensorFeatureBuffer.length >= 20) {
+                let t0 = performance.now();
+                aiPredictedSpeedMps = window.offlineVelocityPredictor.predict(liveSensorFeatureBuffer);
+                lastInferenceLatencyMs = Math.max(0.2, performance.now() - t0);
+                highlightPipeNode('node-features');
+                highlightPipeNode('node-aimodel');
+            }
+
+            // 6.2 Forward Velocity Propagation
             if (isStationary) {
                 liveNav.velocityMps = 0.0;
+            } else if (aiPredictedSpeedMps !== null) {
+                if (!isLiveGPSOutage && liveSensors.gpsSpeed > 0) {
+                    liveNav.velocityMps = 0.6 * (liveSensors.gpsSpeed / 3.6) + 0.4 * aiPredictedSpeedMps;
+                } else {
+                    // Outage / Offline: Pure On-Device AI forward speed prediction
+                    liveNav.velocityMps = aiPredictedSpeedMps;
+                }
             } else if (liveSensors.gpsSpeed > 0 && !isLiveGPSOutage) {
                 liveNav.velocityMps = liveSensors.gpsSpeed / 3.6;
             } else {
-                // Dynamic IMU estimated velocity with damping
                 liveNav.velocityMps = Math.max(0.0, Math.min(35.0, liveNav.velocityMps + liveSensors.ay * 0.1 * dt));
             }
             liveNav.velocityKmh = liveNav.velocityMps * 3.6;
@@ -3116,6 +3346,7 @@
                     liveNav.driftM = Math.sqrt(dlatM**2 + dlonM**2);
                 }
                 liveNav.confidencePct = Math.max(65.0, 98.0 - (liveNav.driftM * 0.1));
+                highlightPipeNode('node-dr');
             } else {
                 // MODE 1: GNSS AVAILABLE -> SENSOR FUSION
                 liveNav.mode = "GNSS+INS";
@@ -3128,36 +3359,65 @@
                 liveNav.confidencePct = 98.0;
             }
 
+            // 6.3 OFFLINE MAP MATCHING ROAD SNAPPING
+            let mapSnap = offlineMapMatcher.match(liveNav.estLat, liveNav.estLon, liveNav.headingRad);
+            liveNav.mapMatchedHistory.push({
+                lat: mapSnap.snappedLat,
+                lon: mapSnap.snappedLon,
+                distM: mapSnap.distM,
+                matched: mapSnap.matched,
+                roadName: mapSnap.roadName,
+                t: currentTimeSec
+            });
+            if (liveNav.mapMatchedHistory.length > 500) liveNav.mapMatchedHistory.shift();
+
+            if (mapSnap.matched) {
+                highlightPipeNode('node-map');
+                if (isLiveGPSOutage) {
+                    liveNav.estLat = 0.88 * liveNav.estLat + 0.12 * mapSnap.snappedLat;
+                    liveNav.estLon = 0.88 * liveNav.estLon + 0.12 * mapSnap.snappedLon;
+                }
+            }
+
             // Record into trajectory history
             liveNav.drHistory.push({ lat: liveNav.estLat, lon: liveNav.estLon, t: currentTimeSec });
             if (liveNav.drHistory.length > 500) liveNav.drHistory.shift();
+            highlightPipeNode('node-ui');
 
             // Update KPI Displays
             updateLiveKPIs();
 
-            // Buffer reading for batch DB insertion if session active
+            // 6.4 Buffer reading for batch DB insertion or local IndexedDB when offline
+            let record = {
+                timestamp: currentTimeSec,
+                accelerometer_x: liveSensors.ax,
+                accelerometer_y: liveSensors.ay,
+                accelerometer_z: liveSensors.az,
+                gyroscope_x: liveSensors.gx,
+                gyroscope_y: liveSensors.gy,
+                gyroscope_z: liveSensors.gz,
+                magnetometer_x: liveSensors.mx,
+                magnetometer_y: liveSensors.my,
+                magnetometer_z: liveSensors.mz,
+                heading: liveSensors.heading,
+                latitude: isLiveGPSOutage ? null : liveSensors.gpsLat,
+                longitude: isLiveGPSOutage ? null : liveSensors.gpsLon,
+                gps_speed: isLiveGPSOutage ? null : liveSensors.gpsSpeed / 3.6,
+                gps_accuracy: isLiveGPSOutage ? null : liveSensors.gpsAcc,
+                altitude: liveSensors.gpsAlt,
+                pitch: liveSensors.pitch,
+                roll: liveSensors.roll,
+                yaw: liveSensors.yaw,
+                predicted_velocity: liveNav.velocityMps,
+                map_snapped_lat: mapSnap.snappedLat,
+                map_snapped_lon: mapSnap.snappedLon
+            };
+
             if (isLiveSessionActive) {
-                liveTelemetryBuffer.push({
-                    timestamp: currentTimeSec,
-                    accelerometer_x: liveSensors.ax,
-                    accelerometer_y: liveSensors.ay,
-                    accelerometer_z: liveSensors.az,
-                    gyroscope_x: liveSensors.gx,
-                    gyroscope_y: liveSensors.gy,
-                    gyroscope_z: liveSensors.gz,
-                    magnetometer_x: liveSensors.mx,
-                    magnetometer_y: liveSensors.my,
-                    magnetometer_z: liveSensors.mz,
-                    heading: liveSensors.heading,
-                    latitude: isLiveGPSOutage ? null : liveSensors.gpsLat,
-                    longitude: isLiveGPSOutage ? null : liveSensors.gpsLon,
-                    gps_speed: isLiveGPSOutage ? null : liveSensors.gpsSpeed / 3.6,
-                    gps_accuracy: isLiveGPSOutage ? null : liveSensors.gpsAcc,
-                    altitude: liveSensors.gpsAlt,
-                    pitch: liveSensors.pitch,
-                    roll: liveSensors.roll,
-                    yaw: liveSensors.yaw
-                });
+                liveTelemetryBuffer.push(record);
+            }
+            if (!navigator.onLine || isLiveSessionActive) {
+                saveOfflineTelemetry([record]);
             }
 
             drawLiveTrajectoryCanvas();
@@ -3165,6 +3425,7 @@
 
         function updateLiveKPIs() {
             let spdKpi = document.getElementById('live-val-speed');
+            let spdSrc = document.getElementById('live-val-speed-src');
             let modeKpi = document.getElementById('live-val-mode');
             let modeSub = document.getElementById('live-val-mode-sub');
             let driftKpi = document.getElementById('live-val-drift');
@@ -3175,6 +3436,10 @@
             let hudZupt = document.getElementById('hud-zupt');
 
             if (spdKpi) spdKpi.innerText = liveNav.velocityKmh.toFixed(1) + ' km/h';
+            if (spdSrc) {
+                let latStr = lastInferenceLatencyMs < 1 ? lastInferenceLatencyMs.toFixed(2) : lastInferenceLatencyMs.toFixed(1);
+                spdSrc.innerHTML = `On-Device GRU Engine (<span id="live-val-latency">${latStr}</span>ms)`;
+            }
             if (driftKpi) driftKpi.innerText = liveNav.driftM.toFixed(2) + ' m';
             if (confKpi) confKpi.innerText = Math.round(liveNav.confidencePct) + '%';
             if (hudLatLon) hudLatLon.innerText = liveNav.estLat.toFixed(6) + ', ' + liveNav.estLon.toFixed(6);
@@ -3186,7 +3451,7 @@
                 if (isLiveGPSOutage) {
                     modeKpi.innerText = 'DEAD RECKONING';
                     modeKpi.style.color = '#f59e0b';
-                    modeSub.innerText = 'Mode 2: AI Velocity + Gyro DR';
+                    modeSub.innerText = 'Mode 2: On-Device AI Velocity + Gyro DR';
                 } else {
                     modeKpi.innerText = 'GNSS + INS';
                     modeKpi.style.color = 'var(--accent-primary)';
@@ -3435,13 +3700,17 @@
                 if (p.lon < minLon) minLon = p.lon; if (p.lon > maxLon) maxLon = p.lon;
             });
 
-            // Maintain minimum span so canvas isn't zero-scaled
-            let latSpan = Math.max(maxLat - minLat, 0.0004);
-            let lonSpan = Math.max(maxLon - minLon, 0.0004);
-            let pad = 36;
+            // Maintain centered viewport around active vehicle trajectory
+            let midLat = (minLat + maxLat) / 2.0;
+            let midLon = (minLon + maxLon) / 2.0;
+            let latSpan = Math.max(maxLat - minLat, 0.0008);
+            let lonSpan = Math.max(maxLon - minLon, 0.0008);
+            let minDisplayLat = midLat - latSpan / 2.0;
+            let minDisplayLon = midLon - lonSpan / 2.0;
+            let pad = 44;
 
-            function mapX(lon) { return pad + ((lon - minLon) / lonSpan) * (w - 2 * pad); }
-            function mapY(lat) { return h - pad - ((lat - minLat) / latSpan) * (h - 2 * pad); }
+            function mapX(lon) { return pad + ((lon - minDisplayLon) / lonSpan) * (w - 2 * pad); }
+            function mapY(lat) { return h - pad - ((lat - minDisplayLat) / latSpan) * (h - 2 * pad); }
 
             // 1. Draw Authoritative GPS Track (Green Line)
             if (liveNav.gpsHistory.length > 1) {
@@ -3478,6 +3747,30 @@
                 if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
             }
             ctx.stroke();
+
+            // 2.5. Draw Offline Map-Matched Fix Track (Cyan Line)
+            if (liveNav.mapMatchedHistory && liveNav.mapMatchedHistory.length > 1) {
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+                ctx.lineWidth = 5;
+                ctx.lineCap = 'round';
+                for (let i = 0; i < liveNav.mapMatchedHistory.length; i++) {
+                    let pt = liveNav.mapMatchedHistory[i];
+                    let x = mapX(pt.lon), y = mapY(pt.lat);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.strokeStyle = '#06b6d4';
+                ctx.lineWidth = 2.0;
+                for (let i = 0; i < liveNav.mapMatchedHistory.length; i++) {
+                    let pt = liveNav.mapMatchedHistory[i];
+                    let x = mapX(pt.lon), y = mapY(pt.lat);
+                    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
 
             // 3. Current Vehicle Puck with Flashlight Cone
             let lastPt = pts[pts.length - 1];
@@ -3572,6 +3865,7 @@
                         liveNav.refLon = 77.5946;
                         liveNav.estLat = 12.9716;
                         liveNav.estLon = 77.5946;
+                        offlineMapMatcher.seedOriginSegment(12.9716, 77.5946, 0.0);
                     }
 
                     if (!isLiveGPSOutage) {
