@@ -2358,9 +2358,20 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateBenchmark();
             resizeCanvas();
+            // Automatically launch smooth live navigation playback after a brief scenic showcase
+            setTimeout(() => {
+                if (!isPlaying) {
+                    togglePlay();
+                }
+            }, 1200);
         });
         updateBenchmark();
-        setTimeout(resizeCanvas, 100);
+        setTimeout(resizeCanvas, 80);
+        setTimeout(() => {
+            if (!isPlaying) {
+                togglePlay();
+            }
+        }, 1400);
     </script>
 </body>
 </html>
