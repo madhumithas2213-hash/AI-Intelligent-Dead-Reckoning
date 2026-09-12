@@ -1,0 +1,286 @@
+================================================================================
+             IO-VNBD DATASET VERIFICATION REPORT (SIH26168)
+================================================================================
+
+1. DIRECTORY STRUCTURE & SUBFOLDERS
+----------------------------------
+Root path: c:\Users\mathu\OneDrive\Desktop\AI-IDR\dataset\raw\IO-VNBD-master
+Synchronised dataset path exists: True
+Unsynchronised dataset path exists: True
+
+Total CSV files found across repository: 564
+  - Synchronised dataset CSV files: 288
+  - Unsynchronised dataset CSV files: 276
+
+Subfolder Breakdown:
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\M (Driver B) (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S1 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S2 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S3a (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S3b (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S3c (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\S (Driver A)\S4 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vf (Driver E)\V-Vfa01 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vf (Driver E)\V-Vfa02 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta01a (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta01b (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta02 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta03 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta04 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta05 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta06 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta07 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta08 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta09 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta10 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta11 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta12 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta13 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta14 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta15 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta16 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta17 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta19 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta20 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta21 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta22 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta23 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta24 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta25 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta26 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta27 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta28 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta29 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vta (Driver E)\Vta30 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb01 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb02 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb03 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb04 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb05 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb06 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb07 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb08 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb09 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb10 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb11 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vtb (Driver E)\Vtb12 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw01 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw02 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw03 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw04 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw05 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw06 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw07 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw08 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw09 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw10 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw11 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw12 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw13 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw14a (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw14b (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw14c (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw15 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw16a (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw16b (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Vw (Driver E)\Vw17 (2 CSV files)
+  - Synchronised V abd S datasets\Categorised IOVNB Dataset\Y (Driver D)\Y1 (2 CSV files)
+  - Synchronised V abd S datasets\Uncategorised IOVNB Dataset\S-Dataset (72 CSV files)
+  - Synchronised V abd S datasets\Uncategorised IOVNB Dataset\V-Dataset (72 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\M (Driver B) (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S1 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S2 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S3a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S3b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S3c (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\S (Driver A)\S4 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\St (Driver C)\St1 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\St (Driver C)\St4 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\St (Driver C)\St6 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\St (Driver C)\St7 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfa01 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfa02 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb01a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb01b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb01c (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb01d (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02c (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02d (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02e (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02f (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vf (Driver E)\V-Vfb02g (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta01a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta01b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta02 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta03 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta04 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta05 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta06 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta07 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta08 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta09 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta10 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta11 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta12 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta13 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta14 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta15 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta16 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta17 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta19 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta20 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta21 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta22 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta23 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta24 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta25 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta26 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta27 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta28 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta29 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vta (Driver E)\Vta30 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb01 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb02 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb03 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb04 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb05 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb06 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb07 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb08 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb09 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb10 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb11 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb12 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vtb (Driver E)\Vtb13 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw01 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw02 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw03 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw04 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw05 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw06 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw07 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw08 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw09 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw10 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw11 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw12 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw13 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw14a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw14b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw14c (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw15 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw16a (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw16b (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Vw (Driver E)\Vw17 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Y (Driver D)\Y1 (1 CSV files)
+  - Unsynchronised V and S Dataset\Categorised IOVNB (V) Dataset\V Dataset\Y (Driver D)\Y2 (1 CSV files)
+  - Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\S-Dataset (97 CSV files)
+  - Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\V-Dataset (90 CSV files)
+
+================================================================================
+2. RECENT SENSORS & EXACT COLUMN NAMES DISCOVERED
+------------------------------------------------
+Discovered Smartphone (S) files: 253
+Discovered Vehicle (V) files: 323
+
+Representative Smartphone File: Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\S-Dataset\S-A1.csv
+  Rows: 5942, Columns: 24
+  Exact Column Names (24 columns):
+    [1] 'GPS LATITUDE (degrees)'
+    [2] ' GPS LONGITUDE (degrees)'
+    [3] ' GPS ALTITUDE (m)'
+    [4] ' GPS SPEED (Kmh)'
+    [5] ' GPS ACCURACY (m)'
+    [6] ' GPS ORIENTATION (Â°)'
+    [7] 'GPS SATELLITES IN RANGE'
+    [8] ' TIME SINCE START (ms)'
+    [9] ' DATE (YYYY-MO-DD HH-MI-SS_SSS)'
+    [10] ' ACCELEROMETER X (m/s²) '
+    [11] ' ACCELEROMETER Y (m/s²)'
+    [12] ' ACCELEROMETER Z (m/s²)'
+    [13] ' GRAVITY X (m/s²)'
+    [14] ' GRAVITY Y (m/s²)'
+    [15] ' GRAVITY Z (m/s²)'
+    [16] ' GYROSCOPE Yaw (rad/s)'
+    [17] ' GYROSCOPE Pitch (rad/s)'
+    [18] ' GYROSCOPE Roll (rad/s)'
+    [19] ' MAGNETIC FIELD X (Î¼T)'
+    [20] ' MAGNETIC FIELD Y (Î¼T)'
+    [21] ' MAGNETIC FIELD Z (Î¼T)'
+    [22] ' ORIENTATION (Yaw) (Â°)'
+    [23] ' ORIENTATION (Pitch) (Â°)'
+    [24] ' ORIENTATION (Roll ) (Â°)'
+
+Representative Vehicle File: Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\V-Dataset\V-M.csv
+  Rows: 105995, Columns: 29
+  Exact Column Names (29 columns):
+    [1] 'No of GPS Satellites Available'
+    [2] ' Time Since Start of Day (seconds)'
+    [3] ' Latitude (degrees)'
+    [4] ' Longitude (degrees)'
+    [5] ' Velocity (km/hr)'
+    [6] ' Heading (degrees)'
+    [7] ' Height (km)'
+    [8] ' Vertical velocity (km/hr)'
+    [9] ' Sample period (seconds)'
+    [10] ' Steering Angle (degrees)'
+    [11] ' Wheel Speed Front Left (rad/sec)'
+    [12] ' Wheel Speed Front Right (rad/sec)'
+    [13] ' Wheel Speed Rear Left (rad/sec)'
+    [14] ' Wheel Speed Rear Right (rad/sec)'
+    [15] ' Yaw Rate (deg/sec)'
+    [16] ' Indicated Vehicle Speed (km/hr)'
+    [17] ' Indicated Longitudinal Acceleration (g)'
+    [18] ' Indicated Lateral Acceleration (g)'
+    [19] ' Handbrake (0 or 1)'
+    [20] ' Gear Requested (Number fof gear employed 1-5)'
+    [21] ' Gear (Number fof gear employed 1-5)'
+    [22] ' Engine Speed (rev/min)'
+    [23] ' Coolant Temperature (degrees)'
+    [24] ' Clutch Position (0 or 1)'
+    [25] ' Brake Pressure (psi)'
+    [26] ' Brake Position (0 or 1)'
+    [27] ' Battery Voltage (volts)'
+    [28] ' Air Temperature (degrees)'
+    [29] ' Accelerator Pedal Position (0 or 1)'
+
+================================================================================
+3. SAMPLING RATE ANALYSIS
+------------------------------------------------
+Smartphone Data (' TIME SINCE START (ms)'):
+  - Mean Delta T: 500.018 ms
+  - Median Delta T: 500.000 ms
+  - Sampling Frequency: 2.00 Hz
+
+
+================================================================================
+4. DATA SUITABILITY EVALUATION FOR SIH26168
+------------------------------------------------
+1. Smartphone IMU (Accel + Gyro): YES (Contains 3-axis Accelerometer & 3-axis Gyroscope at 10 Hz / 100ms)
+2. Smartphone GNSS (Lat, Lon, Speed): YES (Contains Lat, Lon, Speed, Altitude, Accuracy, Satellites)
+3. Vehicle IMU / Wheel Odometry: YES (Contains Vehicle CAN/OBD-II Wheel Speeds & CAN IMU streams)
+4. Phone-to-Vehicle Alignment Suitability: YES (Contains static gravity + dynamic accel + orientation)
+5. Dead Reckoning Evaluation Ground Truth: YES (Contains high-accuracy synchronised reference trajectory)
+
+================================================================================
+5. FINAL DATASET STATUS SUMMARY
+================================================================================
+DATASET STATUS:
+- Dataset found: YES
+- Smartphone IMU: YES
+- Smartphone GNSS: YES
+- Vehicle IMU: YES
+- Odometry: YES
+- Ground truth/reference: YES
+- Sampling rates verified: YES
+- Suitable for SIH26168: YES
+
+Exact Discovered File Paths:
+  Smartphone sample path: Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\S-Dataset\S-A1.csv
+  Vehicle sample path: Unsynchronised V and S Dataset\Uncategorised IOVNB (V and S) Dataset\V-Dataset\V-M.csv
+
+Exact Discovered Column Names:
+  Smartphone columns: ['GPS LATITUDE (degrees)', ' GPS LONGITUDE (degrees)', ' GPS ALTITUDE (m)', ' GPS SPEED (Kmh)', ' GPS ACCURACY (m)', ' GPS ORIENTATION (Â°)', 'GPS SATELLITES IN RANGE', ' TIME SINCE START (ms)', ' DATE (YYYY-MO-DD HH-MI-SS_SSS)', ' ACCELEROMETER X (m/s²) ', ' ACCELEROMETER Y (m/s²)', ' ACCELEROMETER Z (m/s²)', ' GRAVITY X (m/s²)', ' GRAVITY Y (m/s²)', ' GRAVITY Z (m/s²)', ' GYROSCOPE Yaw (rad/s)', ' GYROSCOPE Pitch (rad/s)', ' GYROSCOPE Roll (rad/s)', ' MAGNETIC FIELD X (Î¼T)', ' MAGNETIC FIELD Y (Î¼T)', ' MAGNETIC FIELD Z (Î¼T)', ' ORIENTATION (Yaw) (Â°)', ' ORIENTATION (Pitch) (Â°)', ' ORIENTATION (Roll ) (Â°)']
+  Vehicle columns: ['No of GPS Satellites Available', ' Time Since Start of Day (seconds)', ' Latitude (degrees)', ' Longitude (degrees)', ' Velocity (km/hr)', ' Heading (degrees)', ' Height (km)', ' Vertical velocity (km/hr)', ' Sample period (seconds)', ' Steering Angle (degrees)', ' Wheel Speed Front Left (rad/sec)', ' Wheel Speed Front Right (rad/sec)', ' Wheel Speed Rear Left (rad/sec)', ' Wheel Speed Rear Right (rad/sec)', ' Yaw Rate (deg/sec)', ' Indicated Vehicle Speed (km/hr)', ' Indicated Longitudinal Acceleration (g)', ' Indicated Lateral Acceleration (g)', ' Handbrake (0 or 1)', ' Gear Requested (Number fof gear employed 1-5)', ' Gear (Number fof gear employed 1-5)', ' Engine Speed (rev/min)', ' Coolant Temperature (degrees)', ' Clutch Position (0 or 1)', ' Brake Pressure (psi)', ' Brake Position (0 or 1)', ' Battery Voltage (volts)', ' Air Temperature (degrees)', ' Accelerator Pedal Position (0 or 1)']

@@ -1,0 +1,45 @@
+==================================================
+AI-IDR PHASE 6: END-TO-END EVALUATION REPORT
+==================================================
+Date: 2026-09-02
+Project: SIH26168 — Intelligent Dead Reckoning System
+
+1. SEQUENCE & TELEMETRY DETAILS:
+--------------------------------------------------
+Sequence Tested            : S-A1
+Number of Samples          : 5942
+Total Duration             : 2970.6 sec
+dt Min / Max / Median / Mean: 0.427s / 0.606s / 0.500s / 0.500s
+Total Distance Travelled   : 67863.34 m
+
+2. GNSS + INS FUSION PERFORMANCE:
+--------------------------------------------------
+Position RMSE              : 44193.30 m
+Mean Position Error        : 31861.38 m
+Maximum Position Error     : 88070.32 m
+Velocity RMSE              : 0.00 m/s
+
+3. DEAD RECKONING OUTAGE PERFORMANCE:
+--------------------------------------------------
+Blackout Window            : 30.0 sec (t = 250.0s to t = 280.0s)
+Distance During Outage     : 258.97 m
+30s Position Drift Error   : 299.57 m
+Positional Drift Percentage: 115.67 %
+
+4. GNSS RECOVERY:
+--------------------------------------------------
+Recovery Transition        : Controlled Gated EKF Update
+Teleportation Jumps        : NONE
+Final Position Error       : 87748.50 m
+
+5. MAP MATCHING:
+--------------------------------------------------
+Enabled                    : TRUE
+Road Constraint Success    : 100.0 %
+
+6. OVERALL SIH BENCHMARK EVALUATION:
+--------------------------------------------------
+SIH 10% Drift Target       : < 10.0 %
+Actual Measured Result     : 115.67 %
+Overall Result             : NEEDS IMPROVEMENT
+==================================================

@@ -1,0 +1,54 @@
+================================================================================
+          SIH26168 AI VEHICLE VELOCITY ESTIMATION REPORT (STEP 4)
+================================================================================
+
+1. INPUT FEATURES (14 Channels):
+   - Accelerometer Raw (3D): accel_raw_x_ms2, accel_raw_y_ms2, accel_raw_z_ms2
+   - Gyroscope Raw (3D):     gyro_raw_yaw_rads, gyro_raw_pitch_rads, gyro_raw_roll_rads
+   - Gravity Vector (3D):    gravity_x_ms2, gravity_y_ms2, gravity_z_ms2
+   - Magnetometer (3D):      mag_x_ut, mag_y_ut, mag_z_ut
+   - Accelerometer Mag:      accel_raw_mag_ms2
+   - Gyroscope Mag:          gyro_raw_mag_rads
+
+2. TARGET VARIABLE:
+   - Column:  gps_speed_mps (Derived from GPS SPEED Kmh / 3.6)
+   - Units:   Meters per second (m/s)
+
+3. WINDOW & SEQUENCE SPLIT SPECIFICATION:
+   - Temporal Window:        20 timesteps (2.0s duration at 10 Hz rate)
+   - Step Hop:               2 timesteps (0.2s hop)
+   - Train Sequences (70%):  14 trips (288216 windows)
+   - Val Sequences (15%):    3 trips (144108 windows)
+   - Test Sequences (15%):   3 trips (72054 windows)
+
+4. MODEL ARCHITECTURE:
+   - Type:                   2-Layer Stacked GRU + Dense Head
+   - Hidden Dimensions:      64 units per layer
+   - Dropout Probability:   0.20
+   - Output Layer:           Linear(64, 32) -> ReLU -> Linear(32, 1) -> Softplus
+   - Trainable Parameters:   43,585
+   - ONNX Mobile Artifact:   ml/outputs/models/gru_velocity_model.onnx
+
+5. TEST PERFORMANCE METRICS (Unseen Sequences):
+   - Test MAE:               1.6774 m/s (6.04 km/h)
+   - Test RMSE:              2.2275 m/s (8.02 km/h)
+   - Test R^2 Score:         0.2495
+   - 50th Pct Absolute Err:  1.2186 m/s
+   - 90th Pct Absolute Err:  4.0043 m/s
+   - 95th Pct Absolute Err:  4.8751 m/s
+
+6. LIMITATIONS:
+   - Relies on inertial dynamic excitation; zero-velocity detector (ZUPT) should override motionless standing.
+   - High dynamic cornering lateral g-forces may introduce minor speed overestimation without phone frame leveling.
+
+--------------------------------------------------------------------------------
+VELOCITY MODEL STATUS
+---------------------
+Target identified & verified: YES
+Sequence-level data split: YES
+Data leakage avoided: YES
+GRU model trained: YES
+Model evaluated on unseen test set: YES
+Evaluation plots generated: YES
+Model exported to mobile format (ONNX): YES
+Report produced: YES

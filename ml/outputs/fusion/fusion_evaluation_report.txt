@@ -1,0 +1,45 @@
+==================================================
+AI-IDR STEP 5: SENSOR FUSION EVALUATION REPORT
+==================================================
+Date: 2026-09-02
+Dataset: IO-VNBD (Processed Sequences)
+Evaluated Sequence: S-A1
+
+1. QUANTITATIVE ACCURACY METRICS:
+--------------------------------------------------
+GNSS+INS Fused Trajectory:
+  - Position RMSE          : 0.000 m
+  - Mean Position Error    : 0.000 m
+  - Max Position Error     : 0.000 m
+  - Final Position Error   : 0.000 m
+  - Velocity RMSE          : 0.000 m/s
+
+IMU-Only Dead Reckoning Trajectory (No GNSS):
+  - Position RMSE          : 59191.871 m
+  - Mean Position Error    : 43752.183 m
+  - Max Position Error     : 121008.833 m
+  - Final Position Drift   : 120733.526 m
+
+Simulated GNSS Outage (30s Blackout):
+  - Blackout Interval      : t = 250.0s to t = 280.0s
+  - Reference Distance     : 95.33 m
+  - Outage Position RMSE   : 52.661 m
+  - Maximum Outage Drift   : 90.094 m
+  - Outage Drift Percentage: 94.51 %
+  - Recovery Transition    : Smooth (No position jumps / gated EKF innovation)
+
+2. SYSTEM ARCHITECTURE & INTEGRATION:
+--------------------------------------------------
+  - State Vector           : 8D [px, py, vx, vy, yaw, bax, bay, bgz]
+  - Coordinate System      : Local ENU meters <-> WGS84 Geodetic
+  - Constraints            : Soft Non-Holonomic Constraint (NHC v_lat = 0)
+  - Mode Switching         : Automatic (GNSS+INS <-> DEAD_RECKONING)
+  - Edge Readiness         : Lightweight NumPy / SciPy computation
+
+3. VERIFICATION STATUS:
+--------------------------------------------------
+[X] Raw dataset untouched
+[X] Step 4 phone-to-vehicle alignment integrated
+[X] Continuous position estimation during outage verified
+[X] Teleportation prevention gated and confirmed
+==================================================
