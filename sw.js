@@ -4,12 +4,15 @@
  * Enables the complete navigation system to boot and operate with 0% internet connectivity.
  */
 
-const CACHE_NAME = 'ai-idr-cache-v1';
+const CACHE_NAME = 'ai-idr-cache-v2';
 const ASSETS_TO_CACHE = [
     '/',
     '/index.html',
     '/dashboard.html',
     '/offline_ml_engine.js',
+    '/assets/leaflet/leaflet.js',
+    '/assets/leaflet/leaflet.css',
+    '/assets/maps/offline_road_network.json',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap'
 ];
 

@@ -90,13 +90,39 @@ def init_db(db_path: Path = DB_PATH) -> None:
             motion_state TEXT,
             estimated_lat REAL,
             estimated_lon REAL,
+            map_matched_lat REAL,
+            map_matched_lon REAL,
+            gnss_status TEXT DEFAULT 'AVAILABLE',
             mode TEXT, -- 'GNSS+INS', 'DEAD_RECKONING', 'GNSS_RECOVERED'
             is_outage INTEGER DEFAULT 0,
             drift_error_m REAL DEFAULT 0.0,
             confidence_pct REAL DEFAULT 95.0,
+            source_label TEXT,
+            destination_label TEXT,
+            current_route_step INTEGER DEFAULT 0,
+            next_maneuver TEXT,
+            distance_to_turn_m REAL DEFAULT 0.0,
+            internet_status TEXT DEFAULT 'ONLINE',
             FOREIGN KEY (session_id) REFERENCES navigation_sessions (session_id) ON DELETE CASCADE
         );
     """)
+
+    # Migration for existing databases
+    for col_def in [
+        ("map_matched_lat", "REAL"),
+        ("map_matched_lon", "REAL"),
+        ("gnss_status", "TEXT DEFAULT 'AVAILABLE'"),
+        ("source_label", "TEXT"),
+        ("destination_label", "TEXT"),
+        ("current_route_step", "INTEGER DEFAULT 0"),
+        ("next_maneuver", "TEXT"),
+        ("distance_to_turn_m", "REAL DEFAULT 0.0"),
+        ("internet_status", "TEXT DEFAULT 'ONLINE'")
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE navigation_estimates ADD COLUMN {col_def[0]} {col_def[1]};")
+        except sqlite3.OperationalError:
+            pass  # Column already exists
 
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_estimates_session_time ON navigation_estimates (session_id, timestamp);")
 
@@ -228,19 +254,34 @@ def insert_navigation_estimate(
     mode: str,
     is_outage: bool = False,
     drift_error_m: float = 0.0,
-    confidence_pct: float = 95.0
+    confidence_pct: float = 95.0,
+    map_matched_lat: Optional[float] = None,
+    map_matched_lon: Optional[float] = None,
+    gnss_status: str = "AVAILABLE",
+    source_label: Optional[str] = None,
+    destination_label: Optional[str] = None,
+    current_route_step: Optional[int] = 0,
+    next_maneuver: Optional[str] = None,
+    distance_to_turn_m: Optional[float] = 0.0,
+    internet_status: Optional[str] = "ONLINE"
 ) -> None:
-    """Record an AI-IDR navigation estimate."""
+    """Record an AI-IDR navigation estimate with map-matched coordinates, turn maneuver, and GNSS/Internet status."""
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO navigation_estimates (
             session_id, timestamp, predicted_velocity, motion_state,
-            estimated_lat, estimated_lon, mode, is_outage, drift_error_m, confidence_pct
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            estimated_lat, estimated_lon, map_matched_lat, map_matched_lon,
+            gnss_status, mode, is_outage, drift_error_m, confidence_pct,
+            source_label, destination_label, current_route_step,
+            next_maneuver, distance_to_turn_m, internet_status
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
         session_id, timestamp, predicted_velocity, motion_state,
-        estimated_lat, estimated_lon, mode, 1 if is_outage else 0, drift_error_m, confidence_pct
+        estimated_lat, estimated_lon, map_matched_lat, map_matched_lon,
+        gnss_status, mode, 1 if is_outage else 0, drift_error_m, confidence_pct,
+        source_label, destination_label, current_route_step or 0,
+        next_maneuver, distance_to_turn_m or 0.0, internet_status or "ONLINE"
     ))
     conn.commit()
     conn.close()
