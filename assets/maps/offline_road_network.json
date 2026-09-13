@@ -1,0 +1,237 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "region": "Central Transit Corridor (Offline Road Network)",
+    "bounds": [77.5850, 12.9600, 77.6150, 12.9850],
+    "center": [12.971600, 77.594600],
+    "default_zoom": 16,
+    "description": "Offline OpenStreetMap-derived road network dataset for AI-IDR geographic map matching and offline navigation."
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "ROAD_MG_01",
+      "properties": {
+        "name": "Mahatma Gandhi (MG) Road",
+        "highway": "primary",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 50,
+        "ref": "MG-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.588000, 12.971000],
+          [77.591500, 12.971300],
+          [77.594600, 12.971600],
+          [77.596200, 12.971850],
+          [77.597800, 12.972100],
+          [77.601000, 12.972600],
+          [77.605000, 12.973200],
+          [77.609500, 12.973800],
+          [77.614000, 12.974400]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_BRIGADE_01",
+      "properties": {
+        "name": "Brigade Road",
+        "highway": "primary",
+        "lanes": 2,
+        "oneway": "yes",
+        "maxspeed_kmh": 40,
+        "ref": "BR-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.596200, 12.971850],
+          [77.596400, 12.970200],
+          [77.596600, 12.968500],
+          [77.596800, 12.966800],
+          [77.597100, 12.964500],
+          [77.597400, 12.962000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_RESIDENCY_01",
+      "properties": {
+        "name": "Residency Road (Field Marshal Cariappa Rd)",
+        "highway": "secondary",
+        "lanes": 3,
+        "oneway": "no",
+        "maxspeed_kmh": 45,
+        "ref": "RES-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.608000, 12.967600],
+          [77.602500, 12.967200],
+          [77.596800, 12.966800],
+          [77.594800, 12.966600],
+          [77.592800, 12.966400],
+          [77.590800, 12.966200],
+          [77.587500, 12.965800]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_ST_MARKS_01",
+      "properties": {
+        "name": "St. Marks Road",
+        "highway": "secondary",
+        "lanes": 2,
+        "oneway": "no",
+        "maxspeed_kmh": 40,
+        "ref": "SM-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.592800, 12.966400],
+          [77.593200, 12.968800],
+          [77.593600, 12.971200],
+          [77.594600, 12.971600],
+          [77.595200, 12.974000],
+          [77.595800, 12.976500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_CHURCH_01",
+      "properties": {
+        "name": "Church Street",
+        "highway": "residential",
+        "lanes": 1,
+        "oneway": "yes",
+        "maxspeed_kmh": 25,
+        "ref": "CH-ST"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.593600, 12.971200],
+          [77.596300, 12.971500],
+          [77.599500, 12.971900],
+          [77.603000, 12.972300]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_KASTURBA_01",
+      "properties": {
+        "name": "Kasturba Road",
+        "highway": "primary",
+        "lanes": 3,
+        "oneway": "no",
+        "maxspeed_kmh": 50,
+        "ref": "KR-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.587500, 12.965800],
+          [77.589000, 12.968500],
+          [77.591500, 12.971300],
+          [77.592500, 12.974500],
+          [77.593500, 12.978000],
+          [77.594500, 12.981000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_CUBBON_01",
+      "properties": {
+        "name": "Cubbon Road",
+        "highway": "primary",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 50,
+        "ref": "CB-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.593500, 12.978000],
+          [77.597500, 12.978500],
+          [77.602000, 12.979000],
+          [77.606500, 12.979500],
+          [77.611000, 12.980000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_RICHMOND_01",
+      "properties": {
+        "name": "Richmond Road (General K.S. Thimayya Rd)",
+        "highway": "secondary",
+        "lanes": 3,
+        "oneway": "no",
+        "maxspeed_kmh": 45,
+        "ref": "RC-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.597100, 12.964500],
+          [77.601500, 12.965000],
+          [77.606000, 12.965500],
+          [77.610500, 12.966000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_LAVELLE_01",
+      "properties": {
+        "name": "Lavelle Road",
+        "highway": "residential",
+        "lanes": 2,
+        "oneway": "no",
+        "maxspeed_kmh": 35,
+        "ref": "LV-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.591500, 12.971300],
+          [77.592000, 12.969000],
+          [77.592500, 12.966500],
+          [77.593000, 12.964000],
+          [77.593500, 12.961500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_MUSEUM_01",
+      "properties": {
+        "name": "Museum Road",
+        "highway": "residential",
+        "lanes": 2,
+        "oneway": "no",
+        "maxspeed_kmh": 35,
+        "ref": "MS-RD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.601000, 12.972600],
+          [77.601800, 12.969500],
+          [77.602500, 12.967200]
+        ]
+      }
+    }
+  ]
+}

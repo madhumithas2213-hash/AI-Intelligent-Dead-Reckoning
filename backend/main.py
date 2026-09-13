@@ -122,6 +122,12 @@ class SensorReading(BaseModel):
 class TelemetryStreamBatchRequest(BaseModel):
     session_id: str = "IDR_SESSION_001"
     device_id: Optional[str] = "SMARTPHONE_CLIENT"
+    source_label: Optional[str] = None
+    destination_label: Optional[str] = None
+    current_route_step: Optional[int] = 0
+    next_maneuver: Optional[str] = None
+    distance_to_turn_m: Optional[float] = 0.0
+    internet_status: Optional[str] = "ONLINE"
     readings: List[SensorReading]
 
 
@@ -247,7 +253,16 @@ async def stream_sensor_batch(payload: TelemetryStreamBatchRequest):
             mode=last_estimate["mode"],
             is_outage=last_estimate["is_outage"],
             drift_error_m=last_estimate["drift_error_m"],
-            confidence_pct=last_estimate["confidence_pct"]
+            confidence_pct=last_estimate["confidence_pct"],
+            map_matched_lat=last_estimate.get("map_matched_lat"),
+            map_matched_lon=last_estimate.get("map_matched_lon"),
+            gnss_status="LOST" if last_estimate.get("is_outage") else "AVAILABLE",
+            source_label=payload.source_label,
+            destination_label=payload.destination_label,
+            current_route_step=payload.current_route_step,
+            next_maneuver=payload.next_maneuver,
+            distance_to_turn_m=payload.distance_to_turn_m,
+            internet_status=payload.internet_status or ("OFFLINE" if last_estimate.get("is_outage") else "ONLINE")
         )
 
     return {

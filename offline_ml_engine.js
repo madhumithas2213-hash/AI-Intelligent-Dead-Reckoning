@@ -71,23 +71,51 @@
         }
 
         /**
+         * Convenience method returning scalar forward velocity in m/s directly.
+         */
+        predictVelocity(window2D) {
+            const res = this.predict(window2D);
+            return (res && typeof res.velocity_mps === 'number') ? res.velocity_mps : 0.0;
+        }
+
+        /**
          * Predict forward vehicle speed from 2D array [seq_len, 14] of unscaled sensor measurements.
          * Returns: { velocity_mps, velocity_kmh, latency_ms }
          */
         predict(window2D) {
-            const t0 = performance.now();
-            const seqLen = window2D.length;
+            const t0 = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+            if (!window2D || !Array.isArray(window2D) || window2D.length === 0) {
+                return { velocity_mps: 0.0, velocity_kmh: 0.0, latency_ms: 0.1 };
+            }
+
             const inputDim = this.arch.input_dim;
             const hiddenDim = this.arch.hidden_dim;
+            const targetLen = this.arch.window_size || 20;
 
-            // 1. Standardize / Scale Inputs (Z-score normalization)
+            // Handle sliding window length: pad if starting up (< 20 samples), trim if longer
+            let seq = window2D;
+            if (seq.length < targetLen) {
+                const padCount = targetLen - seq.length;
+                const firstRow = seq[0];
+                const padded = [];
+                for (let p = 0; p < padCount; p++) padded.push(firstRow);
+                seq = padded.concat(seq);
+            } else if (seq.length > targetLen) {
+                seq = seq.slice(seq.length - targetLen);
+            }
+            const seqLen = seq.length;
+
+            // 1. Standardize / Scale Inputs (Z-score normalization with NaN defense)
             const scaledSeq = [];
             for (let t = 0; t < seqLen; t++) {
                 const row = new Float32Array(inputDim);
+                const sample = seq[t] || [];
                 for (let f = 0; f < inputDim; f++) {
                     const mean = this.scaler.mean[f];
                     const scale = this.scaler.scale[f] || 1.0;
-                    row[f] = (window2D[t][f] - mean) / scale;
+                    const val = Number(sample[f]);
+                    const cleanVal = Number.isFinite(val) ? val : 0.0;
+                    row[f] = (cleanVal - mean) / scale;
                 }
                 scaledSeq.push(row);
             }
@@ -150,11 +178,12 @@
 
             // PyTorch F.softplus activation matching model definition exactly
             const velMps = velPred > 20.0 ? velPred : Math.log1p(Math.exp(Math.max(-40.0, velPred)));
-            const latencyMs = performance.now() - t0;
+            const tEnd = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+            const latencyMs = Math.max(0.1, tEnd - t0);
 
             return {
-                velocity_mps: velMps,
-                velocity_kmh: velMps * 3.6,
+                velocity_mps: Number.isFinite(velMps) ? Math.max(0.0, velMps) : 0.0,
+                velocity_kmh: Number.isFinite(velMps) ? Math.max(0.0, velMps * 3.6) : 0.0,
                 latency_ms: Math.round(latencyMs * 100) / 100
             };
         }
