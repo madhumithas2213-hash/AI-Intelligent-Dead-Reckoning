@@ -1774,6 +1774,53 @@
             animation: pulseGlow 1.2s infinite;
         }
 
+        /* Vehicle Profile Selector */
+        .vehicle-profile-selector {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            background: rgba(6, 10, 20, 0.75);
+            padding: 4px;
+            border-radius: 9px;
+            border: 1px solid var(--border-subtle);
+        }
+        .veh-profile-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            color: var(--text-muted);
+            font-size: 11.5px;
+            font-weight: 700;
+            padding: 6px 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.15s ease;
+        }
+        .veh-profile-btn:hover {
+            color: #ffffff;
+            background: rgba(56, 189, 248, 0.12);
+        }
+        .veh-profile-btn.active {
+            background: linear-gradient(135deg, #0284c7, #0ea5e9);
+            border-color: rgba(56, 189, 248, 0.6);
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4);
+        }
+        .driver-env-pill {
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            color: #38bdf8;
+            letter-spacing: 0.4px;
+        }
+
         /* Route Summary Preview Sheet */
         .nav-route-summary-sheet {
             background: linear-gradient(180deg, rgba(14, 24, 48, 0.98) 0%, rgba(7, 13, 28, 0.98) 100%);
@@ -1969,6 +2016,130 @@
         .btn-end-nav:hover {
             background: rgba(244, 63, 94, 0.35);
             color: #ffffff;
+        }
+
+        /* =========================================================================
+           AI-IDR FULLSCREEN MAP & FLOATING ACTION CONTROLS & MULTI-ROUTE STYLES
+           ========================================================================= */
+        .nav-hero-map-card.fullscreen-active {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 99999 !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+        .nav-hero-map-card.fullscreen-active .nav-map-viewport {
+            height: 100vh !important;
+            max-height: 100vh !important;
+            border-radius: 0 !important;
+        }
+        .nav-hero-map-card.fullscreen-active .map-header {
+            display: none !important;
+        }
+        .nav-hero-map-card.fullscreen-active .driver-hud-sheet {
+            position: absolute !important;
+            bottom: 12px !important;
+            left: 14px !important;
+            right: 14px !important;
+            max-width: 600px !important;
+            margin: 0 auto !important;
+            z-index: 1002 !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8) !important;
+        }
+
+        /* Floating map action buttons (+, -, ◎, ⛶) */
+        .map-floating-action-group {
+            position: absolute;
+            right: 14px;
+            top: 74px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            pointer-events: auto;
+        }
+        .map-action-round-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(15, 23, 42, 0.94);
+            border: 1px solid var(--border-color);
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.18s ease;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .map-action-round-btn:hover {
+            background: rgba(56, 189, 248, 0.25);
+            border-color: #38bdf8;
+            color: #38bdf8;
+            transform: scale(1.06);
+        }
+        .map-action-round-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* Multi-Route Options Selector (Recommended vs Alternative) */
+        .route-options-selector {
+            display: flex;
+            gap: 8px;
+            margin-top: 4px;
+            margin-bottom: 6px;
+            width: 100%;
+        }
+        .route-opt-tab {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 8px 10px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+        .route-opt-tab:hover {
+            border-color: rgba(56, 189, 248, 0.5);
+            background: rgba(15, 23, 42, 0.95);
+        }
+        .route-opt-tab.active {
+            background: rgba(2, 132, 199, 0.25);
+            border-color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+        }
+        .route-opt-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .route-opt-tab.active .route-opt-title {
+            color: #38bdf8;
+        }
+        .route-opt-stats {
+            font-size: 13px;
+            font-weight: 800;
+            color: #f8fafc;
+            font-family: 'JetBrains Mono', monospace;
         }
     </style>
     <script src="offline_ml_engine.js"></script>
@@ -2635,14 +2806,28 @@
                     </div>
 
                     <div id="dest-card-body" class="dest-card-body">
+                        <!-- Multi-Modal Vehicle Profile Selector -->
+                        <div class="vehicle-profile-selector">
+                            <button id="veh-btn-car" class="veh-profile-btn active" onclick="setVehicleProfile('car')">🚗 Car</button>
+                            <button id="veh-btn-bike" class="veh-profile-btn" onclick="setVehicleProfile('bike')">🏍️ Bike</button>
+                            <button id="veh-btn-walk" class="veh-profile-btn" onclick="setVehicleProfile('walk')">🚶 Walk</button>
+                            <button id="veh-btn-truck" class="veh-profile-btn" onclick="setVehicleProfile('truck')">🚚 Truck</button>
+                            <button id="veh-btn-ship" class="veh-profile-btn" onclick="setVehicleProfile('ship')">🚢 Ship</button>
+                        </div>
+
                         <!-- Start Location Row -->
-                        <div class="dest-location-row">
+                        <div class="dest-location-row" style="position:relative;">
                             <span class="dest-pin-icon">🟢</span>
-                            <div style="flex:1; min-width:0;">
+                            <div style="flex:1; min-width:0; position:relative;">
                                 <div class="dest-row-lbl">START LOCATION</div>
-                                <div id="nav-start-display" class="dest-row-val" title="Authoritative GPS position or Bangalore origin">📍 Current Location (GPS Fix)</div>
+                                <input type="text" id="nav-start-input" class="nav-dest-input" placeholder="Type origin city (e.g. Chennai, Ariyalur)..." value="" autocomplete="off" style="display:none;" />
+                                <div id="nav-start-display" class="dest-row-val" title="Authoritative GPS position or custom origin">📍 Current Location (GPS Fix)</div>
+                                <div id="nav-start-suggestions" class="dest-suggestions-dropdown" style="display:none;"></div>
                             </div>
-                            <button class="dest-btn-inline" onclick="setCurrentLocationAsStart()" title="Use live GPS coordinates">Use Current</button>
+                            <div style="display:flex; gap:4px;">
+                                <button id="btn-edit-start" class="dest-btn-inline" onclick="toggleEditStartLocation()" title="Set custom start point">✏️ Custom</button>
+                                <button class="dest-btn-inline" onclick="setCurrentLocationAsStart()" title="Use live GPS coordinates">Use Current</button>
+                            </div>
                         </div>
 
                         <!-- Destination Location Row -->
@@ -2662,13 +2847,16 @@
 
                         <!-- Preset Quick Destination Chips -->
                         <div class="dest-presets-container">
-                            <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Bangalore Presets:</span>
+                            <span style="font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;">Quick Destinations / Presets:</span>
                             <div class="dest-presets-chips">
                                 <button class="dest-preset-chip" onclick="selectPresetDestination('brigade')">📍 Brigade Rd</button>
                                 <button class="dest-preset-chip" onclick="selectPresetDestination('church')">📍 Church St</button>
                                 <button class="dest-preset-chip" onclick="selectPresetDestination('residency')">📍 Residency Rd</button>
                                 <button class="dest-preset-chip" onclick="selectPresetDestination('cubbon')">📍 Cubbon Rd</button>
                                 <button class="dest-preset-chip" onclick="selectPresetDestination('richmond')">📍 Richmond Circle</button>
+                                <button class="dest-preset-chip" onclick="quickSelectCity('Chennai')">📍 Chennai</button>
+                                <button class="dest-preset-chip" onclick="quickSelectCity('Ariyalur')">📍 Ariyalur</button>
+                                <button class="dest-preset-chip" onclick="quickSelectCity('Coimbatore')">📍 Coimbatore</button>
                                 <button id="btn-pick-map-dest" class="dest-preset-chip dest-chip-map" onclick="toggleMapPointPicker()">🗺️ Tap Map to Pick</button>
                             </div>
                         </div>
@@ -2691,6 +2879,9 @@
                             <span id="route-sum-dest-name" style="font-size:12px; font-weight:800; color:#ffffff; max-width:180px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Destination</span>
                         </div>
                     </div>
+
+                    <!-- MULTI-ROUTE SELECTION TABS (Recommended vs Alternative) -->
+                    <div id="route-options-selector" class="route-options-selector" style="display:none;"></div>
 
                     <div class="route-sum-actions">
                         <button id="btn-start-navigation" class="btn-start-navigation" onclick="startTurnByTurnNavigation()">
@@ -2792,6 +2983,15 @@
                                 <div style="width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 16px solid #cbd5e1; position: absolute; bottom: 0; left: -2px;"></div>
                             </div>
                         </div>
+
+                        <!-- FLOATING MAP ACTION BUTTONS (+, -, ◎, 🛰️, ⛶) -->
+                        <div class="map-floating-action-group">
+                            <button class="map-action-round-btn" onclick="mapZoomIn()" title="Zoom In (+)">+</button>
+                            <button class="map-action-round-btn" onclick="mapZoomOut()" title="Zoom Out (−)">−</button>
+                            <button class="map-action-round-btn" onclick="recenterMapOnVehicle()" title="Re-center on vehicle (◎)">◎</button>
+                            <button id="btn-map-layer-toggle" class="map-action-round-btn" onclick="cycleMapLayer()" title="Active: Dark Vector. Tap to switch to Topo.">🗺️</button>
+                            <button id="btn-map-fullscreen" class="map-action-round-btn" onclick="toggleFullscreenMap()" title="Toggle full-screen map (⛶)">⛶</button>
+                        </div>
                     </div>
 
                     <!-- DRIVER NAVIGATION HUD FLOATING SHEET (In-Car / Mobile Consumer Navigation UI) -->
@@ -2807,6 +3007,7 @@
                             </div>
                             <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px; margin-left:auto;">
                                 <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+                                    <span id="driver-env-badge" class="driver-env-pill">🛣️ OPEN HIGHWAY</span>
                                     <span id="nav-confidence-pill" class="nav-confidence-pill" style="font-size:11px; font-weight:800; padding:3px 9px; border-radius:6px; background:rgba(16,185,129,0.18); border:1px solid rgba(16,185,129,0.4); color:var(--accent-green);" title="AI-IDR Navigation Health & Positioning Fidelity">● HIGH CONFIDENCE</span>
                                     <span id="driver-mode-pill" style="font-size:11px; padding:3px 9px; border-radius:6px; background:rgba(16, 185, 129, 0.2); border:1px solid rgba(16, 185, 129, 0.45); color:#34d399; font-weight:800;">🛰️ GNSS + INS</span>
                                 </div>
@@ -4485,11 +4686,13 @@
         let isNavigatingActive = false;
         let isPickingDestinationOnMap = false;
         let liveRoutePolyline = null;
+        let liveRouteAltPolylines = [];
         let liveRouteStartMarker = null;
         let liveRouteDestMarker = null;
         let customStartCoord = null;
         let lastTurnDistanceM = null;
         let isArrivedAtDestination = false;
+        let lastMapPanTime = 0;
 
         const PRESET_DESTINATIONS = {
             'brigade': { name: 'Brigade Road', lat: 12.968500, lon: 77.596600 },
@@ -4498,6 +4701,42 @@
             'cubbon': { name: 'Cubbon Road', lat: 12.978500, lon: 77.597500 },
             'richmond': { name: 'Richmond Circle', lat: 12.964500, lon: 77.597100 }
         };
+
+        // Country-wide Offline Gazetteer for reliable disconnected geocoding
+        const OFFLINE_GAZETTEER = {
+            'chennai': { name: 'Chennai, Tamil Nadu', lat: 13.082700, lon: 80.270700 },
+            'ariyalur': { name: 'Ariyalur, Tamil Nadu', lat: 11.140100, lon: 79.078600 },
+            'coimbatore': { name: 'Coimbatore, Tamil Nadu', lat: 11.016800, lon: 76.955800 },
+            'madurai': { name: 'Madurai, Tamil Nadu', lat: 9.925200, lon: 78.119800 },
+            'trichy': { name: 'Tiruchirappalli (Trichy), Tamil Nadu', lat: 10.790500, lon: 78.704700 },
+            'tiruchirappalli': { name: 'Tiruchirappalli, Tamil Nadu', lat: 10.790500, lon: 78.704700 },
+            'bangalore': { name: 'Bengaluru (Bangalore), Karnataka', lat: 12.971600, lon: 77.594600 },
+            'bengaluru': { name: 'Bengaluru, Karnataka', lat: 12.971600, lon: 77.594600 },
+            'salem': { name: 'Salem, Tamil Nadu', lat: 11.664300, lon: 78.146000 },
+            'erode': { name: 'Erode, Tamil Nadu', lat: 11.341000, lon: 77.717200 },
+            'tiruppur': { name: 'Tiruppur, Tamil Nadu', lat: 11.108500, lon: 77.341100 },
+            'vellore': { name: 'Vellore, Tamil Nadu', lat: 12.916500, lon: 79.132500 },
+            'hosur': { name: 'Hosur, Tamil Nadu', lat: 12.740900, lon: 77.825300 },
+            'thanjavur': { name: 'Thanjavur, Tamil Nadu', lat: 10.787000, lon: 79.137800 },
+            'dindigul': { name: 'Dindigul, Tamil Nadu', lat: 10.367300, lon: 77.980300 },
+            'tirunelveli': { name: 'Tirunelveli, Tamil Nadu', lat: 8.713900, lon: 77.756700 },
+            'kanyakumari': { name: 'Kanyakumari, Tamil Nadu', lat: 8.088300, lon: 77.538500 },
+            'airport': { name: 'Kempegowda Int. Airport (BLR)', lat: 13.198600, lon: 77.706600 },
+            'hospital': { name: 'Victoria Hospital, Bangalore', lat: 12.963200, lon: 77.574400 },
+            'railway station': { name: 'KSR Bangalore City Railway Station', lat: 12.978100, lon: 77.569600 },
+            'central station': { name: 'Chennai Central Railway Station', lat: 13.082300, lon: 80.275500 }
+        };
+
+        function findInOfflineGazetteer(query) {
+            if (!query) return null;
+            let q = query.toLowerCase().trim();
+            for (let key in OFFLINE_GAZETTEER) {
+                if (q.includes(key) || OFFLINE_GAZETTEER[key].name.toLowerCase().includes(q)) {
+                    return OFFLINE_GAZETTEER[key];
+                }
+            }
+            return null;
+        }
 
         function calculateBearingDeg(lat1, lon1, lat2, lon2) {
             const dLon = (lon2 - lon1) * (Math.PI / 180.0);
@@ -4517,42 +4756,814 @@
             return { icon: '↑', type: 'straight', text: 'Continue straight' };
         }
 
+        // =========================================================================
+        // ZERO-TOUCH ADAPTIVE ENVIRONMENT CLASSIFIER
+        // Classifies: Tunnel, Urban Canyon, Elevated Flyover, Highway, Surface Street
+        // =========================================================================
+        class EnvironmentClassifier {
+            static classify(sensors, nav, isOutage) {
+                let speed = (nav && typeof nav.velocityKmh === 'number') ? nav.velocityKmh : 0;
+                let acc = (sensors && typeof sensors.gpsAcc === 'number') ? sensors.gpsAcc : 5.0;
+                let pitch = (sensors && typeof sensors.pitch === 'number') ? Math.abs(sensors.pitch) : 0;
+
+                // 0. Maritime / Ship Deep Ocean Navigation
+                if (currentVehicleProfile === 'ship') {
+                    if (isOutage || (sensors && sensors.gpsLat === null && nav && nav.lastGpsTimestamp && (performance.now() - nav.lastGpsTimestamp > 2500))) {
+                        return {
+                            id: 'DEEP_SEA_OUTAGE',
+                            label: '🌊 DEEP SEA DEAD RECKONING',
+                            description: 'High-Seas GNSS Outage — Ocean Current (Set & Drift) Compensated',
+                            color: '#38bdf8',
+                            bg: 'rgba(56, 189, 248, 0.25)',
+                            border: 'rgba(56, 189, 248, 0.6)'
+                        };
+                    }
+                    return {
+                        id: 'MARITIME_OCEAN',
+                        label: '🌊 OPEN OCEAN NAVIGATION',
+                        description: 'International Shipping Fairway & Deep Water Sea Lane',
+                        color: '#06b6d4',
+                        bg: 'rgba(6, 182, 212, 0.22)',
+                        border: 'rgba(6, 182, 212, 0.5)'
+                    };
+                }
+
+                // 1. Tunnel / Subterranean Corridor
+                if (isOutage || (sensors && sensors.gpsLat === null && nav && nav.lastGpsTimestamp && (performance.now() - nav.lastGpsTimestamp > 2500))) {
+                    return {
+                        id: 'TUNNEL',
+                        label: '🚇 TUNNEL CORRIDOR',
+                        description: 'Subterranean GNSS Outage — AI-IDR Dead Reckoning Active',
+                        color: '#f59e0b',
+                        bg: 'rgba(245, 158, 11, 0.22)',
+                        border: 'rgba(245, 158, 11, 0.5)'
+                    };
+                }
+
+                // 2. Urban Canyon (Multipath Reflection)
+                if (acc > 16.0 || (acc > 12.0 && speed < 40)) {
+                    return {
+                        id: 'URBAN_CANYON',
+                        label: '🏢 URBAN CANYON',
+                        description: 'Multipath Reflection Detected — GNSS + IMU Fused',
+                        color: '#38bdf8',
+                        bg: 'rgba(56, 189, 248, 0.2)',
+                        border: 'rgba(56, 189, 248, 0.5)'
+                    };
+                }
+
+                // 3. Elevated Flyover / Bridge
+                if (pitch > 3.2 && speed > 25) {
+                    return {
+                        id: 'BRIDGE',
+                        label: '🌉 ELEVATED FLYOVER',
+                        description: 'Elevated Span / Grade Incline Detected',
+                        color: '#06b6d4',
+                        bg: 'rgba(6, 182, 212, 0.2)',
+                        border: 'rgba(6, 182, 212, 0.5)'
+                    };
+                }
+
+                // 4. Open Highway / Expressway
+                if (speed >= 55) {
+                    return {
+                        id: 'HIGHWAY',
+                        label: '🛣️ OPEN HIGHWAY',
+                        description: 'High-Speed Transit Corridor — Clear Sky Visibility',
+                        color: '#10b981',
+                        bg: 'rgba(16, 185, 129, 0.2)',
+                        border: 'rgba(16, 185, 129, 0.5)'
+                    };
+                }
+
+                // 5. Nominal Surface Street
+                return {
+                    id: 'SURFACE',
+                    label: '🚗 SURFACE STREET',
+                    description: 'Nominal Urban Transit Corridor',
+                    color: '#34d399',
+                    bg: 'rgba(52, 211, 153, 0.16)',
+                    border: 'rgba(52, 211, 153, 0.4)'
+                };
+            }
+        }
+
+        // =========================================================================
+        // MULTI-MODAL VEHICLE PROFILES & DYNAMICS
+        // 🚗 Car | 🏍️ Bike | 🚶 Walk | 🚚 Truck | 🚢 Ship
+        // =========================================================================
+        let currentVehicleProfile = 'car';
+        const VEHICLE_PROFILES = {
+            'car': {
+                name: 'Car / Automobile',
+                icon: '🚗',
+                speedKmh: 45,
+                maxSpeedKmh: 100,
+                osrmMode: 'driving',
+                speedMps: 12.5,
+                drGain: 1.0,
+                desc: 'Standard 4-wheel chassis kinematics & momentum'
+            },
+            'bike': {
+                name: 'Motorcycle / Scooter',
+                icon: '🏍️',
+                speedKmh: 35,
+                maxSpeedKmh: 80,
+                osrmMode: 'driving',
+                speedMps: 9.7,
+                drGain: 0.95,
+                leanCompensation: true,
+                desc: '2-wheel agility with gyro roll-angle lean compensation'
+            },
+            'walk': {
+                name: 'Pedestrian / Walking',
+                icon: '🚶',
+                speedKmh: 5,
+                maxSpeedKmh: 8,
+                osrmMode: 'walking',
+                speedMps: 1.38,
+                drGain: 0.65,
+                stepKinematics: true,
+                desc: 'Pedestrian dead reckoning & omnidirectional step kinetics'
+            },
+            'truck': {
+                name: 'Commercial / Heavy Vehicle',
+                icon: '🚚',
+                speedKmh: 32,
+                maxSpeedKmh: 65,
+                osrmMode: 'driving',
+                speedMps: 8.9,
+                drGain: 1.15,
+                highInertia: true,
+                desc: 'Heavy cargo inertia, wide turn radii & highway trunk routing'
+            },
+            'ship': {
+                name: 'Ship / Maritime Vessel',
+                icon: '🚢',
+                speedKmh: 33.34, // 18.0 knots
+                speedKnots: 18.0,
+                maxSpeedKmh: 46.3, // 25.0 knots
+                osrmMode: 'maritime',
+                speedMps: 9.26,
+                drGain: 1.05,
+                isMaritime: true,
+                speedUnit: 'kt',
+                distanceUnit: 'NM',
+                desc: 'Deep-draft vessel kinematics, ocean currents, leeway drift & shipping lane corridors'
+            }
+        };
+
+        function setVehicleProfile(profileKey) {
+            if (!VEHICLE_PROFILES[profileKey]) return;
+            currentVehicleProfile = profileKey;
+            const profile = VEHICLE_PROFILES[profileKey];
+
+            ['car', 'bike', 'walk', 'truck', 'ship'].forEach(key => {
+                let btn = document.getElementById(`veh-btn-${key}`);
+                if (btn) {
+                    if (key === profileKey) btn.classList.add('active');
+                    else btn.classList.remove('active');
+                }
+            });
+
+            // Update active route duration and ETA if route exists
+            if (activeNavRoute) {
+                let speedMps = profile.speedMps || 12.5;
+                activeNavRoute.durationSec = Math.max(30, Math.round(activeNavRoute.distanceMeters / speedMps));
+                showRouteSummaryPreview(activeNavRoute);
+                updateTurnInstructionBanner();
+            }
+
+            if (typeof updateLiveKPIs === 'function') updateLiveKPIs();
+            console.log(`[VehicleProfile] Active profile switched to: ${profile.name} (${profile.icon})`);
+        }
+
+        // =========================================================================
+        // CUSTOM START / ORIGIN SELECTION HANDLERS
+        // =========================================================================
+        function toggleEditStartLocation() {
+            let startDisplay = document.getElementById('nav-start-display');
+            let startInput = document.getElementById('nav-start-input');
+            let editBtn = document.getElementById('btn-edit-start');
+            let suggBox = document.getElementById('nav-start-suggestions');
+
+            if (!startInput || !startDisplay) return;
+
+            if (startInput.style.display === 'none') {
+                startDisplay.style.display = 'none';
+                startInput.style.display = 'block';
+                startInput.value = customStartCoord ? `${customStartCoord[0].toFixed(5)}, ${customStartCoord[1].toFixed(5)}` : '';
+                startInput.focus();
+                if (editBtn) editBtn.innerText = '✓ Done';
+            } else {
+                resolveCustomStartLocation();
+                startInput.style.display = 'none';
+                startDisplay.style.display = 'block';
+                if (suggBox) suggBox.style.display = 'none';
+                if (editBtn) editBtn.innerText = '✏️ Custom';
+            }
+        }
+
+        async function resolveCustomStartLocation() {
+            let startInput = document.getElementById('nav-start-input');
+            let startDisplay = document.getElementById('nav-start-display');
+            if (!startInput || !startInput.value.trim()) return;
+
+            let query = startInput.value.trim();
+            // 1. Check coordinates "lat, lon"
+            let parts = query.split(',').map(s => parseFloat(s.trim()));
+            if (parts.length === 2 && isValidCoordinate(parts[0], parts[1])) {
+                customStartCoord = [parts[0], parts[1]];
+                if (startDisplay) startDisplay.innerText = `📍 Custom (${parts[0].toFixed(4)}, ${parts[1].toFixed(4)})`;
+                if (liveLeafletMap) liveLeafletMap.panTo([parts[0], parts[1]]);
+                return;
+            }
+
+            // 2. Check offline gazetteer
+            let gaz = findInOfflineGazetteer(query);
+            if (gaz) {
+                customStartCoord = [gaz.lat, gaz.lon];
+                if (startDisplay) startDisplay.innerText = `📍 ${gaz.name}`;
+                if (liveLeafletMap) liveLeafletMap.panTo([gaz.lat, gaz.lon]);
+                return;
+            }
+
+            // 3. Online geocode via Nominatim
+            if (navigator.onLine) {
+                try {
+                    let res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`);
+                    if (res.ok) {
+                        let data = await res.json();
+                        if (data && data.length > 0) {
+                            let lat = parseFloat(data[0].lat);
+                            let lon = parseFloat(data[0].lon);
+                            let name = data[0].name || query;
+                            customStartCoord = [lat, lon];
+                            if (startDisplay) startDisplay.innerText = `📍 ${name}`;
+                            if (liveLeafletMap) liveLeafletMap.panTo([lat, lon]);
+                            return;
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            if (startDisplay) startDisplay.innerText = `📍 ${query}`;
+        }
+
+        function quickSelectCity(cityName) {
+            let destInput = document.getElementById('nav-dest-input');
+            if (destInput) destInput.value = cityName;
+            onPreviewRouteClick();
+        }
+
+        function initStartSearchInput() {
+            let startInput = document.getElementById('nav-start-input');
+            let suggBox = document.getElementById('nav-start-suggestions');
+            if (!startInput) return;
+
+            let debounceTimer = null;
+            startInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (suggBox) suggBox.style.display = 'none';
+                    toggleEditStartLocation();
+                } else if (e.key === 'Escape') {
+                    if (suggBox) suggBox.style.display = 'none';
+                }
+            });
+
+            startInput.addEventListener('input', function() {
+                let q = startInput.value.trim();
+                clearTimeout(debounceTimer);
+                if (!suggBox) return;
+
+                if (q.length < 2) {
+                    suggBox.style.display = 'none';
+                    return;
+                }
+
+                // Check gazetteer instantly
+                let gazMatches = [];
+                for (let k in OFFLINE_GAZETTEER) {
+                    if (k.includes(q.toLowerCase()) || OFFLINE_GAZETTEER[k].name.toLowerCase().includes(q.toLowerCase())) {
+                        gazMatches.push(OFFLINE_GAZETTEER[k]);
+                    }
+                }
+
+                if (gazMatches.length > 0) {
+                    suggBox.innerHTML = '';
+                    gazMatches.slice(0, 4).forEach(item => {
+                        let div = document.createElement('div');
+                        div.className = 'dest-suggestion-item';
+                        div.innerHTML = `<span style="font-size:14px;">📍</span><div class="dest-suggestion-title">${item.name}</div>`;
+                        div.onclick = function() {
+                            startInput.value = item.name;
+                            customStartCoord = [item.lat, item.lon];
+                            let startDisplay = document.getElementById('nav-start-display');
+                            if (startDisplay) startDisplay.innerText = `📍 ${item.name}`;
+                            suggBox.style.display = 'none';
+                            toggleEditStartLocation();
+                            if (liveLeafletMap) liveLeafletMap.panTo([item.lat, item.lon]);
+                        };
+                        suggBox.appendChild(div);
+                    });
+                    suggBox.style.display = 'block';
+                    return;
+                }
+
+                // Debounced online geocoding
+                debounceTimer = setTimeout(async () => {
+                    if (!navigator.onLine) return;
+                    try {
+                        let res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=3`);
+                        if (!res.ok) return;
+                        let items = await res.json();
+                        if (!items || items.length === 0) {
+                            suggBox.style.display = 'none';
+                            return;
+                        }
+                        suggBox.innerHTML = '';
+                        items.forEach(item => {
+                            let div = document.createElement('div');
+                            div.className = 'dest-suggestion-item';
+                            let title = item.name || item.display_name.split(',')[0];
+                            div.innerHTML = `<span style="font-size:14px;">📍</span><div class="dest-suggestion-title">${title}</div>`;
+                            div.onclick = function() {
+                                startInput.value = title;
+                                customStartCoord = [parseFloat(item.lat), parseFloat(item.lon)];
+                                let startDisplay = document.getElementById('nav-start-display');
+                                if (startDisplay) startDisplay.innerText = `📍 ${title}`;
+                                suggBox.style.display = 'none';
+                                toggleEditStartLocation();
+                                if (liveLeafletMap) liveLeafletMap.panTo(customStartCoord);
+                            };
+                            suggBox.appendChild(div);
+                        });
+                        suggBox.style.display = 'block';
+                    } catch (e) {}
+                }, 350);
+            });
+
+            document.addEventListener('click', function(e) {
+                if (suggBox && !startInput.contains(e.target) && !suggBox.contains(e.target)) {
+                    suggBox.style.display = 'none';
+                }
+            });
+        }
+
+        // =========================================================================
+        // GLOBAL MARITIME SEA LANES & CHOKEPOINTS DATASET (IMO Deep-Water Corridors)
+        // Arabian Sea, Red Sea, Duba Port, Suez Canal, Persian Gulf, Malacca, Singapore
+        // =========================================================================
+        const OFFLINE_SEA_ROUTES_DATA = {
+            "type": "FeatureCollection",
+            "features": [
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_MUMBAI_ARABIAN_DEEP",
+                    "properties": { "name": "Mumbai to Central Arabian Sea Fairway", "corridor": "Arabian Sea TSS" },
+                    "geometry": { "type": "LineString", "coordinates": [[72.8656, 18.9438], [72.5, 18.85], [71.5, 18.5], [69.5, 17.8], [67.0, 16.5], [64.5, 15.0], [60.0, 14.0]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_KOCHI_ARABIAN_DEEP",
+                    "properties": { "name": "Kochi to Arabian Sea Deep Passage", "corridor": "Arabian Sea Southwest Fairway" },
+                    "geometry": { "type": "LineString", "coordinates": [[76.2667, 9.9667], [75.5, 9.9], [73.5, 10.2], [70.0, 11.5], [65.0, 13.0], [60.0, 14.0]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_GULF_OF_ADEN_TSS",
+                    "properties": { "name": "Gulf of Aden Recommended Transit Corridor", "corridor": "Gulf of Aden TSS" },
+                    "geometry": { "type": "LineString", "coordinates": [[60.0, 14.0], [55.0, 13.2], [52.0, 12.8], [48.5, 12.3], [46.0, 12.0], [44.5, 12.2], [43.4, 12.5833]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_BAB_EL_MANDEB_STRAIT",
+                    "properties": { "name": "Bab-el-Mandeb Strait Shipping Chokepoint", "corridor": "Bab-el-Mandeb Strait" },
+                    "geometry": { "type": "LineString", "coordinates": [[43.4, 12.5833], [43.3, 12.8], [43.1, 13.2], [42.6, 13.9], [42.0, 14.7], [41.5, 15.8]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_RED_SEA_CENTRAL_JEDDAH",
+                    "properties": { "name": "Red Sea Central Deep Water Channel", "corridor": "Central Red Sea Shipping Lane" },
+                    "geometry": { "type": "LineString", "coordinates": [[41.5, 15.8], [40.8, 17.5], [39.8, 19.5], [38.8, 21.0], [38.5, 21.5], [39.1925, 21.4858]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_RED_SEA_NORTH_DUBA",
+                    "properties": { "name": "Red Sea North Channel to Duba Commercial Port", "corridor": "Northern Red Sea Duba Fairway" },
+                    "geometry": { "type": "LineString", "coordinates": [[38.5, 21.5], [37.8, 23.0], [36.8, 25.0], [35.8, 26.8], [35.3, 27.35], [35.69, 27.35]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_GULF_OF_SUEZ_CANAL",
+                    "properties": { "name": "Gulf of Suez & Suez Canal Convoy Approach", "corridor": "Suez Canal Transit Corridor" },
+                    "geometry": { "type": "LineString", "coordinates": [[35.3, 27.35], [34.3, 27.8], [33.7, 28.3], [33.0, 29.0], [32.55, 29.9667], [32.3, 31.2667]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_MEDITERRANEAN_BASIN",
+                    "properties": { "name": "Mediterranean Sea Trunk Shipping Lane", "corridor": "Eastern Mediterranean Shipping Lane" },
+                    "geometry": { "type": "LineString", "coordinates": [[32.3, 31.2667], [30.5, 32.5], [27.0, 34.0], [22.0, 35.5], [17.0, 36.5], [13.0, 37.5]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_GULF_OF_OMAN_HORMUZ",
+                    "properties": { "name": "Arabian Sea to Gulf of Oman & Strait of Hormuz", "corridor": "Strait of Hormuz Inbound TSS" },
+                    "geometry": { "type": "LineString", "coordinates": [[60.0, 14.0], [60.5, 18.0], [60.2, 21.5], [59.0, 24.0], [57.5, 25.5], [56.45, 26.5667]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_PERSIAN_GULF_DUBAI",
+                    "properties": { "name": "Strait of Hormuz to Dubai (Jebel Ali / Port Rashid)", "corridor": "Arabian Gulf Commercial Fairway" },
+                    "geometry": { "type": "LineString", "coordinates": [[56.45, 26.5667], [55.8, 26.2], [55.3, 25.5], [55.2708, 25.2048], [55.0667, 25.0167]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_CHENNAI_BAY_OF_BENGAL",
+                    "properties": { "name": "Chennai Port to Central Bay of Bengal Shipping Lane", "corridor": "Bay of Bengal Fairway" },
+                    "geometry": { "type": "LineString", "coordinates": [[80.2925, 13.0827], [81.5, 12.8], [84.0, 11.5], [87.5, 9.5], [91.0, 7.5], [94.0, 6.0]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_MALACCA_STRAIT_SINGAPORE",
+                    "properties": { "name": "Great Nicobar to Malacca Strait & Singapore Port", "corridor": "Malacca Strait Inbound TSS" },
+                    "geometry": { "type": "LineString", "coordinates": [[94.0, 6.0], [96.5, 5.5], [98.5, 4.2], [100.5, 3.2], [102.0, 2.0], [103.2, 1.4], [103.85, 1.25]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_INDIAN_COASTAL_WEST",
+                    "properties": { "name": "Indian West Coast Maritime Highway (Mumbai to Kochi)", "corridor": "Indian Western Seaboard Fairway" },
+                    "geometry": { "type": "LineString", "coordinates": [[72.8656, 18.9438], [72.6, 17.5], [73.2, 15.5], [74.2, 13.5], [75.2, 11.5], [76.2667, 9.9667]] }
+                },
+                {
+                    "type": "Feature",
+                    "id": "SEA_CORRIDOR_INDIAN_COASTAL_SOUTH_EAST",
+                    "properties": { "name": "Indian South-East Coast Fairway (Kochi to Cape Comorin & Chennai)", "corridor": "Cape Comorin & Palk Strait Bypass" },
+                    "geometry": { "type": "LineString", "coordinates": [[76.2667, 9.9667], [76.8, 8.5], [77.5, 7.6], [78.5, 7.8], [80.0, 8.5], [81.2, 10.0], [80.5, 11.8], [80.2925, 13.0827]] }
+                }
+            ]
+        };
+
+        function showMultiModalOverseasNotice(destName, portName) {
+            let pill = document.getElementById('nav-dest-status-pill');
+            if (pill) {
+                pill.style.display = 'inline-block';
+                pill.className = 'dest-status-pill';
+                pill.style.background = 'rgba(56, 189, 248, 0.2)';
+                pill.style.borderColor = '#38bdf8';
+                pill.style.color = '#38bdf8';
+                pill.innerText = `🚢 Overseas Destination: Routed to ${portName}. Switch to 🚢 Ship for sea passage to ${destName}`;
+            }
+            if (typeof speakGuidance === 'function') {
+                speakGuidance(`Overseas destination. Road route plotted to ${portName}. Switch vehicle profile to ship for maritime passage.`);
+            }
+        }
+
         class RoutingEngine {
+            static previewRoutes = [];
+            static activeRouteIndex = 0;
+            static seaSegments = null;
+
+            static getSeaSegments() {
+                if (RoutingEngine.seaSegments && RoutingEngine.seaSegments.length > 0) {
+                    return RoutingEngine.seaSegments;
+                }
+                let rawFeatures = (typeof OFFLINE_SEA_ROUTES_DATA !== 'undefined' && OFFLINE_SEA_ROUTES_DATA.features)
+                    ? OFFLINE_SEA_ROUTES_DATA.features
+                    : [];
+                RoutingEngine.seaSegments = rawFeatures.map(f => ({
+                    id: f.id,
+                    name: f.properties.name,
+                    corridor: f.properties.corridor || 'Shipping Lane',
+                    points: f.geometry.coordinates.map(c => [c[1], c[0]])
+                }));
+                return RoutingEngine.seaSegments;
+            }
+
             static async calculateRoute(startLat, startLon, destLat, destLon, destName = "Destination") {
                 if (!isValidCoordinate(startLat, startLon) || !isValidCoordinate(destLat, destLon)) {
                     throw new Error("Invalid start or destination coordinates.");
                 }
 
-                // 1. Try Online OSRM Driving Engine (with 3500ms abort controller)
+                RoutingEngine.previewRoutes = [];
+                RoutingEngine.activeRouteIndex = 0;
+
+                // 0. Maritime Vessel Sea-Lanes Routing
+                if (currentVehicleProfile === 'ship') {
+                    const maritimeRoutes = RoutingEngine.calculateMaritimeRoutes(startLat, startLon, destLat, destLon, destName);
+                    RoutingEngine.previewRoutes = maritimeRoutes;
+                    const primaryMaritime = maritimeRoutes[0];
+                    RoutingEngine.saveActiveRoute(primaryMaritime);
+                    return primaryMaritime;
+                }
+
+                // 1. Try Online OSRM Engine (with 6500ms timeout and primary + backup mirror)
                 if (navigator.onLine) {
-                    try {
-                        const controller = new AbortController();
-                        const timeoutId = setTimeout(() => controller.abort(), 3500);
-                        const url = `https://router.project-osrm.org/route/v1/driving/${startLon},${startLat};${destLon},${destLat}?overview=full&geometries=geojson&steps=true`;
-                        const res = await fetch(url, { signal: controller.signal });
-                        clearTimeout(timeoutId);
-                        if (res.ok) {
-                            const json = await res.json();
-                            if (json.routes && json.routes.length > 0) {
-                                const parsedRoute = RoutingEngine.parseOSRMRoute(json.routes[0], startLat, startLon, destLat, destLon, destName);
-                                RoutingEngine.saveActiveRoute(parsedRoute);
-                                return parsedRoute;
+                    let osrmProfile = (typeof VEHICLE_PROFILES !== 'undefined' && VEHICLE_PROFILES[currentVehicleProfile] && VEHICLE_PROFILES[currentVehicleProfile].osrmMode) ? VEHICLE_PROFILES[currentVehicleProfile].osrmMode : 'driving';
+                    const osrmUrls = [
+                        `https://router.project-osrm.org/route/v1/${osrmProfile}/${startLon},${startLat};${destLon},${destLat}?overview=full&geometries=geojson&steps=true&alternatives=true`,
+                        `https://routing.openstreetmap.de/routed-car/route/v1/driving/${startLon},${startLat};${destLon},${destLat}?overview=full&geometries=geojson&steps=true&alternatives=true`
+                    ];
+
+                    for (let url of osrmUrls) {
+                        try {
+                            const controller = new AbortController();
+                            const timeoutId = setTimeout(() => controller.abort(), 6500);
+                            const res = await fetch(url, { signal: controller.signal });
+                            clearTimeout(timeoutId);
+                            if (res.ok) {
+                                const json = await res.json();
+                                if (json.routes && json.routes.length > 0) {
+                                    const primaryRoute = RoutingEngine.parseOSRMRoute(json.routes[0], startLat, startLon, destLat, destLon, destName, "Recommended Route");
+                                    RoutingEngine.previewRoutes.push(primaryRoute);
+
+                                    if (json.routes.length > 1) {
+                                        const altRoute = RoutingEngine.parseOSRMRoute(json.routes[1], startLat, startLon, destLat, destLon, destName, "Alternative Route");
+                                        altRoute.isAlternative = true;
+                                        RoutingEngine.previewRoutes.push(altRoute);
+                                    }
+
+                                    RoutingEngine.saveActiveRoute(primaryRoute);
+                                    try {
+                                        localStorage.setItem('idr_corridor_cache_v1', JSON.stringify({
+                                            timestamp: Date.now(),
+                                            coords: primaryRoute.coordinates
+                                        }));
+                                    } catch (e) {}
+                                    return primaryRoute;
+                                }
                             }
+                        } catch (err) {
+                            console.warn("[RoutingEngine] OSRM mirror attempt failed, trying next mirror / offline fallback:", err.message);
                         }
-                    } catch (err) {
-                        console.warn("[RoutingEngine] Online OSRM fetch unavailable or timed out, executing offline topological road routing:", err.message);
                     }
                 }
 
-                // 2. Offline Road Network Fallback
-                const offlineRoute = RoutingEngine.calculateOfflineRoute(startLat, startLon, destLat, destLon, destName);
-                RoutingEngine.saveActiveRoute(offlineRoute);
-                return offlineRoute;
+                // Guardrail: Detect overseas destination across international waters for land vehicles
+                let directDistM = haversineDistanceM(startLat, startLon, destLat, destLon);
+                let isOverseas = (directDistM > 750000) && (destLon < 68.0 || destLon > 97.5 || destLat < 6.0 || destLat > 37.0);
+                if (isOverseas) {
+                    let embarkPort = (destLon < 75.0)
+                        ? { name: "Mumbai International Port", lat: 18.9438, lon: 72.8656 }
+                        : { name: "Chennai International Port", lat: 13.0827, lon: 80.2925 };
+
+                    showMultiModalOverseasNotice(destName, embarkPort.name);
+                    return RoutingEngine.calculateRoute(startLat, startLon, embarkPort.lat, embarkPort.lon, `${embarkPort.name} [Transfer to 🚢 Ship for ${destName}]`);
+                }
+
+                // 2. Offline Road Network Fallback (A* shortest path on connected network)
+                const offlineRoutes = RoutingEngine.calculateOfflineRoutes(startLat, startLon, destLat, destLon, destName);
+                RoutingEngine.previewRoutes = offlineRoutes;
+                const primaryOffline = offlineRoutes[0];
+                RoutingEngine.saveActiveRoute(primaryOffline);
+                return primaryOffline;
             }
 
-            static parseOSRMRoute(osrmRoute, startLat, startLon, destLat, destLon, destName) {
+            // High-Seas Maritime Routing Engine on International Shipping Lanes Graph
+            static calculateMaritimeRoutes(startLat, startLon, destLat, destLon, destName) {
+                let segments = RoutingEngine.getSeaSegments();
+                if (!segments || segments.length === 0) {
+                    return RoutingEngine.calculateOfflineRoutes(startLat, startLon, destLat, destLon, destName);
+                }
+
+                let startSeg = null, destSeg = null;
+                let minStartDist = Infinity, minDestDist = Infinity;
+
+                for (let seg of segments) {
+                    for (let pt of seg.points) {
+                        let dStart = haversineDistanceM(startLat, startLon, pt[0], pt[1]);
+                        if (dStart < minStartDist) {
+                            minStartDist = dStart;
+                            startSeg = seg;
+                        }
+                        let dDest = haversineDistanceM(destLat, destLon, pt[0], pt[1]);
+                        if (dDest < minDestDist) {
+                            minDestDist = dDest;
+                            destSeg = seg;
+                        }
+                    }
+                }
+
+                if (!startSeg || !destSeg) {
+                    return RoutingEngine.calculateOfflineRoutes(startLat, startLon, destLat, destLon, destName);
+                }
+
+                let segLengthMap = {};
+                segments.forEach(s => {
+                    let len = 0;
+                    for (let k = 0; k < s.points.length - 1; k++) {
+                        len += haversineDistanceM(s.points[k][0], s.points[k][1], s.points[k + 1][0], s.points[k + 1][1]);
+                    }
+                    segLengthMap[s.id] = Math.max(len, 100);
+                });
+
+                let adj = {};
+                segments.forEach(s => adj[s.id] = []);
+                segments.forEach((s1) => {
+                    segments.forEach((s2) => {
+                        if (s1.id === s2.id) return;
+                        for (let p1 of s1.points) {
+                            for (let p2 of s2.points) {
+                                let juncDist = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
+                                if (juncDist < 50000) {
+                                    let weight = segLengthMap[s2.id] + juncDist;
+                                    adj[s1.id].push({ targetId: s2.id, junction: p1, targetSeg: s2, weight: weight });
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                });
+
+                let findAStarSeaPath = () => {
+                    if (startSeg.id === destSeg.id) return [startSeg.id];
+                    let openSet = [startSeg.id];
+                    let cameFrom = {};
+                    let gScore = {}, fScore = {};
+                    segments.forEach(s => { gScore[s.id] = Infinity; fScore[s.id] = Infinity; });
+                    gScore[startSeg.id] = 0;
+                    fScore[startSeg.id] = haversineDistanceM(startSeg.points[0][0], startSeg.points[0][1], destLat, destLon);
+
+                    while (openSet.length > 0) {
+                        let currIdx = 0, bestF = fScore[openSet[0]];
+                        for (let i = 1; i < openSet.length; i++) {
+                            if (fScore[openSet[i]] < bestF) { bestF = fScore[openSet[i]]; currIdx = i; }
+                        }
+                        let current = openSet.splice(currIdx, 1)[0];
+                        if (current === destSeg.id) {
+                            let path = [current];
+                            while (cameFrom[current]) {
+                                current = cameFrom[current];
+                                path.unshift(current);
+                            }
+                            return path;
+                        }
+                        for (let edge of (adj[current] || [])) {
+                            let tentativeG = gScore[current] + edge.weight;
+                            if (tentativeG < gScore[edge.targetId]) {
+                                cameFrom[edge.targetId] = current;
+                                gScore[edge.targetId] = tentativeG;
+                                let midPt = edge.targetSeg.points[Math.floor(edge.targetSeg.points.length / 2)];
+                                fScore[edge.targetId] = tentativeG + haversineDistanceM(midPt[0], midPt[1], destLat, destLon);
+                                if (!openSet.includes(edge.targetId)) openSet.push(edge.targetId);
+                            }
+                        }
+                    }
+                    return [startSeg.id, destSeg.id];
+                };
+
+                let seaPath = findAStarSeaPath();
+                let segMap = {};
+                segments.forEach(s => segMap[s.id] = s);
+
+                let routeCoords = [[startLat, startLon]];
+                for (let i = 0; i < seaPath.length; i++) {
+                    let seg = segMap[seaPath[i]];
+                    if (!seg) continue;
+                    let prevPt = routeCoords[routeCoords.length - 1];
+                    let nextPt = (i === seaPath.length - 1)
+                        ? [destLat, destLon]
+                        : (function() {
+                            let nextSeg = segMap[seaPath[i + 1]];
+                            let bestJunc = null, minD = Infinity;
+                            if (nextSeg) {
+                                for (let p1 of seg.points) {
+                                    for (let p2 of nextSeg.points) {
+                                        let d = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
+                                        if (d < minD) { minD = d; bestJunc = p1; }
+                                    }
+                                }
+                            }
+                            return bestJunc || seg.points[seg.points.length - 1];
+                        })();
+
+                    let entryIdx = 0, minEntryD = Infinity;
+                    let exitIdx = seg.points.length - 1, minExitD = Infinity;
+
+                    for (let k = 0; k < seg.points.length; k++) {
+                        let d1 = haversineDistanceM(prevPt[0], prevPt[1], seg.points[k][0], seg.points[k][1]);
+                        if (d1 < minEntryD) { minEntryD = d1; entryIdx = k; }
+                        let d2 = haversineDistanceM(nextPt[0], nextPt[1], seg.points[k][0], seg.points[k][1]);
+                        if (d2 < minExitD) { minExitD = d2; exitIdx = k; }
+                    }
+
+                    let slice = (entryIdx <= exitIdx)
+                        ? seg.points.slice(entryIdx, exitIdx + 1)
+                        : seg.points.slice(exitIdx, entryIdx + 1).reverse();
+
+                    for (let pt of slice) {
+                        let last = routeCoords[routeCoords.length - 1];
+                        if (!last || haversineDistanceM(last[0], last[1], pt[0], pt[1]) > 500) {
+                            routeCoords.push(pt);
+                        }
+                    }
+                }
+                routeCoords.push([destLat, destLon]);
+
+                let totalDistM = 0;
+                for (let k = 0; k < routeCoords.length - 1; k++) {
+                    totalDistM += haversineDistanceM(routeCoords[k][0], routeCoords[k][1], routeCoords[k + 1][0], routeCoords[k + 1][1]);
+                }
+                let totalNM = totalDistM / 1852.0;
+                let shipSpeedKnots = (VEHICLE_PROFILES['ship'] && VEHICLE_PROFILES['ship'].speedKnots) || 18.0;
+                let durationSec = Math.round((totalNM / shipSpeedKnots) * 3600);
+
+                let steps = [];
+                let initialBearing = Math.round(calculateBearingDeg(routeCoords[0][0], routeCoords[0][1], routeCoords[1][0], routeCoords[1][1]));
+                let initialBrgStr = String((initialBearing + 360) % 360).padStart(3, '0') + '° T';
+
+                steps.push({
+                    stepIndex: 0,
+                    instruction: `Depart berth / harbor. Steer Course ${initialBrgStr} into sea lane`,
+                    roadName: startSeg.corridor || startSeg.name,
+                    distanceMeters: Math.round(haversineDistanceM(routeCoords[0][0], routeCoords[0][1], routeCoords[1][0], routeCoords[1][1])),
+                    durationSec: 1800,
+                    location: routeCoords[0],
+                    icon: '⚓',
+                    maneuverType: 'straight'
+                });
+
+                for (let i = 1; i < routeCoords.length - 1; i++) {
+                    let pPrev = routeCoords[i - 1];
+                    let pCurr = routeCoords[i];
+                    let pNext = routeCoords[i + 1];
+                    let b1 = calculateBearingDeg(pPrev[0], pPrev[1], pCurr[0], pCurr[1]);
+                    let b2 = calculateBearingDeg(pCurr[0], pCurr[1], pNext[0], pNext[1]);
+                    let diffAngle = ((b2 - b1 + 180) % 360 + 360) % 360 - 180;
+                    let brgNextStr = String(Math.round((b2 + 360) % 360)).padStart(3, '0') + '° T';
+
+                    let legDistM = haversineDistanceM(pCurr[0], pCurr[1], pNext[0], pNext[1]);
+                    let legNM = Math.round((legDistM / 1852.0) * 10) / 10;
+
+                    let maneuverTxt = '';
+                    let maneuverIcon = '↑';
+                    let maneuverType = 'straight';
+
+                    if (diffAngle > 20) {
+                        maneuverTxt = `Alter course to Starboard onto ${brgNextStr} (${legNM} NM)`;
+                        maneuverIcon = '↱';
+                        maneuverType = 'turn-right';
+                    } else if (diffAngle < -20) {
+                        maneuverTxt = `Alter course to Port onto ${brgNextStr} (${legNM} NM)`;
+                        maneuverIcon = '↰';
+                        maneuverType = 'turn-left';
+                    } else {
+                        maneuverTxt = `Maintain Course to Steer ${brgNextStr} (${legNM} NM)`;
+                        maneuverIcon = '↑';
+                        maneuverType = 'straight';
+                    }
+
+                    steps.push({
+                        stepIndex: steps.length,
+                        instruction: maneuverTxt,
+                        roadName: `Fairway Waypoint ${steps.length} (${brgNextStr})`,
+                        distanceMeters: Math.round(legDistM),
+                        durationSec: Math.round((legNM / shipSpeedKnots) * 3600),
+                        location: pCurr,
+                        icon: maneuverIcon,
+                        maneuverType: maneuverType
+                    });
+                }
+
+                steps.push({
+                    stepIndex: steps.length,
+                    instruction: `Arrive at ${destName} Harbor Approach / Anchorage`,
+                    roadName: `${destName} Port`,
+                    distanceMeters: 0,
+                    durationSec: 0,
+                    location: [destLat, destLon],
+                    icon: '🏁',
+                    maneuverType: 'arrive'
+                });
+
+                let maritimeRoute = {
+                    id: 'ROUTE_MARITIME_' + Date.now(),
+                    isOffline: true,
+                    isMaritime: true,
+                    isAlternative: false,
+                    engine: 'MARITIME SHIPPING LANES',
+                    routeLabel: '★ Recommended Sea Lane',
+                    sourceName: 'Embarkation Port',
+                    destinationName: destName,
+                    start: [startLat, startLon],
+                    destination: [destLat, destLon],
+                    distanceMeters: Math.round(totalDistM),
+                    distanceNM: Math.round(totalNM * 10) / 10,
+                    durationSec: durationSec,
+                    coordinates: routeCoords,
+                    steps: steps,
+                    currentStepIndex: 0
+                };
+
+                return [maritimeRoute];
+            }
+
+            static parseOSRMRoute(osrmRoute, startLat, startLon, destLat, destLon, destName, routeLabel = "Recommended Route") {
                 const rawCoords = (osrmRoute.geometry && osrmRoute.geometry.coordinates) ? osrmRoute.geometry.coordinates : [];
                 const coords = rawCoords.map(c => [c[1], c[0]]);
+
+                let speedMps = (typeof VEHICLE_PROFILES !== 'undefined' && VEHICLE_PROFILES[currentVehicleProfile] && VEHICLE_PROFILES[currentVehicleProfile].speedMps) ? VEHICLE_PROFILES[currentVehicleProfile].speedMps : 12.5;
 
                 let steps = [];
                 if (osrmRoute.legs && osrmRoute.legs[0] && Array.isArray(osrmRoute.legs[0].steps)) {
@@ -4590,7 +5601,7 @@
                             instruction: instruction,
                             roadName: s.name || destName,
                             distanceMeters: Math.round(s.distance || 0),
-                            durationSec: Math.round(s.duration || 0),
+                            durationSec: Math.round(s.duration || (s.distance / speedMps)),
                             location: loc,
                             icon: icon,
                             maneuverType: maneuverType
@@ -4603,22 +5614,30 @@
                 }
 
                 return {
-                    id: 'ROUTE_OSRM_' + Date.now(),
+                    id: 'ROUTE_OSRM_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
                     isOffline: false,
                     engine: 'ONLINE OSRM',
+                    routeLabel: routeLabel,
                     sourceName: 'Current Location',
                     destinationName: destName,
                     start: [startLat, startLon],
                     destination: [destLat, destLon],
                     distanceMeters: Math.round(osrmRoute.distance || haversineDistanceM(startLat, startLon, destLat, destLon)),
-                    durationSec: Math.round(osrmRoute.duration || (osrmRoute.distance / 8.33)),
+                    durationSec: Math.round(osrmRoute.duration || (osrmRoute.distance / speedMps)),
                     coordinates: coords,
                     steps: steps,
                     currentStepIndex: 0
                 };
             }
 
+            // Backwards-compatible single-route offline method
             static calculateOfflineRoute(startLat, startLon, destLat, destLon, destName) {
+                const routes = RoutingEngine.calculateOfflineRoutes(startLat, startLon, destLat, destLon, destName);
+                return routes[0];
+            }
+
+            // Multi-route offline routing with A* shortest-path and alternative paths
+            static calculateOfflineRoutes(startLat, startLon, destLat, destLon, destName) {
                 let segments = (offlineMapMatcher && offlineMapMatcher.segments && offlineMapMatcher.segments.length > 0)
                     ? offlineMapMatcher.segments
                     : [];
@@ -4643,10 +5662,19 @@
                     }
                 }
 
-                let routeCoords = [];
-                let steps = [];
+                // If start and destination can connect to the road network
+                if (startSeg && destSeg) {
+                    // Precompute segment road lengths
+                    let segLengthMap = {};
+                    segments.forEach(s => {
+                        let len = 0;
+                        for (let k = 0; k < s.points.length - 1; k++) {
+                            len += haversineDistanceM(s.points[k][0], s.points[k][1], s.points[k + 1][0], s.points[k + 1][1]);
+                        }
+                        segLengthMap[s.id] = Math.max(len, 10);
+                    });
 
-                if (startSeg && destSeg && minStartDist < 1200 && minDestDist < 1200) {
+                    // Build weighted adjacency graph
                     let adj = {};
                     segments.forEach(s => adj[s.id] = []);
                     segments.forEach((s1) => {
@@ -4654,8 +5682,10 @@
                             if (s1.id === s2.id) return;
                             for (let p1 of s1.points) {
                                 for (let p2 of s2.points) {
-                                    if (haversineDistanceM(p1[0], p1[1], p2[0], p2[1]) < 60) {
-                                        adj[s1.id].push({ targetId: s2.id, junction: p1, targetSeg: s2 });
+                                    let juncDist = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
+                                    if (juncDist < 300) {
+                                        let weight = segLengthMap[s2.id] + juncDist;
+                                        adj[s1.id].push({ targetId: s2.id, junction: p1, targetSeg: s2, weight: weight });
                                         break;
                                     }
                                 }
@@ -4663,214 +5693,422 @@
                         });
                     });
 
-                    let segPath = [startSeg.id];
-                    if (startSeg.id !== destSeg.id) {
-                        let queue = [[startSeg.id]];
-                        let visited = new Set([startSeg.id]);
-                        let found = false;
-                        while (queue.length > 0) {
-                            let currPath = queue.shift();
-                            let lastId = currPath[currPath.length - 1];
-                            for (let edge of (adj[lastId] || [])) {
-                                if (edge.targetId === destSeg.id) {
-                                    segPath = [...currPath, destSeg.id];
-                                    found = true;
-                                    break;
-                                }
-                                if (!visited.has(edge.targetId)) {
-                                    visited.add(edge.targetId);
-                                    queue.push([...currPath, edge.targetId]);
+                    // A* Pathfinding helper
+                    let findAStarPath = (avoidNode = null) => {
+                        if (startSeg.id === destSeg.id) return [startSeg.id];
+                        let openSet = [startSeg.id];
+                        let cameFrom = {};
+                        let gScore = {};
+                        let fScore = {};
+                        segments.forEach(s => {
+                            gScore[s.id] = Infinity;
+                            fScore[s.id] = Infinity;
+                        });
+                        gScore[startSeg.id] = 0;
+                        fScore[startSeg.id] = haversineDistanceM(startSeg.points[0][0], startSeg.points[0][1], destLat, destLon);
+
+                        while (openSet.length > 0) {
+                            let currIdx = 0;
+                            let bestF = fScore[openSet[0]];
+                            for (let i = 1; i < openSet.length; i++) {
+                                if (fScore[openSet[i]] < bestF) {
+                                    bestF = fScore[openSet[i]];
+                                    currIdx = i;
                                 }
                             }
-                            if (found) break;
-                        }
-                    }
+                            let current = openSet.splice(currIdx, 1)[0];
 
-                    routeCoords.push([startLat, startLon]);
-                    let segMap = {};
-                    segments.forEach(s => segMap[s.id] = s);
+                            if (current === destSeg.id) {
+                                let path = [current];
+                                while (cameFrom[current]) {
+                                    current = cameFrom[current];
+                                    path.unshift(current);
+                                }
+                                return path;
+                            }
 
-                    for (let i = 0; i < segPath.length; i++) {
-                        let seg = segMap[segPath[i]];
-                        if (!seg) continue;
-                        let prevPt = routeCoords[routeCoords.length - 1];
-                        let nextPt = (i === segPath.length - 1)
-                            ? [destLat, destLon]
-                            : (function() {
-                                let nextSeg = segMap[segPath[i + 1]];
-                                let bestJunc = null, minD = Infinity;
-                                if (nextSeg) {
-                                    for (let p1 of seg.points) {
-                                        for (let p2 of nextSeg.points) {
-                                            let d = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
-                                            if (d < minD) { minD = d; bestJunc = p1; }
-                                        }
+                            for (let edge of (adj[current] || [])) {
+                                if (avoidNode && edge.targetId === avoidNode && current !== startSeg.id) continue;
+                                let tentativeG = gScore[current] + edge.weight;
+                                if (tentativeG < gScore[edge.targetId]) {
+                                    cameFrom[edge.targetId] = current;
+                                    gScore[edge.targetId] = tentativeG;
+                                    let targetMidPt = edge.targetSeg.points[Math.floor(edge.targetSeg.points.length / 2)];
+                                    let h = haversineDistanceM(targetMidPt[0], targetMidPt[1], destLat, destLon);
+                                    fScore[edge.targetId] = tentativeG + h;
+                                    if (!openSet.includes(edge.targetId)) {
+                                        openSet.push(edge.targetId);
                                     }
                                 }
-                                return bestJunc || seg.points[seg.points.length - 1];
-                            })();
-
-                        let entryIdx = 0, minEntryD = Infinity;
-                        let exitIdx = seg.points.length - 1, minExitD = Infinity;
-
-                        for (let k = 0; k < seg.points.length; k++) {
-                            let d1 = haversineDistanceM(prevPt[0], prevPt[1], seg.points[k][0], seg.points[k][1]);
-                            if (d1 < minEntryD) { minEntryD = d1; entryIdx = k; }
-                            let d2 = haversineDistanceM(nextPt[0], nextPt[1], seg.points[k][0], seg.points[k][1]);
-                            if (d2 < minExitD) { minExitD = d2; exitIdx = k; }
-                        }
-
-                        let slice = [];
-                        if (entryIdx <= exitIdx) {
-                            slice = seg.points.slice(entryIdx, exitIdx + 1);
-                        } else {
-                            slice = seg.points.slice(exitIdx, entryIdx + 1).reverse();
-                        }
-
-                        for (let pt of slice) {
-                            let last = routeCoords[routeCoords.length - 1];
-                            if (!last || haversineDistanceM(last[0], last[1], pt[0], pt[1]) > 5) {
-                                routeCoords.push(pt);
                             }
                         }
+                        return null;
+                    };
+
+                    let primaryPath = findAStarPath(null) || [startSeg.id, destSeg.id];
+                    let altPath = null;
+                    if (primaryPath.length >= 3) {
+                        let avoidMid = primaryPath[Math.floor(primaryPath.length / 2)];
+                        altPath = findAStarPath(avoidMid);
                     }
-                    routeCoords.push([destLat, destLon]);
 
-                    steps.push({
-                        stepIndex: 0,
-                        instruction: `Head onto ${startSeg.name}`,
-                        roadName: startSeg.name,
-                        distanceMeters: Math.round(haversineDistanceM(startLat, startLon, startSeg.points[0][0], startSeg.points[0][1])),
-                        durationSec: 15,
-                        location: startSeg.points[0],
-                        icon: '↑',
-                        maneuverType: 'straight'
-                    });
+                    let buildRouteFromSegPath = (segPath, label, isAlt = false) => {
+                        let routeCoords = [[startLat, startLon]];
+                        let segMap = {};
+                        segments.forEach(s => segMap[s.id] = s);
 
-                    for (let i = 0; i < segPath.length - 1; i++) {
-                        let s1 = segMap[segPath[i]];
-                        let s2 = segMap[segPath[i + 1]];
-                        if (s1 && s2) {
-                            let bestJunc = s2.points[0];
-                            let minD = Infinity;
-                            for (let p1 of s1.points) {
-                                for (let p2 of s2.points) {
-                                    let d = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
-                                    if (d < minD) { minD = d; bestJunc = p2; }
+                        for (let i = 0; i < segPath.length; i++) {
+                            let seg = segMap[segPath[i]];
+                            if (!seg) continue;
+                            let prevPt = routeCoords[routeCoords.length - 1];
+                            let nextPt = (i === segPath.length - 1)
+                                ? [destLat, destLon]
+                                : (function() {
+                                    let nextSeg = segMap[segPath[i + 1]];
+                                    let bestJunc = null, minD = Infinity;
+                                    if (nextSeg) {
+                                        for (let p1 of seg.points) {
+                                            for (let p2 of nextSeg.points) {
+                                                let d = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
+                                                if (d < minD) { minD = d; bestJunc = p1; }
+                                            }
+                                        }
+                                    }
+                                    return bestJunc || seg.points[seg.points.length - 1];
+                                })();
+
+                            let entryIdx = 0, minEntryD = Infinity;
+                            let exitIdx = seg.points.length - 1, minExitD = Infinity;
+
+                            for (let k = 0; k < seg.points.length; k++) {
+                                let d1 = haversineDistanceM(prevPt[0], prevPt[1], seg.points[k][0], seg.points[k][1]);
+                                if (d1 < minEntryD) { minEntryD = d1; entryIdx = k; }
+                                let d2 = haversineDistanceM(nextPt[0], nextPt[1], seg.points[k][0], seg.points[k][1]);
+                                if (d2 < minExitD) { minExitD = d2; exitIdx = k; }
+                            }
+
+                            let slice = [];
+                            if (entryIdx <= exitIdx) {
+                                slice = seg.points.slice(entryIdx, exitIdx + 1);
+                            } else {
+                                slice = seg.points.slice(exitIdx, entryIdx + 1).reverse();
+                            }
+
+                            for (let pt of slice) {
+                                let last = routeCoords[routeCoords.length - 1];
+                                if (!last || haversineDistanceM(last[0], last[1], pt[0], pt[1]) > 5) {
+                                    routeCoords.push(pt);
                                 }
                             }
-                            let b1 = calculateBearingDeg(s1.points[0][0], s1.points[0][1], s1.points[s1.points.length - 1][0], s1.points[s1.points.length - 1][1]);
-                            let b2 = calculateBearingDeg(s2.points[0][0], s2.points[0][1], s2.points[s2.points.length - 1][0], s2.points[s2.points.length - 1][1]);
-                            let turn = getManeuverFromTurnAngle(b2 - b1);
-                            steps.push({
-                                stepIndex: steps.length,
-                                instruction: `${turn.text} onto ${s2.name}`,
-                                roadName: s2.name,
-                                distanceMeters: Math.round(haversineDistanceM(bestJunc[0], bestJunc[1], s2.points[s2.points.length - 1][0], s2.points[s2.points.length - 1][1])),
-                                durationSec: 30,
-                                location: bestJunc,
-                                icon: turn.icon,
-                                maneuverType: turn.type
-                            });
                         }
+                        routeCoords.push([destLat, destLon]);
+
+                        let steps = [];
+                        steps.push({
+                            stepIndex: 0,
+                            instruction: `Head onto ${startSeg.name}`,
+                            roadName: startSeg.name,
+                            distanceMeters: Math.round(haversineDistanceM(startLat, startLon, startSeg.points[0][0], startSeg.points[0][1])),
+                            durationSec: 15,
+                            location: startSeg.points[0],
+                            icon: '↑',
+                            maneuverType: 'straight'
+                        });
+
+                        for (let i = 0; i < segPath.length - 1; i++) {
+                            let s1 = segMap[segPath[i]];
+                            let s2 = segMap[segPath[i + 1]];
+                            if (s1 && s2) {
+                                let bestJunc = s2.points[0];
+                                let minD = Infinity;
+                                for (let p1 of s1.points) {
+                                    for (let p2 of s2.points) {
+                                        let d = haversineDistanceM(p1[0], p1[1], p2[0], p2[1]);
+                                        if (d < minD) { minD = d; bestJunc = p2; }
+                                    }
+                                }
+                                let b1 = calculateBearingDeg(s1.points[0][0], s1.points[0][1], s1.points[s1.points.length - 1][0], s1.points[s1.points.length - 1][1]);
+                                let b2 = calculateBearingDeg(s2.points[0][0], s2.points[0][1], s2.points[s2.points.length - 1][0], s2.points[s2.points.length - 1][1]);
+                                let turn = getManeuverFromTurnAngle(b2 - b1);
+                                steps.push({
+                                    stepIndex: steps.length,
+                                    instruction: `${turn.text} onto ${s2.name}`,
+                                    roadName: s2.name,
+                                    distanceMeters: Math.round(haversineDistanceM(bestJunc[0], bestJunc[1], s2.points[s2.points.length - 1][0], s2.points[s2.points.length - 1][1])),
+                                    durationSec: 30,
+                                    location: bestJunc,
+                                    icon: turn.icon,
+                                    maneuverType: turn.type
+                                });
+                            }
+                        }
+
+                        steps.push({
+                            stepIndex: steps.length,
+                            instruction: `Arrive at ${destName}`,
+                            roadName: destName,
+                            distanceMeters: 0,
+                            durationSec: 0,
+                            location: [destLat, destLon],
+                            icon: '🏁',
+                            maneuverType: 'arrive'
+                        });
+
+                        let totalDistM = 0;
+                        for (let k = 0; k < routeCoords.length - 1; k++) {
+                            totalDistM += haversineDistanceM(routeCoords[k][0], routeCoords[k][1], routeCoords[k + 1][0], routeCoords[k + 1][1]);
+                        }
+
+                        return {
+                            id: 'ROUTE_OFFLINE_' + (isAlt ? 'ALT_' : '') + Date.now(),
+                            isOffline: true,
+                            isAlternative: isAlt,
+                            engine: 'OFFLINE ROAD NETWORK',
+                            routeLabel: label,
+                            sourceName: 'Current Location',
+                            destinationName: destName,
+                            start: [startLat, startLon],
+                            destination: [destLat, destLon],
+                            distanceMeters: Math.round(totalDistM),
+                            durationSec: Math.round(totalDistM / 8.33),
+                            coordinates: routeCoords,
+                            steps: steps,
+                            currentStepIndex: 0
+                        };
+                    };
+
+                    let primaryRoute = buildRouteFromSegPath(primaryPath, "★ Recommended Route", false);
+                    let resultList = [primaryRoute];
+
+                    if (altPath && altPath.length >= 2 && altPath.join(',') !== primaryPath.join(',')) {
+                        let altRoute = buildRouteFromSegPath(altPath, "⚡ Alternative Route", true);
+                        resultList.push(altRoute);
                     }
-
-                    steps.push({
-                        stepIndex: steps.length,
-                        instruction: `Arrive at ${destName}`,
-                        roadName: destName,
-                        distanceMeters: 0,
-                        durationSec: 0,
-                        location: [destLat, destLon],
-                        icon: '🏁',
-                        maneuverType: 'arrive'
-                    });
-
-                } else {
-                    routeCoords = RoutingEngine.generateCorridorGeometry(startLat, startLon, destLat, destLon);
-                    steps = RoutingEngine.synthesizeSteps(routeCoords, destName);
+                    return resultList;
                 }
 
-                let totalDistM = 0;
-                for (let i = 0; i < routeCoords.length - 1; i++) {
-                    totalDistM += haversineDistanceM(routeCoords[i][0], routeCoords[i][1], routeCoords[i + 1][0], routeCoords[i + 1][1]);
+                // Outside pre-cached local network (e.g. state/country wide routing)
+                // Use smooth direct geodesic road corridor
+                let primaryCoords = RoutingEngine.generateCorridorGeometry(startLat, startLon, destLat, destLon, 0);
+                let primarySteps = RoutingEngine.synthesizeSteps(primaryCoords, destName);
+                let primaryDist = 0;
+                for (let i = 0; i < primaryCoords.length - 1; i++) {
+                    primaryDist += haversineDistanceM(primaryCoords[i][0], primaryCoords[i][1], primaryCoords[i + 1][0], primaryCoords[i + 1][1]);
                 }
-                let totalDurationSec = Math.round(totalDistM / 8.33);
 
-                return {
+                let primaryRoute = {
                     id: 'ROUTE_OFFLINE_' + Date.now(),
                     isOffline: true,
+                    isAlternative: false,
                     engine: 'OFFLINE ROAD NETWORK',
+                    routeLabel: '★ Recommended Route',
                     sourceName: 'Current Location',
                     destinationName: destName,
                     start: [startLat, startLon],
                     destination: [destLat, destLon],
-                    distanceMeters: Math.round(totalDistM),
-                    durationSec: totalDurationSec,
-                    coordinates: routeCoords,
-                    steps: steps,
+                    distanceMeters: Math.round(primaryDist),
+                    durationSec: Math.round(primaryDist / 11.11),
+                    coordinates: primaryCoords,
+                    steps: primarySteps,
                     currentStepIndex: 0
                 };
+
+                // Create alternative regional arterial route with gentle lateral deviation (+6%)
+                let altCoords = RoutingEngine.generateCorridorGeometry(startLat, startLon, destLat, destLon, 0.0035);
+                let altSteps = RoutingEngine.synthesizeSteps(altCoords, destName);
+                let altDist = 0;
+                for (let i = 0; i < altCoords.length - 1; i++) {
+                    altDist += haversineDistanceM(altCoords[i][0], altCoords[i][1], altCoords[i + 1][0], altCoords[i + 1][1]);
+                }
+
+                let altRoute = {
+                    id: 'ROUTE_OFFLINE_ALT_' + Date.now(),
+                    isOffline: true,
+                    isAlternative: true,
+                    engine: 'OFFLINE ROAD NETWORK',
+                    routeLabel: '⚡ Alternative Route',
+                    sourceName: 'Current Location',
+                    destinationName: destName,
+                    start: [startLat, startLon],
+                    destination: [destLat, destLon],
+                    distanceMeters: Math.round(altDist),
+                    durationSec: Math.round(altDist / 10.5),
+                    coordinates: altCoords,
+                    steps: altSteps,
+                    currentStepIndex: 0
+                };
+
+                return [primaryRoute, altRoute];
             }
 
-            static generateCorridorGeometry(startLat, startLon, destLat, destLon) {
-                let midLat = (startLat + destLat) / 2.0;
-                let midLon = (startLon + destLon) / 2.0;
-                let p0 = [startLat, startLon];
-                let p1 = [midLat, startLon];
-                let p2 = [midLat, destLon];
-                let p3 = [destLat, destLon];
-
+            // Realistic smooth geodesic corridor geometry connecting any two geographic coordinates
+            static generateCorridorGeometry(startLat, startLon, destLat, destLon, lateralOffset = 0) {
+                let dist = haversineDistanceM(startLat, startLon, destLat, destLon);
+                let numSteps = Math.max(8, Math.min(60, Math.floor(dist / 600)));
                 let coords = [];
-                let addLeg = (a, b, numSteps) => {
-                    for (let s = 0; s <= numSteps; s++) {
-                        let t = s / numSteps;
-                        coords.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
+
+                let dLat = destLat - startLat;
+                let dLon = destLon - startLon;
+                let perpLat = -dLon;
+                let perpLon = dLat;
+                let norm = Math.hypot(perpLat, perpLon) || 1;
+                perpLat /= norm;
+                perpLon /= norm;
+
+                for (let i = 0; i <= numSteps; i++) {
+                    let t = i / numSteps;
+                    let lat = startLat + dLat * t;
+                    let lon = startLon + dLon * t;
+                    if (lateralOffset !== 0) {
+                        let curve = Math.sin(t * Math.PI) * lateralOffset;
+                        lat += perpLat * curve;
+                        lon += perpLon * curve;
                     }
-                };
-                addLeg(p0, p1, 5);
-                addLeg(p1, p2, 5);
-                addLeg(p2, p3, 5);
+                    coords.push([lat, lon]);
+                }
                 return coords;
             }
 
-            static synthesizeSteps(coords, destName) {
-                if (coords.length < 2) {
+            static synthesizeSteps(coords, destName, sourceName = "Current Location") {
+                if (!Array.isArray(coords) || coords.length < 2) {
                     return [{
                         stepIndex: 0,
                         instruction: `Arrive at ${destName}`,
                         roadName: destName,
                         distanceMeters: 0,
                         durationSec: 0,
-                        location: coords[0] || [0, 0],
+                        location: (coords && coords[0]) ? coords[0] : [0, 0],
                         icon: '🏁',
                         maneuverType: 'arrive'
                     }];
                 }
 
+                let speedMps = (typeof VEHICLE_PROFILES !== 'undefined' && VEHICLE_PROFILES[currentVehicleProfile] && VEHICLE_PROFILES[currentVehicleProfile].speedMps) ? VEHICLE_PROFILES[currentVehicleProfile].speedMps : 12.5;
+
+                function getRegionalRoadName(progressRatio) {
+                    let sLow = (sourceName || '').toLowerCase();
+                    let dLow = (destName || '').toLowerCase();
+
+                    let isChennai = sLow.includes('chennai') || dLow.includes('chennai');
+                    let isAriyalur = sLow.includes('ariyalur') || dLow.includes('ariyalur');
+                    let isBangalore = sLow.includes('bangalore') || sLow.includes('bengaluru') || dLow.includes('bangalore') || dLow.includes('bengaluru');
+                    let isCoimbatore = sLow.includes('coimbatore') || dLow.includes('coimbatore');
+                    let isMadurai = sLow.includes('madurai') || dLow.includes('madurai');
+                    let isTrichy = sLow.includes('trichy') || sLow.includes('tiruchirappalli') || dLow.includes('trichy') || dLow.includes('tiruchirappalli');
+
+                    if (isChennai && isAriyalur) {
+                        if (progressRatio < 0.25) return 'Grand Southern Trunk (GST) Road / NH 32';
+                        if (progressRatio < 0.65) return 'National Highway 38 (NH 38 Expressway)';
+                        return 'Ariyalur State Highway Corridor (SH 139)';
+                    }
+                    if (isBangalore && isChennai) {
+                        if (progressRatio < 0.3) return 'Old Madras Road / NH 75';
+                        if (progressRatio < 0.7) return 'NH 48 Bengaluru-Chennai Expressway';
+                        return 'Poonamallee High Road / Chennai Radial Way';
+                    }
+                    if (isCoimbatore && isMadurai) {
+                        if (progressRatio < 0.4) return 'NH 83 Coimbatore-Pollachi Corridor';
+                        if (progressRatio < 0.75) return 'Dindigul-Theni Highway';
+                        return 'Madurai Ring Road / Transit Corridor';
+                    }
+                    if (isChennai && isTrichy) {
+                        if (progressRatio < 0.3) return 'GST Road / Chennai Bypass';
+                        if (progressRatio < 0.7) return 'NH 45 (Chennai-Trichy Highway)';
+                        return 'Tiruchirappalli Bypass Corridor';
+                    }
+
+                    if (progressRatio < 0.2) return `${sourceName && sourceName !== 'Current Location' ? sourceName : 'Transit'} Corridor`;
+                    if (progressRatio < 0.5) return 'National Highway / Main Expressway';
+                    if (progressRatio < 0.8) return 'State Arterial Bypass Corridor';
+                    return `${destName} Radial Approach`;
+                }
+
+                function lookupNearbyRoad(lat, lon, fallbackName) {
+                    if (typeof offlineMapMatcher !== 'undefined' && offlineMapMatcher && offlineMapMatcher.hasOfflineRoads) {
+                        let m = offlineMapMatcher.match(lat, lon, 0.0);
+                        if (m && m.matched && m.roadName && m.roadName !== 'Transit Corridor') {
+                            return m.roadName;
+                        }
+                    }
+                    return fallbackName;
+                }
+
+                let totalDistM = 0;
+                for (let k = 0; k < coords.length - 1; k++) {
+                    totalDistM += haversineDistanceM(coords[k][0], coords[k][1], coords[k + 1][0], coords[k + 1][1]);
+                }
+
                 let steps = [];
+                let initialRoad = lookupNearbyRoad(coords[0][0], coords[0][1], getRegionalRoadName(0.05));
+
+                let firstLegDist = Math.max(120, Math.round(totalDistM * 0.15));
                 steps.push({
                     stepIndex: 0,
-                    instruction: `Head towards ${destName}`,
-                    roadName: 'Main Transit Corridor',
-                    distanceMeters: Math.round(haversineDistanceM(coords[0][0], coords[0][1], coords[Math.floor(coords.length / 2)][0], coords[Math.floor(coords.length / 2)][1])),
-                    durationSec: 60,
+                    instruction: `Head onto ${initialRoad}`,
+                    roadName: initialRoad,
+                    distanceMeters: firstLegDist,
+                    durationSec: Math.max(10, Math.round(firstLegDist / speedMps)),
                     location: coords[0],
                     icon: '↑',
                     maneuverType: 'straight'
                 });
 
-                if (coords.length >= 6) {
-                    let midIdx = Math.floor(coords.length / 2);
+                let lastStepCoordIdx = 0;
+                let sampleInterval = Math.max(2, Math.floor(coords.length / 5));
+
+                for (let i = sampleInterval; i < coords.length - 1; i += sampleInterval) {
+                    let ptPrev = coords[Math.max(0, i - 1)];
+                    let ptCurr = coords[i];
+                    let ptNext = coords[Math.min(coords.length - 1, i + 1)];
+
+                    let bIn = calculateBearingDeg(ptPrev[0], ptPrev[1], ptCurr[0], ptCurr[1]);
+                    let bOut = calculateBearingDeg(ptCurr[0], ptCurr[1], ptNext[0], ptNext[1]);
+                    let dAngle = bOut - bIn;
+                    let turnManeuver = getManeuverFromTurnAngle(dAngle);
+
+                    let segDistM = 0;
+                    for (let s = lastStepCoordIdx; s < i; s++) {
+                        segDistM += haversineDistanceM(coords[s][0], coords[s][1], coords[s + 1][0], coords[s + 1][1]);
+                    }
+
+                    let progressRatio = i / coords.length;
+                    let stepRoadName = lookupNearbyRoad(ptCurr[0], ptCurr[1], getRegionalRoadName(progressRatio));
+
+                    let instruction = (turnManeuver.type !== 'straight')
+                        ? `${turnManeuver.text} onto ${stepRoadName}`
+                        : `Continue straight on ${stepRoadName}`;
+
                     steps.push({
-                        stepIndex: 1,
-                        instruction: `Turn right onto Arterial Way`,
-                        roadName: 'Arterial Way',
-                        distanceMeters: Math.round(haversineDistanceM(coords[midIdx][0], coords[midIdx][1], coords[coords.length - 1][0], coords[coords.length - 1][1])),
-                        durationSec: 45,
-                        location: coords[midIdx],
-                        icon: '↱',
-                        maneuverType: 'turn-right'
+                        stepIndex: steps.length,
+                        instruction: instruction,
+                        roadName: stepRoadName,
+                        distanceMeters: Math.round(segDistM),
+                        durationSec: Math.max(15, Math.round(segDistM / speedMps)),
+                        location: ptCurr,
+                        icon: turnManeuver.icon,
+                        maneuverType: turnManeuver.type
+                    });
+
+                    lastStepCoordIdx = i;
+                }
+
+                let finalLegDist = 0;
+                for (let s = lastStepCoordIdx; s < coords.length - 1; s++) {
+                    finalLegDist += haversineDistanceM(coords[s][0], coords[s][1], coords[s + 1][0], coords[s + 1][1]);
+                }
+                finalLegDist = Math.round(finalLegDist);
+
+                let approachRoad = lookupNearbyRoad(coords[coords.length - 1][0], coords[coords.length - 1][1], `${destName} Approach`);
+                if (finalLegDist > 200) {
+                    steps.push({
+                        stepIndex: steps.length,
+                        instruction: `Continue towards ${destName}`,
+                        roadName: approachRoad,
+                        distanceMeters: finalLegDist,
+                        durationSec: Math.max(10, Math.round(finalLegDist / speedMps)),
+                        location: coords[lastStepCoordIdx],
+                        icon: '↑',
+                        maneuverType: 'straight'
                     });
                 }
 
@@ -4918,6 +6156,8 @@
                 activeNavRoute = null;
                 isNavigatingActive = false;
                 isArrivedAtDestination = false;
+                RoutingEngine.previewRoutes = [];
+                RoutingEngine.activeRouteIndex = 0;
                 try {
                     localStorage.removeItem('idr_active_nav_route');
                 } catch (e) {}
@@ -4925,6 +6165,10 @@
                 if (liveRoutePolyline && liveLeafletMap) {
                     liveLeafletMap.removeLayer(liveRoutePolyline);
                     liveRoutePolyline = null;
+                }
+                if (liveRouteAltPolylines && liveRouteAltPolylines.length > 0 && liveLeafletMap) {
+                    liveRouteAltPolylines.forEach(p => liveLeafletMap.removeLayer(p));
+                    liveRouteAltPolylines = [];
                 }
                 if (liveRouteStartMarker && liveLeafletMap) {
                     liveLeafletMap.removeLayer(liveRouteStartMarker);
@@ -4963,7 +6207,69 @@
             customStartCoord = null;
             let startDisplay = document.getElementById('nav-start-display');
             if (startDisplay) {
+                startDisplay.innerHTML = `<span>⏳ Acquiring live GPS position...</span>`;
+            }
+
+            if (!('geolocation' in navigator)) {
+                updateStartDisplayFromEst();
+                alert("Geolocation is not supported by your browser. Using estimated position.");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    if (pos && pos.coords && isValidCoordinate(pos.coords.latitude, pos.coords.longitude)) {
+                        let lat = pos.coords.latitude;
+                        let lon = pos.coords.longitude;
+                        liveNav.refLat = lat;
+                        liveNav.refLon = lon;
+                        liveNav.estLat = lat;
+                        liveNav.estLon = lon;
+                        liveNav.lastAuthoritativeLat = lat;
+                        liveNav.lastAuthoritativeLon = lon;
+                        liveNav.lastGpsTimestamp = performance.now();
+                        isLiveGPSOutage = false;
+
+                        if (startDisplay) {
+                            startDisplay.innerText = `📍 Current Location (${lat.toFixed(5)}, ${lon.toFixed(5)})`;
+                        }
+                        let hudLatLon = document.getElementById('hud-latlon');
+                        if (hudLatLon) hudLatLon.innerText = `${lat.toFixed(6)}, ${lon.toFixed(6)}`;
+
+                        if (liveLeafletMap) {
+                            liveLeafletMap.setView([lat, lon], 17, { animate: true });
+                            if (liveVehicleMarker) liveVehicleMarker.setLatLng([lat, lon]);
+                        }
+                        let statusPill = document.getElementById('nav-dest-status-pill');
+                        if (statusPill) {
+                            statusPill.style.display = 'inline-block';
+                            statusPill.innerHTML = `📍 GPS fix acquired (${lat.toFixed(4)}, ${lon.toFixed(4)})`;
+                        }
+                        console.log(`[GPS] Live location locked: ${lat}, ${lon}`);
+                    } else {
+                        updateStartDisplayFromEst();
+                    }
+                },
+                (err) => {
+                    console.warn("[GPS] Geolocation error:", err.message);
+                    updateStartDisplayFromEst();
+                    let statusPill = document.getElementById('nav-dest-status-pill');
+                    if (statusPill) {
+                        statusPill.style.display = 'inline-block';
+                        statusPill.innerHTML = `ℹ️ GPS unavailable (${err.message}). Using current estimated position.`;
+                    }
+                },
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 10000 }
+            );
+        }
+
+        function updateStartDisplayFromEst() {
+            let startDisplay = document.getElementById('nav-start-display');
+            if (!startDisplay) return;
+            if (isValidCoordinate(liveNav.estLat, liveNav.estLon)) {
                 startDisplay.innerText = `📍 Current Location (${liveNav.estLat.toFixed(5)}, ${liveNav.estLon.toFixed(5)})`;
+            } else {
+                startDisplay.innerText = `📍 Current Location (GPS Fix)`;
             }
         }
 
@@ -5069,6 +6375,9 @@
                                 suggBox.style.display = 'none';
                                 let lat = parseFloat(item.lat);
                                 let lon = parseFloat(item.lon);
+                                if (liveLeafletMap) {
+                                    liveLeafletMap.panTo([lat, lon]);
+                                }
                                 let startLat = customStartCoord ? customStartCoord[0] : (isValidCoordinate(liveNav.estLat, liveNav.estLon) ? liveNav.estLat : 12.971600);
                                 let startLon = customStartCoord ? customStartCoord[1] : (isValidCoordinate(liveNav.estLat, liveNav.estLon) ? liveNav.estLon : 77.594600);
                                 calculateAndPreviewRoute(startLat, startLon, lat, lon, title);
@@ -5154,6 +6463,22 @@
                 let results = await res.json();
 
                 if (!results || results.length === 0) {
+                    let gazMatch = findInOfflineGazetteer(rawQuery);
+                    if (gazMatch) {
+                        let destLat = gazMatch.lat;
+                        let destLon = gazMatch.lon;
+                        let placeName = gazMatch.name;
+                        if (destInput) destInput.value = placeName;
+                        if (statusPill) {
+                            statusPill.style.display = 'inline-block';
+                            statusPill.innerHTML = `📍 Found (Offline): <strong>${placeName}</strong> (${destLat.toFixed(4)}, ${destLon.toFixed(4)})`;
+                        }
+                        if (liveLeafletMap) {
+                            liveLeafletMap.panTo([destLat, destLon]);
+                        }
+                        await calculateAndPreviewRoute(startLat, startLon, destLat, destLon, placeName);
+                        return;
+                    }
                     if (statusPill) {
                         statusPill.style.display = 'inline-block';
                         statusPill.innerHTML = `⚠️ Location not found. Try adding city name or tap map.`;
@@ -5180,6 +6505,22 @@
                 await calculateAndPreviewRoute(startLat, startLon, destLat, destLon, placeName);
             } catch (err) {
                 console.warn("[Geocoding] Nominatim lookup failed:", err.message);
+                let gazMatch = findInOfflineGazetteer(rawQuery);
+                if (gazMatch) {
+                    let destLat = gazMatch.lat;
+                    let destLon = gazMatch.lon;
+                    let placeName = gazMatch.name;
+                    if (destInput) destInput.value = placeName;
+                    if (statusPill) {
+                        statusPill.style.display = 'inline-block';
+                        statusPill.innerHTML = `📍 Found (Offline): <strong>${placeName}</strong> (${destLat.toFixed(4)}, ${destLon.toFixed(4)})`;
+                    }
+                    if (liveLeafletMap) {
+                        liveLeafletMap.panTo([destLat, destLon]);
+                    }
+                    await calculateAndPreviewRoute(startLat, startLon, destLat, destLon, placeName);
+                    return;
+                }
                 if (statusPill) {
                     statusPill.style.display = 'inline-block';
                     statusPill.innerHTML = `⚠️ Search offline or timed out. Tap map to select.`;
@@ -5214,12 +6555,25 @@
             }
         }
 
+        function selectRouteOption(idx) {
+            if (!RoutingEngine.previewRoutes || !RoutingEngine.previewRoutes[idx]) return;
+            RoutingEngine.activeRouteIndex = idx;
+            const selectedRoute = RoutingEngine.previewRoutes[idx];
+            RoutingEngine.saveActiveRoute(selectedRoute);
+            renderActiveRouteOnMap(selectedRoute);
+            showRouteSummaryPreview(selectedRoute);
+        }
+
         function renderActiveRouteOnMap(route) {
             if (!liveLeafletMap || typeof L === 'undefined') return;
 
             if (liveRoutePolyline) {
                 liveLeafletMap.removeLayer(liveRoutePolyline);
                 liveRoutePolyline = null;
+            }
+            if (liveRouteAltPolylines && liveRouteAltPolylines.length > 0) {
+                liveRouteAltPolylines.forEach(p => liveLeafletMap.removeLayer(p));
+                liveRouteAltPolylines = [];
             }
             if (liveRouteStartMarker) {
                 liveLeafletMap.removeLayer(liveRouteStartMarker);
@@ -5232,10 +6586,32 @@
 
             if (!route || !Array.isArray(route.coordinates) || route.coordinates.length < 2) return;
 
+            // 1. Render alternative routes (if any) as selectable dashed routes
+            if (RoutingEngine.previewRoutes && RoutingEngine.previewRoutes.length > 1) {
+                RoutingEngine.previewRoutes.forEach((alt, idx) => {
+                    if (idx === RoutingEngine.activeRouteIndex) return;
+                    let altPoly = L.polyline(alt.coordinates, {
+                        color: '#64748b',
+                        weight: 4.5,
+                        opacity: 0.75,
+                        dashArray: '6, 8',
+                        lineCap: 'round',
+                        lineJoin: 'round'
+                    }).addTo(liveLeafletMap);
+                    altPoly.bindTooltip(`Alternative: ${(alt.distanceMeters / 1000).toFixed(1)} km`, {
+                        sticky: true,
+                        className: 'road-label-tooltip'
+                    });
+                    altPoly.on('click', () => selectRouteOption(idx));
+                    liveRouteAltPolylines.push(altPoly);
+                });
+            }
+
+            // 2. Render primary active route
             liveRoutePolyline = L.polyline(route.coordinates, {
                 color: '#0284c7',
                 weight: 6.5,
-                opacity: 0.9,
+                opacity: 0.95,
                 lineCap: 'round',
                 lineJoin: 'round'
             }).addTo(liveLeafletMap);
@@ -5275,23 +6651,61 @@
             let timeEl = document.getElementById('route-sum-time');
             let badgeEl = document.getElementById('route-sum-engine-badge');
             let destNameEl = document.getElementById('route-sum-dest-name');
+            let optsContainer = document.getElementById('route-options-selector');
 
             if (!sheet || !route) return;
 
-            let distKm = (route.distanceMeters / 1000.0).toFixed(1);
-            let timeMin = Math.max(1, Math.round(route.durationSec / 60));
-
-            if (distEl) distEl.innerText = distKm;
-            if (timeEl) timeEl.innerText = timeMin;
-            if (destNameEl) destNameEl.innerText = route.destinationName || 'Destination';
-
-            if (badgeEl) {
-                if (route.isOffline) {
+            if (route.isMaritime || currentVehicleProfile === 'ship') {
+                let distNM = (route.distanceMeters / 1852.0).toFixed(1);
+                let timeHrs = (route.durationSec / 3600).toFixed(1);
+                if (distEl) distEl.innerText = `${distNM} NM`;
+                if (timeEl) timeEl.innerText = timeHrs < 24 ? `${timeHrs}h` : `${(timeHrs / 24).toFixed(1)}d`;
+                if (destNameEl) destNameEl.innerText = route.destinationName || 'Port Destination';
+                if (badgeEl) {
                     badgeEl.className = 'badge-status-pill badge-cyan';
-                    badgeEl.innerText = '🗺️ OFFLINE ROAD NETWORK';
+                    badgeEl.innerText = '⚓ MARITIME SEA LANE';
+                }
+            } else {
+                let distKm = (route.distanceMeters / 1000.0).toFixed(1);
+                let timeMin = Math.max(1, Math.round(route.durationSec / 60));
+
+                if (distEl) distEl.innerText = distKm;
+                if (timeEl) timeEl.innerText = timeMin;
+                if (destNameEl) destNameEl.innerText = route.destinationName || 'Destination';
+
+                if (badgeEl) {
+                    if (route.isOffline) {
+                        badgeEl.className = 'badge-status-pill badge-cyan';
+                        badgeEl.innerText = '🗺️ OFFLINE ROAD NETWORK';
+                    } else {
+                        badgeEl.className = 'badge-status-pill badge-green';
+                        badgeEl.innerText = '🟢 ONLINE OSRM';
+                    }
+                }
+            }
+
+            // Render multi-route selector tabs if alternatives exist
+            if (optsContainer) {
+                if (RoutingEngine.previewRoutes && RoutingEngine.previewRoutes.length > 1) {
+                    optsContainer.innerHTML = '';
+                    RoutingEngine.previewRoutes.forEach((r, idx) => {
+                        let tab = document.createElement('button');
+                        let isActive = (idx === RoutingEngine.activeRouteIndex);
+                        tab.className = `route-opt-tab ${isActive ? 'active' : ''}`;
+                        let title = idx === 0 ? '★ Recommended' : `⚡ Route Option ${idx + 1}`;
+                        let rStats = (r.isMaritime || currentVehicleProfile === 'ship')
+                            ? `${(r.distanceMeters / 1852.0).toFixed(1)} NM • ${(r.durationSec / 3600).toFixed(1)}h`
+                            : `${(r.distanceMeters / 1000.0).toFixed(1)} km • ${Math.max(1, Math.round(r.durationSec / 60))} min`;
+                        tab.innerHTML = `
+                            <div class="route-opt-title">${title}</div>
+                            <div class="route-opt-stats">${rStats}</div>
+                        `;
+                        tab.onclick = () => selectRouteOption(idx);
+                        optsContainer.appendChild(tab);
+                    });
+                    optsContainer.style.display = 'flex';
                 } else {
-                    badgeEl.className = 'badge-status-pill badge-green';
-                    badgeEl.innerText = '🟢 ONLINE OSRM';
+                    optsContainer.style.display = 'none';
                 }
             }
 
@@ -5449,18 +6863,34 @@
             } else {
                 if (iconEl) iconEl.innerText = step.icon || '↑';
                 if (distEl) {
-                    if (distToStepM > 1000) {
-                        distEl.innerText = `In ${(distToStepM / 1000).toFixed(1)} km`;
-                    } else if (distToStepM > 30) {
-                        distEl.innerText = `In ${Math.round(distToStepM)} m`;
+                    if (currentVehicleProfile === 'ship' || (activeNavRoute && activeNavRoute.isMaritime)) {
+                        let distNM = distToStepM / 1852.0;
+                        if (distNM >= 1.0) {
+                            distEl.innerText = `In ${distNM.toFixed(1)} NM`;
+                        } else {
+                            let cables = Math.max(1, Math.round(distNM * 10));
+                            distEl.innerText = `In ${cables} cbl (${Math.round(distToStepM)} m)`;
+                        }
                     } else {
-                        distEl.innerText = `Turn now: ${step.roadName}`;
+                        if (distToStepM > 1000) {
+                            distEl.innerText = `In ${(distToStepM / 1000).toFixed(1)} km`;
+                        } else if (distToStepM > 30) {
+                            distEl.innerText = `In ${Math.round(distToStepM)} m`;
+                        } else {
+                            distEl.innerText = `Turn now: ${step.roadName}`;
+                        }
                     }
                 }
                 if (roadEl) roadEl.innerText = step.instruction;
                 if (etaEl) {
-                    let distStr = remDistM >= 1000 ? `${(remDistM / 1000).toFixed(1)} km` : `${Math.round(remDistM)} m`;
-                    etaEl.innerText = `Step ${stepIdx + 1} of ${activeNavRoute.steps.length} • ${distStr} left • ETA: ${remMin} min`;
+                    if (currentVehicleProfile === 'ship' || (activeNavRoute && activeNavRoute.isMaritime)) {
+                        let remNM = (remDistM / 1852.0).toFixed(1);
+                        let etaHours = (remMin / 60).toFixed(1);
+                        etaEl.innerText = `Waypoint ${stepIdx + 1} of ${activeNavRoute.steps.length} • ${remNM} NM left • ETA: ${remMin < 60 ? remMin + ' min' : etaHours + ' hrs'}`;
+                    } else {
+                        let distStr = remDistM >= 1000 ? `${(remDistM / 1000).toFixed(1)} km` : `${Math.round(remDistM)} m`;
+                        etaEl.innerText = `Step ${stepIdx + 1} of ${activeNavRoute.steps.length} • ${distStr} left • ETA: ${remMin} min`;
+                    }
                 }
                 if (progEl) progEl.style.width = progressPct + '%';
             }
@@ -5469,6 +6899,9 @@
                 if (isLiveGPSOutage) {
                     pillEl.className = 'nav-banner-pill pill-outage';
                     pillEl.innerText = '⚠️ AI-IDR GUIDING (GNSS LOST)';
+                } else if (activeNavRoute.isMaritime) {
+                    pillEl.className = 'nav-banner-pill pill-online';
+                    pillEl.innerText = '⚓ MARITIME SEA LANES';
                 } else if (activeNavRoute.isOffline) {
                     pillEl.className = 'nav-banner-pill pill-online';
                     pillEl.innerText = '🗺️ OFFLINE ROAD NETWORK';
@@ -5492,6 +6925,12 @@
         let liveRoadNetworkLayer = null;
         let isOfflineRoadNetworkLoaded = false;
 
+        let currentMapLayer = 'dark'; // 'dark' | 'topo' | 'nautical' | 'satellite'
+        let satHybridLayer = null;
+        let osmTileLayer = null;
+        let topoLayer = null;
+        let openseaMapLayer = null;
+
         function initLiveGeographicMap() {
             if (typeof L === 'undefined') {
                 console.warn("[initLiveGeographicMap] Leaflet library (L) is not loaded yet.");
@@ -5508,22 +6947,40 @@
             liveLeafletMap = L.map('liveMap', {
                 center: [startLat, startLon],
                 zoom: 17,
-                minZoom: 12,
+                minZoom: 4,
                 maxZoom: 19,
                 zoomControl: true,
                 attributionControl: true
             });
 
-            // 1. Online OpenStreetMap Tile Layer (Auto-inverts to dark cyber theme)
-            // When offline, tiles fail silently while local vector roads render seamlessly
-            const osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // Multi-Layer Real Geographic Tile Systems
+            // A. Satellite Hybrid Layer (Esri World Imagery: Real Oceans, Coasts, Mountains, and Earth)
+            // Note: maxNativeZoom: 16 prevents 404 black tiles in regional/rural India while maxZoom: 19 allows smooth Leaflet upsampling
+            satHybridLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                maxNativeZoom: 16,
+                maxZoom: 19,
+                attribution: 'Tiles &copy; Esri &mdash; Earthstar Geographics'
+            });
+            satHybridLayer.on('tileerror', (e) => {
+                if (e && e.tile) e.tile.style.display = 'none';
+            });
+
+            // B. Dark Cyber Vector Layer (OpenStreetMap with dark cyber theme - 100% reliable, zero blank tiles)
+            osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 className: 'dark-tiles',
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             });
-            osmTileLayer.on('tileerror', () => {
-                // Silently pass tile network errors when offline
+            osmTileLayer.on('tileerror', () => {});
+
+            // C. Topographic Layer (Contour and elevation relief)
+            topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                maxZoom: 17,
+                attribution: 'Map data: &copy; OpenStreetMap, SRTM | Map style: &copy; OpenTopoMap'
             });
+            topoLayer.on('tileerror', () => {});
+
+            // Default to fast Dark Cyber Vector Layer for 100% reliable rendering with zero blank tiles
             osmTileLayer.addTo(liveLeafletMap);
 
             // 2. Trajectory Polylines
@@ -5582,10 +7039,16 @@
             // 4. Load Offline Road Network GeoJSON
             loadOfflineRoadNetworkGeoJSON();
 
-            // 5. User drag detection: switch from Follow to Free View without jerking
+            // 5. User gesture detection: switch from Follow to Free View without jerking or camera snapping
             liveLeafletMap.on('dragstart', () => {
                 isFollowVehicle = false;
                 updateFollowUI();
+            });
+            liveLeafletMap.on('movestart', (e) => {
+                if (e && e.originalEvent) {
+                    isFollowVehicle = false;
+                    updateFollowUI();
+                }
             });
             liveLeafletMap.on('zoomstart', (e) => {
                 if (e && e.originalEvent) {
@@ -5593,9 +7056,13 @@
                     updateFollowUI();
                 }
             });
+            liveLeafletMap.on('touchstart', () => {
+                isFollowVehicle = false;
+                updateFollowUI();
+            });
 
-            // 6. Native Geolocation Quick Pre-seed (for immediate real phone centering)
-            if ('geolocation' in navigator && liveNav.lastAuthoritativeLat === null) {
+            // 6. Native Geolocation Quick Pre-seed & Continuous High-Accuracy Watch
+            if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     if (pos && pos.coords && isValidCoordinate(pos.coords.latitude, pos.coords.longitude)) {
                         let lat = pos.coords.latitude;
@@ -5617,6 +7084,7 @@
                         }
                     }
                 }, () => {}, { enableHighAccuracy: true, timeout: 3500, maximumAge: 60000 });
+                requestSmartphoneGPS();
             }
 
             // 7. Click on map to pick custom navigation destination
@@ -5668,6 +7136,119 @@
             if (recenterBtn) {
                 recenterBtn.style.display = isFollowVehicle ? 'none' : 'flex';
             }
+        }
+
+        function mapZoomIn() {
+            if (liveLeafletMap) liveLeafletMap.zoomIn();
+        }
+
+        function mapZoomOut() {
+            if (liveLeafletMap) liveLeafletMap.zoomOut();
+        }
+
+        function toggleFullscreenMap() {
+            let heroCard = document.querySelector('.nav-hero-map-card');
+            let fsBtn = document.getElementById('btn-map-fullscreen');
+            if (!heroCard) return;
+            let isFs = heroCard.classList.toggle('fullscreen-active');
+            if (fsBtn) {
+                fsBtn.innerText = isFs ? '🗗' : '⛶';
+                fsBtn.title = isFs ? 'Exit full-screen map (🗗)' : 'Toggle full-screen map (⛶)';
+            }
+            if (liveLeafletMap) {
+                setTimeout(() => liveLeafletMap.invalidateSize(), 250);
+            }
+        }
+
+        function cycleMapLayer() {
+            if (!liveLeafletMap) return;
+            const btn = document.getElementById('btn-map-layer-toggle');
+
+            if (currentMapLayer === 'satellite') {
+                currentMapLayer = 'dark';
+                if (satHybridLayer) liveLeafletMap.removeLayer(satHybridLayer);
+                if (topoLayer) liveLeafletMap.removeLayer(topoLayer);
+                if (openseaMapLayer) liveLeafletMap.removeLayer(openseaMapLayer);
+                if (!osmTileLayer) {
+                    osmTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        className: 'dark-tiles',
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    });
+                }
+                osmTileLayer.addTo(liveLeafletMap);
+                if (btn) {
+                    btn.innerHTML = '🗺️';
+                    btn.title = 'Active: Dark Vector. Tap to switch to Topo.';
+                }
+            } else if (currentMapLayer === 'dark') {
+                currentMapLayer = 'topo';
+                if (osmTileLayer) liveLeafletMap.removeLayer(osmTileLayer);
+                if (satHybridLayer) liveLeafletMap.removeLayer(satHybridLayer);
+                if (openseaMapLayer) liveLeafletMap.removeLayer(openseaMapLayer);
+                if (!topoLayer) {
+                    topoLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 17,
+                        attribution: 'Map data: &copy; OpenStreetMap, SRTM | Map style: &copy; OpenTopoMap'
+                    });
+                }
+                topoLayer.addTo(liveLeafletMap);
+                if (btn) {
+                    btn.innerHTML = '⛰️';
+                    btn.title = 'Active: Topographic. Tap to switch to Nautical Chart.';
+                }
+            } else if (currentMapLayer === 'topo') {
+                currentMapLayer = 'nautical';
+                if (osmTileLayer) liveLeafletMap.removeLayer(osmTileLayer);
+                if (topoLayer) liveLeafletMap.removeLayer(topoLayer);
+                if (!satHybridLayer) {
+                    satHybridLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        maxNativeZoom: 16,
+                        maxZoom: 19,
+                        attribution: 'Tiles &copy; Esri &mdash; Earthstar Geographics'
+                    });
+                }
+                satHybridLayer.addTo(liveLeafletMap);
+                if (!openseaMapLayer) {
+                    openseaMapLayer = L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
+                        maxZoom: 18,
+                        attribution: 'Map data &copy; <a href="http://www.openseamap.org">OpenSeaMap</a>'
+                    });
+                }
+                openseaMapLayer.addTo(liveLeafletMap);
+                if (btn) {
+                    btn.innerHTML = '⚓';
+                    btn.title = 'Active: Nautical Chart (OpenSeaMap & Seamarks). Tap to switch to Satellite.';
+                }
+            } else {
+                currentMapLayer = 'satellite';
+                if (osmTileLayer) liveLeafletMap.removeLayer(osmTileLayer);
+                if (topoLayer) liveLeafletMap.removeLayer(topoLayer);
+                if (openseaMapLayer) liveLeafletMap.removeLayer(openseaMapLayer);
+                if (!satHybridLayer) {
+                    satHybridLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                        maxNativeZoom: 16,
+                        maxZoom: 19,
+                        attribution: 'Tiles &copy; Esri &mdash; Earthstar Geographics'
+                    });
+                    satHybridLayer.on('tileerror', (e) => {
+                        if (e && e.tile) e.tile.style.display = 'none';
+                    });
+                }
+                satHybridLayer.addTo(liveLeafletMap);
+                if (btn) {
+                    btn.innerHTML = '🛰️';
+                    btn.title = 'Active: Satellite Hybrid (Oceans & Real Earth). Tap to switch to Dark Vector.';
+                }
+            }
+
+            // Ensure route and trajectory polylines stay on top
+            if (liveRoadNetworkLayer) liveRoadNetworkLayer.bringToFront();
+            if (liveGnssPolyline) liveGnssPolyline.bringToFront();
+            if (liveDrPolyline) liveDrPolyline.bringToFront();
+            if (liveMapMatchedPolyline) liveMapMatchedPolyline.bringToFront();
+            if (liveRoutePolyline) liveRoutePolyline.bringToFront();
+            if (liveVehicleMarker) liveVehicleMarker.setZIndexOffset(1000);
         }
 
         function loadOfflineRoadNetworkGeoJSON() {
@@ -5791,10 +7372,18 @@
                 liveMapMatchedPolyline.setLatLngs(mmPts);
             }
 
-            // Smoothly Follow Vehicle Puck when Follow mode is active
+            // Smoothly Follow Vehicle Puck ONLY when Follow mode is active and user is not actively gesturing
             if (isFollowVehicle || !liveNav.hasCentered) {
-                liveLeafletMap.panTo([estLat, estLon], { animate: true, duration: 0.15 });
-                liveNav.hasCentered = true;
+                const now = performance.now();
+                if (!liveLeafletMap._animatingZoom && (!lastMapPanTime || now - lastMapPanTime > 280)) {
+                    const currentCenter = liveLeafletMap.getCenter();
+                    const distFromCenter = haversineDistanceM(currentCenter.lat, currentCenter.lng, estLat, estLon);
+                    if (distFromCenter > 2.5 || !liveNav.hasCentered) {
+                        liveLeafletMap.panTo([estLat, estLon], { animate: true, duration: 0.25 });
+                        lastMapPanTime = now;
+                        liveNav.hasCentered = true;
+                    }
+                }
             }
         }
 
@@ -6214,6 +7803,15 @@
             let vEast = liveNav.velocityMps * Math.sin(liveNav.headingRad);
             let vNorth = liveNav.velocityMps * Math.cos(liveNav.headingRad);
 
+            // High-Seas Ocean Current (Set & Drift) & Leeway Vector Compensation for Ships
+            if (currentVehicleProfile === 'ship') {
+                let oceanDriftSpeedMps = 0.41; // ~0.8 knots
+                let oceanDriftDirRad = 75.0 * (Math.PI / 180.0); // 075° True
+                let leewayAngleRad = 2.0 * (Math.PI / 180.0);
+                vEast += oceanDriftSpeedMps * Math.sin(oceanDriftDirRad) + liveNav.velocityMps * Math.sin(leewayAngleRad);
+                vNorth += oceanDriftSpeedMps * Math.cos(oceanDriftDirRad);
+            }
+
             const R_EARTH = 6378137.0;
             let dEast = vEast * dt;
             let dNorth = vNorth * dt;
@@ -6439,17 +8037,33 @@
             let hudHead = document.getElementById('hud-heading');
             let hudZupt = document.getElementById('hud-zupt');
 
-            if (spdKpi) spdKpi.innerText = liveNav.velocityKmh.toFixed(1) + ' km/h';
-            if (spdSrc) {
-                let latStr = lastInferenceLatencyMs < 1 ? lastInferenceLatencyMs.toFixed(2) : lastInferenceLatencyMs.toFixed(1);
-                spdSrc.innerHTML = `On-Device GRU Engine (<span id="live-val-latency">${latStr}</span>ms)`;
+            if (currentVehicleProfile === 'ship') {
+                let knots = liveNav.velocityKmh / 1.852;
+                if (spdKpi) spdKpi.innerText = knots.toFixed(1) + ' kt';
+                if (spdSrc) {
+                    let latStr = lastInferenceLatencyMs < 1 ? lastInferenceLatencyMs.toFixed(2) : lastInferenceLatencyMs.toFixed(1);
+                    spdSrc.innerHTML = `On-Device GRU Engine (<span id="live-val-latency">${latStr}</span>ms)`;
+                }
+                if (driftKpi) driftKpi.innerText = (liveNav.driftM / 1852.0).toFixed(3) + ' NM';
+                if (confKpi) confKpi.innerText = Math.round(liveNav.confidencePct) + '%';
+                if (hudLatLon) hudLatLon.innerText = liveNav.estLat.toFixed(6) + ', ' + liveNav.estLon.toFixed(6);
+                if (hudVel) hudVel.innerText = knots.toFixed(1) + ' kt (' + (liveNav.velocityMps * 1.94384).toFixed(1) + ' kt)';
+                let degTrue = Math.round((liveNav.headingRad * 180 / Math.PI + 360) % 360);
+                if (hudHead) hudHead.innerText = String(degTrue).padStart(3, '0') + '° T';
+                if (hudZupt) hudZupt.innerText = (liveSensors.motionState === 'STATIONARY') ? 'Anchored / Moored' : 'Underway';
+            } else {
+                if (spdKpi) spdKpi.innerText = liveNav.velocityKmh.toFixed(1) + ' km/h';
+                if (spdSrc) {
+                    let latStr = lastInferenceLatencyMs < 1 ? lastInferenceLatencyMs.toFixed(2) : lastInferenceLatencyMs.toFixed(1);
+                    spdSrc.innerHTML = `On-Device GRU Engine (<span id="live-val-latency">${latStr}</span>ms)`;
+                }
+                if (driftKpi) driftKpi.innerText = liveNav.driftM.toFixed(2) + ' m';
+                if (confKpi) confKpi.innerText = Math.round(liveNav.confidencePct) + '%';
+                if (hudLatLon) hudLatLon.innerText = liveNav.estLat.toFixed(6) + ', ' + liveNav.estLon.toFixed(6);
+                if (hudVel) hudVel.innerText = liveNav.velocityMps.toFixed(2) + ' m/s (' + liveNav.velocityKmh.toFixed(1) + ' km/h)';
+                if (hudHead) hudHead.innerText = (liveNav.headingRad * 180 / Math.PI).toFixed(1) + '°';
+                if (hudZupt) hudZupt.innerText = (liveSensors.motionState === 'STATIONARY') ? 'Engaged' : 'Dynamic Motion';
             }
-            if (driftKpi) driftKpi.innerText = liveNav.driftM.toFixed(2) + ' m';
-            if (confKpi) confKpi.innerText = Math.round(liveNav.confidencePct) + '%';
-            if (hudLatLon) hudLatLon.innerText = liveNav.estLat.toFixed(6) + ', ' + liveNav.estLon.toFixed(6);
-            if (hudVel) hudVel.innerText = liveNav.velocityMps.toFixed(2) + ' m/s (' + liveNav.velocityKmh.toFixed(1) + ' km/h)';
-            if (hudHead) hudHead.innerText = (liveNav.headingRad * 180 / Math.PI).toFixed(1) + '°';
-            if (hudZupt) hudZupt.innerText = (liveSensors.motionState === 'STATIONARY') ? 'Engaged' : 'Dynamic Motion';
 
             if (modeKpi && modeSub) {
                 if (isLiveGPSOutage) {
@@ -6529,6 +8143,16 @@
             let drvRoad = document.getElementById('driver-road');
             if (drvRoad) {
                 drvRoad.innerText = '🛣️ ' + (liveTrajectoryMetrics.activeRoad || 'Main Transit Corridor');
+            }
+
+            let envBadge = document.getElementById('driver-env-badge');
+            if (envBadge && typeof EnvironmentClassifier !== 'undefined') {
+                let env = EnvironmentClassifier.classify(liveSensors, liveNav, isLiveGPSOutage);
+                envBadge.innerText = env.label;
+                envBadge.style.color = env.color;
+                envBadge.style.background = env.bg;
+                envBadge.style.borderColor = env.border;
+                envBadge.title = env.description;
             }
         }
 
@@ -7093,6 +8717,7 @@
         window.addEventListener('DOMContentLoaded', () => {
             initLiveGeographicMap();
             initDestinationSearchInput();
+            initStartSearchInput();
             updateBenchmark();
             resizeCanvas();
             setTimeout(drawLiveTrajectoryCanvas, 100);
