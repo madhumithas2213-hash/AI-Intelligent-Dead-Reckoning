@@ -13,6 +13,7 @@ const ASSETS_TO_CACHE = [
     '/assets/leaflet/leaflet.js',
     '/assets/leaflet/leaflet.css',
     '/assets/maps/offline_road_network.json',
+    '/assets/maps/offline_sea_routes.json',
     'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap'
 ];
 

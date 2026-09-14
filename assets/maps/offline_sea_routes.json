@@ -1,0 +1,324 @@
+{
+  "type": "FeatureCollection",
+  "name": "AI_IDR_GLOBAL_MARITIME_SHIPPING_LANES",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_MUMBAI_ARABIAN_DEEP",
+      "properties": {
+        "name": "Mumbai Port to Central Arabian Sea Fairway",
+        "type": "maritime_lane",
+        "corridor": "Arabian Sea Inbound/Outbound TSS",
+        "speed_limit_knots": 24,
+        "depth_meters": 1200
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [72.8656, 18.9438],
+          [72.5000, 18.8500],
+          [71.5000, 18.5000],
+          [69.5000, 17.8000],
+          [67.0000, 16.5000],
+          [64.5000, 15.0000],
+          [60.0000, 14.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_KOCHI_ARABIAN_DEEP",
+      "properties": {
+        "name": "Kochi Harbor to Central Arabian Sea Deep Passage",
+        "type": "maritime_lane",
+        "corridor": "Arabian Sea Southwest Fairway",
+        "speed_limit_knots": 24,
+        "depth_meters": 2400
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [76.2667, 9.9667],
+          [75.5000, 9.9000],
+          [73.5000, 10.2000],
+          [70.0000, 11.5000],
+          [65.0000, 13.0000],
+          [60.0000, 14.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_GULF_OF_ADEN_TSS",
+      "properties": {
+        "name": "Socotra & Gulf of Aden International Recommended Transit Corridor (IRTC)",
+        "type": "maritime_lane",
+        "corridor": "Gulf of Aden TSS",
+        "speed_limit_knots": 22,
+        "depth_meters": 1800
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [60.0000, 14.0000],
+          [55.0000, 13.2000],
+          [52.0000, 12.8000],
+          [48.5000, 12.3000],
+          [46.0000, 12.0000],
+          [44.5000, 12.2000],
+          [43.4000, 12.5833]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_BAB_EL_MANDEB_STRAIT",
+      "properties": {
+        "name": "Bab-el-Mandeb Strait Shipping Chokepoint",
+        "type": "maritime_strait",
+        "corridor": "Bab-el-Mandeb Inbound TSS",
+        "speed_limit_knots": 18,
+        "depth_meters": 185
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [43.4000, 12.5833],
+          [43.3000, 12.8000],
+          [43.1000, 13.2000],
+          [42.6000, 13.9000],
+          [42.0000, 14.7000],
+          [41.5000, 15.8000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_RED_SEA_CENTRAL_JEDDAH",
+      "properties": {
+        "name": "Red Sea Central Deep Water Channel (Jeddah Approach)",
+        "type": "maritime_lane",
+        "corridor": "Central Red Sea Shipping Lane",
+        "speed_limit_knots": 22,
+        "depth_meters": 1250
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [41.5000, 15.8000],
+          [40.8000, 17.5000],
+          [39.8000, 19.5000],
+          [38.8000, 21.0000],
+          [38.5000, 21.5000],
+          [39.1925, 21.4858]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_RED_SEA_NORTH_DUBA",
+      "properties": {
+        "name": "Red Sea North Channel to Duba Commercial Port (Saudi Arabia)",
+        "type": "maritime_lane",
+        "corridor": "Northern Red Sea Duba Fairway",
+        "speed_limit_knots": 20,
+        "depth_meters": 800
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [38.5000, 21.5000],
+          [37.8000, 23.0000],
+          [36.8000, 25.0000],
+          [35.8000, 26.8000],
+          [35.3000, 27.3500],
+          [35.6900, 27.3500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_GULF_OF_SUEZ_CANAL",
+      "properties": {
+        "name": "Gulf of Suez & Suez Canal Convoy Approach",
+        "type": "maritime_canal",
+        "corridor": "Suez Canal Transit Corridor",
+        "speed_limit_knots": 14,
+        "depth_meters": 65
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [35.3000, 27.3500],
+          [34.3000, 27.8000],
+          [33.7000, 28.3000],
+          [33.0000, 29.0000],
+          [32.5500, 29.9667],
+          [32.3000, 31.2667]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_MEDITERRANEAN_BASIN",
+      "properties": {
+        "name": "Mediterranean Sea Trunk Lane (Port Said to Southern Europe)",
+        "type": "maritime_lane",
+        "corridor": "Eastern Mediterranean Shipping Lane",
+        "speed_limit_knots": 22,
+        "depth_meters": 2100
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [32.3000, 31.2667],
+          [30.5000, 32.5000],
+          [27.0000, 34.0000],
+          [22.0000, 35.5000],
+          [17.0000, 36.5000],
+          [13.0000, 37.5000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_GULF_OF_OMAN_HORMUZ",
+      "properties": {
+        "name": "Arabian Sea to Gulf of Oman & Strait of Hormuz",
+        "type": "maritime_strait",
+        "corridor": "Strait of Hormuz Inbound TSS",
+        "speed_limit_knots": 20,
+        "depth_meters": 110
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [60.0000, 14.0000],
+          [60.5000, 18.0000],
+          [60.2000, 21.5000],
+          [59.0000, 24.0000],
+          [57.5000, 25.5000],
+          [56.4500, 26.5667]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_PERSIAN_GULF_DUBAI",
+      "properties": {
+        "name": "Strait of Hormuz to Dubai (Jebel Ali / Port Rashid)",
+        "type": "maritime_lane",
+        "corridor": "Arabian Gulf Commercial Fairway",
+        "speed_limit_knots": 18,
+        "depth_meters": 45
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [56.4500, 26.5667],
+          [55.8000, 26.2000],
+          [55.3000, 25.5000],
+          [55.2708, 25.2048],
+          [55.0667, 25.0167]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_CHENNAI_BAY_OF_BENGAL",
+      "properties": {
+        "name": "Chennai Port to Central Bay of Bengal Shipping Lane",
+        "type": "maritime_lane",
+        "corridor": "Bay of Bengal Eastbound Fairway",
+        "speed_limit_knots": 22,
+        "depth_meters": 2200
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [80.2925, 13.0827],
+          [81.5000, 12.8000],
+          [84.0000, 11.5000],
+          [87.5000, 9.5000],
+          [91.0000, 7.5000],
+          [94.0000, 6.0000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_MALACCA_STRAIT_SINGAPORE",
+      "properties": {
+        "name": "Great Nicobar to Malacca Strait & Singapore Port",
+        "type": "maritime_strait",
+        "corridor": "Malacca Strait Inbound TSS",
+        "speed_limit_knots": 16,
+        "depth_meters": 48
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [94.0000, 6.0000],
+          [96.5000, 5.5000],
+          [98.5000, 4.2000],
+          [100.5000, 3.2000],
+          [102.0000, 2.0000],
+          [103.2000, 1.4000],
+          [103.8500, 1.2500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_INDIAN_COASTAL_WEST",
+      "properties": {
+        "name": "Indian West Coast Maritime Highway (Mumbai to Kochi)",
+        "type": "maritime_lane",
+        "corridor": "Indian Western Seaboard Fairway",
+        "speed_limit_knots": 20,
+        "depth_meters": 350
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [72.8656, 18.9438],
+          [72.6000, 17.5000],
+          [73.2000, 15.5000],
+          [74.2000, 13.5000],
+          [75.2000, 11.5000],
+          [76.2667, 9.9667]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "SEA_CORRIDOR_INDIAN_COASTAL_SOUTH_EAST",
+      "properties": {
+        "name": "Indian South-East Coast Fairway (Kochi to Cape Comorin & Chennai)",
+        "type": "maritime_lane",
+        "corridor": "Cape Comorin & Palk Strait Bypass",
+        "speed_limit_knots": 20,
+        "depth_meters": 500
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [76.2667, 9.9667],
+          [76.8000, 8.5000],
+          [77.5000, 7.6000],
+          [78.5000, 7.8000],
+          [80.0000, 8.5000],
+          [81.2000, 10.0000],
+          [80.5000, 11.8000],
+          [80.2925, 13.0827]
+        ]
+      }
+    }
+  ]
+}

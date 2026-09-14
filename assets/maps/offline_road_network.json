@@ -232,6 +232,258 @@
           [77.602500, 12.967200]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH44_BLR_HOSUR",
+      "properties": {
+        "name": "National Highway 44 (Bengaluru - Hosur Expressway)",
+        "highway": "motorway",
+        "lanes": 6,
+        "oneway": "no",
+        "maxspeed_kmh": 100,
+        "ref": "NH-44"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.594600, 12.971600],
+          [77.622900, 12.917700],
+          [77.664800, 12.845200],
+          [77.771900, 12.780100],
+          [77.825300, 12.740900]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH44_HOSUR_SALEM",
+      "properties": {
+        "name": "National Highway 44 (Hosur - Krishnagiri - Dharmapuri - Salem)",
+        "highway": "motorway",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 90,
+        "ref": "NH-44"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.825300, 12.740900],
+          [78.214000, 12.518600],
+          [78.158400, 12.121100],
+          [78.077200, 11.942100],
+          [78.043500, 11.745200],
+          [78.146000, 11.664300]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH44_SALEM_NAMAKKAL",
+      "properties": {
+        "name": "National Highway 44 (Salem - Rasipuram - Namakkal Corridor)",
+        "highway": "motorway",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 90,
+        "ref": "NH-44"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.146000, 11.664300],
+          [78.175200, 11.542000],
+          [78.169000, 11.455000],
+          [77.828100, 11.359400],
+          [78.173000, 11.365000],
+          [78.167000, 11.218900]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH44_NAMAKKAL_KARUR_DINDIGUL",
+      "properties": {
+        "name": "National Highway 44 (Namakkal - Karur - Dindigul - Madurai)",
+        "highway": "motorway",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 90,
+        "ref": "NH-44"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.167000, 11.218900],
+          [78.005000, 11.045000],
+          [78.084000, 10.960100],
+          [77.955000, 10.531000],
+          [77.980300, 10.367300],
+          [77.965000, 10.082000],
+          [78.119800, 9.925200]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH544_SALEM_COIMBATORE",
+      "properties": {
+        "name": "National Highway 544 (Salem - Erode - Coimbatore Highway)",
+        "highway": "trunk",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 85,
+        "ref": "NH-544"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.146000, 11.664300],
+          [77.868000, 11.482000],
+          [77.717200, 11.341000],
+          [77.583000, 11.275000],
+          [77.269000, 11.193000],
+          [76.955800, 11.016800]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH48_BLR_CHENNAI",
+      "properties": {
+        "name": "National Highway 48 (Bengaluru - Kolar - Ranipet - Chennai Expressway)",
+        "highway": "motorway",
+        "lanes": 6,
+        "oneway": "no",
+        "maxspeed_kmh": 100,
+        "ref": "NH-48"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [77.594600, 12.971600],
+          [77.798000, 13.071000],
+          [78.134000, 13.136000],
+          [79.100000, 13.217000],
+          [79.333000, 12.930000],
+          [79.703000, 12.834000],
+          [79.943000, 12.968000],
+          [80.093000, 13.048000],
+          [80.270700, 13.082700]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_GST_NH32_CHENNAI_VILLUPURAM",
+      "properties": {
+        "name": "Grand Southern Trunk Road / NH 32 (Chennai - Tambaram - Tindivanam - Villupuram)",
+        "highway": "trunk",
+        "lanes": 6,
+        "oneway": "no",
+        "maxspeed_kmh": 85,
+        "ref": "NH-32"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [80.270700, 13.082700],
+          [80.212000, 13.006000],
+          [80.120000, 12.924000],
+          [79.983000, 12.684000],
+          [79.885000, 12.509000],
+          [79.650000, 12.228000],
+          [79.486000, 11.940000]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH38_VILLUPURAM_TRICHY",
+      "properties": {
+        "name": "National Highway 38 (Villupuram - Perambalur - Samayapuram - Trichy)",
+        "highway": "trunk",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 90,
+        "ref": "NH-38"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [79.486000, 11.940000],
+          [79.292000, 11.690000],
+          [79.055000, 11.536000],
+          [78.874000, 11.234000],
+          [78.742000, 10.925000],
+          [78.704700, 10.790500]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_SH139_PERAMBALUR_ARIYALUR",
+      "properties": {
+        "name": "State Highway 139 (Perambalur - Kunnam - Ariyalur Road)",
+        "highway": "primary",
+        "lanes": 2,
+        "oneway": "no",
+        "maxspeed_kmh": 60,
+        "ref": "SH-139"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.874000, 11.234000],
+          [78.985000, 11.205000],
+          [79.078600, 11.140100]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_SH142_TRICHY_ARIYALUR",
+      "properties": {
+        "name": "State Highway 142 (Trichy - Lalgudi - Pullambadi - Ariyalur)",
+        "highway": "primary",
+        "lanes": 2,
+        "oneway": "no",
+        "maxspeed_kmh": 60,
+        "ref": "SH-142"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [78.704700, 10.790500],
+          [78.817000, 10.869000],
+          [78.932000, 10.975000],
+          [79.078600, 11.140100]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ROAD_NH83_COIMBATORE_DINDIGUL",
+      "properties": {
+        "name": "National Highway 83 (Coimbatore - Pollachi - Palani - Dindigul)",
+        "highway": "primary",
+        "lanes": 4,
+        "oneway": "no",
+        "maxspeed_kmh": 80,
+        "ref": "NH-83"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [76.955800, 11.016800],
+          [77.008000, 10.660000],
+          [77.248000, 10.584000],
+          [77.518000, 10.450000],
+          [77.747000, 10.485000],
+          [77.980300, 10.367300]
+        ]
+      }
     }
   ]
 }
